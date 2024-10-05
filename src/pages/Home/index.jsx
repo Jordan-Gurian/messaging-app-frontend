@@ -21,6 +21,7 @@ export default function HomePage() {
             <main>
                 Home
                 <Link to='/login'>Log in</Link>
+                <Link to='/register'>Register</Link>
             </main>
         )
     }

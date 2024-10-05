@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
 import ErrorMessage from './../../components/ErrorMessage';
 
-export default function LoginPage() {
+export default function RegisterPage() {
 
     const [currentError, setCurrentError] = useState("");
 
     return (
         <main>
-            <LoginForm setCurrentError={setCurrentError}/>
+            <RegisterForm setCurrentError={setCurrentError}/>
             <ErrorMessage currentError={currentError}/>
         </main>
     )
