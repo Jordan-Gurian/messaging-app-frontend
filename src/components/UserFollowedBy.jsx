@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import UserProfileImage from './UserProfileImage';
+import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import UserProfileImage from './UserProfileImage';
 
 export default function UserFollowedBy(props) {
 
@@ -12,12 +13,12 @@ export default function UserFollowedBy(props) {
                 Followers:
                 {props.followedBy.map((user) => {
                     return (
-                        <div key={uuidv4()} className='following-user'>
+                        <Link key={uuidv4()} className='following-user' to={`./../${user.username}`} reloadDocument>
                             <UserProfileImage 
                                 profile_url={`${apiUrl}/${user.profile_url}`} 
                             />
                             <div>{user.username}</div>
-                        </div>
+                        </Link>
                     )
                 })}
             </div>
