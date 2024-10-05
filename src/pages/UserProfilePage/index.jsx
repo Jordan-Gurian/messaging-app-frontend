@@ -1,33 +1,48 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-// import LoginForm from './LoginForm';
-// import ErrorMessage from './../../components/ErrorMessage';
+import UserProfileImage from './../../components/UserProfileImage';
+import UserProfileBio from './../../components/UserProfileBio';
+import UserFollowing from './../../components/UserFollowing';
+import UserFollowedBy from './../../components/UserFollowedBy';
+import UserChats from './../../components/UserChats';
 
-export default async function UserProfilePage() {
+export default function UserProfilePage() {
 
     const { username } = useParams();
+    const [user, setUser] = useState({});
 
     const apiUrl = import.meta.env.VITE_API_URL;
-    const requestURL = `${apiUrl}/user/${username}`;
-    let responseDetails;
+    const requestURL = `${apiUrl}/users/${username}`;
 
-    try {
-        const response = await fetch(requestURL);
-        responseDetails = await response.json();
-    } catch {
-        //props.setCurrentError("Login request was not received")
-    }       
-    
-    // probably need to handle null values in each components asopposed to this components
-    const { profile_url, profile_bio, following, followedBy, chats } = responseDetails;
+    async function getUser() {
+        try {
+            const response = await fetch(requestURL);
+            setUser(await response.json());
+        } catch {
+            //props.setCurrentError("Login request was not received")
+        } 
+    }
+      
+    useEffect(() => {
+        getUser();
+    }, []);
 
-    return (
-        <main>
-            <UserProfileImage profile_url={profile_url} /> // component will probably be used elsewhere
-            <UserProfileBio profile_bio={profile_bio}/> // might want this as separate component for editing
-            <UserFollowing following={following}/> // maybe let it also be it's own page?
-            <UserFollowedBy followedBy={followedBy}/> // maybe let it also be it's own page?
-            <UserChats chats={chats}/> // Probably want this to be a snippet of full list of chats?
-        </main>
-    )
+    if (Object.keys(user).length > 0) {
+        return (
+            <main>
+                <UserProfileImage profile_url={`${apiUrl}/${user.profile_url}`} />
+                <UserProfileBio profile_bio={user.profile_bio} />
+                <UserFollowing following={user.following} />
+                <UserFollowedBy followedBy={user.followedBy} />
+                <UserChats chats={user.chats} />
+            </main>
+        )
+    } else {
+        return (
+            <main>
+                Loading...
+            </main>
+        )
+    }
+
 }
