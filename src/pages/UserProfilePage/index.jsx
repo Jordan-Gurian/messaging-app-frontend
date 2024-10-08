@@ -5,6 +5,7 @@ import UserProfileBio from './../../components/UserProfileBio';
 import UserFollowing from './../../components/UserFollowing';
 import UserFollowedBy from './../../components/UserFollowedBy';
 import UserChats from './../../components/UserChats';
+import EditUserProfileImage from './EditUserProfileImage';
 
 export default function UserProfilePage() {
 
@@ -31,6 +32,7 @@ export default function UserProfilePage() {
         return (
             <main>
                 <UserProfileImage profile_url={`${apiUrl}/${user.profile_url}`} />
+                <EditUserProfileImage />
                 <UserProfileBio profile_bio={user.profile_bio} />
                 <UserFollowing following={user.following} />
                 <UserFollowedBy followedBy={user.followedBy} />
