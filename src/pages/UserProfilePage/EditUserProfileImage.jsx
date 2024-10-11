@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { jwtDecode } from 'jwt-decode';
-import { createS3Client, uploadToS3 } from '../../utils/s3Utils';
+import { createS3Client, uploadToS3, deleteS3Objects } from '../../utils/s3Utils';
 import Resizer from 'react-image-file-resizer';
 import PropTypes from 'prop-types';
 
@@ -42,6 +42,7 @@ export default function EditUserProfileImage(props) {
 
         try {
             const s3 = createS3Client();
+            await deleteS3Objects(s3, null, username)
             await uploadToS3(s3, fileResized, key);
             const user = await updateUserProfileUrl(key, username);
             props.onFormSubmit(user)
