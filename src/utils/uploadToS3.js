@@ -1,6 +1,6 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
-export default async function useUploadToS3(file, key) {
+export default async function uploadToS3(file, key) {
 
     const credentials = {
         accessKeyId: import.meta.env.VITE_S3_ACCESS_KEY,
