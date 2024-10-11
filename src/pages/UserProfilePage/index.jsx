@@ -30,7 +30,6 @@ export default function UserProfilePage() {
         try {
             const s3 = createS3Client();
             setPresignedUrl(await getUserPresignedUrl(s3, user.profile_url));
-            
         } catch (error) {
             return { error }
         } 
@@ -47,7 +46,9 @@ export default function UserProfilePage() {
 
 
     useEffect(() => {
-        getPresignedUrl();
+        if (user.profile_url) {
+            getPresignedUrl();
+        }
     }, [user])
 
     if (Object.keys(user).length > 0 && presignedUrl !== '') {
