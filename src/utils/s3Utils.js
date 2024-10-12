@@ -61,7 +61,7 @@ export async function deleteS3Objects(s3Client, key=null, folderPath=null) {
             // Step 1: List all objects in the bucket
             const listedObjects = await s3Client.send(getCommand);
         
-            if (listedObjects.Contents.length === 0) {
+            if (!listedObjects || listedObjects.Contents.length === 0) {
               console.log('No objects found in the bucket.');
               return;
             }
