@@ -5,7 +5,6 @@ import UserProfileBio from './../../components/UserProfileBio';
 import UserFollowing from './../../components/UserFollowing';
 import UserFollowedBy from './../../components/UserFollowedBy';
 import UserChats from './../../components/UserChats';
-import EditUserProfileImage from './EditUserProfileImage';
 import { createS3Client, getUserPresignedUrl } from './../../utils/s3Utils';
 
 export default function UserProfilePage() {
@@ -54,8 +53,7 @@ export default function UserProfilePage() {
     if (Object.keys(user).length > 0 && presignedUrl !== '') {
         return (
             <main>
-                <UserProfileImage presignedUrl={presignedUrl} />
-                <EditUserProfileImage onFormSubmit={handleFormSubmit}/>
+                <UserProfileImage onFormSubmit={handleFormSubmit} presignedUrl={presignedUrl} />
                 <UserProfileBio profile_bio={user.profile_bio} />
                 <UserFollowing following={user.following} />
                 <UserFollowedBy followedBy={user.followedBy} />

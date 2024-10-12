@@ -1,24 +1,29 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { jwtDecode } from 'jwt-decode';
 import { createS3Client, uploadToS3, deleteS3Objects } from '../../utils/s3Utils';
 import Resizer from 'react-image-file-resizer';
 import PropTypes from 'prop-types';
+import EditIcon from './../../assets/edit.png';
+
+import './EditUserProfileImage.css';
 
 export default function EditUserProfileImage(props) {
 
     const usernameObj = useParams()
     const username = usernameObj.username;
-    const [selectedFile, setSelectedFile] = useState(null);
+    const fileUploadRef = useRef();
 
     function handleFileInput(event) {
-        setSelectedFile(event.target.files[0]);
+        event.preventDefault();
+        fileUploadRef.current.click();    
     }
 
-    async function handleProfileImageUpdate(event, file, username) {
-        event.preventDefault();
+    async function handleProfileImageUpdate(event, username) {
 
+
+        const file = fileUploadRef.current.files[0];
         const key = `${username}/${uuidv4()}`;
 
         async function resizeFile(file) {
@@ -93,18 +98,27 @@ export default function EditUserProfileImage(props) {
     }
     
     return (
-        <form id="form" encType="multipart/form-data" onSubmit={(event) => handleProfileImageUpdate(event, selectedFile, username)}>
+        <form id="form" encType="multipart/form-data" onSubmit={handleFileInput}>
             <input 
                 type="file"
                 id="file"
                 accept=".png, .jpg, .jpeg"
-                onChange={handleFileInput}
+                ref={fileUploadRef}
+                onChange={(event) => handleProfileImageUpdate(event, username)}
+                hidden
             />
-            <button type="submit">Upload photo</button>
+            <button type="submit">
+                <img 
+                    src={EditIcon}
+                    height='20px'
+                    width='20px'
+                    alt="404 not found"
+                />
+            </button>
         </form>
     )
 }
 
 EditUserProfileImage.propTypes = {
-    onFormSubmit: PropTypes.func.isRequired
+    onFormSubmit: PropTypes.func.isRequired,
 };
