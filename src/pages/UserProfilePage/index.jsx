@@ -54,7 +54,7 @@ export default function UserProfilePage() {
         return (
             <main>
                 <UserProfileImage onFormSubmit={handleFormSubmit} presignedUrl={presignedUrl} />
-                <UserProfileBio profile_bio={user.profile_bio} />
+                <UserProfileBio onFormSubmit={handleFormSubmit} profile_bio={user.profile_bio} />
                 <UserFollowing following={user.following} />
                 <UserFollowedBy followedBy={user.followedBy} />
                 <UserChats chats={user.chats} />
