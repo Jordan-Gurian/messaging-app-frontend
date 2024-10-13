@@ -43,7 +43,7 @@ export default function EditUserProfileBio(props) {
         try {
             const response = await fetch(requestURL, requestOptions);
             const user = await response.json();
-            props.onFormSubmit(user)
+            props.onFormSubmit()
         } catch (error) {
             console.log(error)
             return { error }        

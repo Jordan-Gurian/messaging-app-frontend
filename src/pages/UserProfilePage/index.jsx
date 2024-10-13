@@ -5,6 +5,8 @@ import UserProfileBio from './../../components/UserProfileBio';
 import UserFollowing from './../../components/UserFollowing';
 import UserFollowedBy from './../../components/UserFollowedBy';
 import UserChats from './../../components/UserChats';
+import FollowButton from './../../components/FollowButton';
+import { jwtDecode } from 'jwt-decode';
 import { createS3Client, getUserPresignedUrl } from './../../utils/s3Utils';
 
 export default function UserProfilePage() {
@@ -12,6 +14,10 @@ export default function UserProfilePage() {
     const { username } = useParams();
     const [user, setUser] = useState({});
     const [presignedUrl, setPresignedUrl] = useState('');
+
+    const token = localStorage.token;
+    const decoded = jwtDecode(token);
+    const isUser = decoded.user.username === username;
 
     const apiUrl = import.meta.env.VITE_API_URL;
     const requestURL = `${apiUrl}/users/${username}`;
@@ -50,11 +56,12 @@ export default function UserProfilePage() {
         }
     }, [user])
 
-    if (Object.keys(user).length > 0 && presignedUrl !== '') {
+    if (Object.keys(user).length > 0 && presignedUrl) {
         return (
             <main>
-                <UserProfileImage onFormSubmit={handleFormSubmit} presignedUrl={presignedUrl} />
-                <UserProfileBio onFormSubmit={handleFormSubmit} profile_bio={user.profile_bio} />
+                <UserProfileImage onFormSubmit={handleFormSubmit} presignedUrl={presignedUrl} isUser={isUser} />
+                <FollowButton onClick={handleFormSubmit} followedBy={user.followedBy} isUser={isUser} />
+                <UserProfileBio onFormSubmit={handleFormSubmit} profile_bio={user.profile_bio} isUser={isUser} />
                 <UserFollowing following={user.following} />
                 <UserFollowedBy followedBy={user.followedBy} />
                 <UserChats chats={user.chats} />

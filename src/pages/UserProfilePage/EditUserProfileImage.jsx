@@ -50,7 +50,7 @@ export default function EditUserProfileImage(props) {
             await deleteS3Objects(s3, null, username)
             await uploadToS3(s3, fileResized, key);
             const user = await updateUserProfileUrl(key, username);
-            props.onFormSubmit(user)
+            props.onFormSubmit()
         } catch (error) {
             console.log(error)
             return { error }
@@ -67,6 +67,7 @@ export default function EditUserProfileImage(props) {
         const token = localStorage.token;
         const decoded = jwtDecode(token);
         
+        // Redundant, but nice added layer of defense
         if (decoded.user.username !== username) {
             return new Error(`Cannot change another user's profile`);
         }
