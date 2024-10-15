@@ -5,6 +5,8 @@ import LoginPage from './pages/Login/index'
 import HomePage from './pages/Home/index';
 import RegisterPage from './pages/Register/index';
 import UserProfilePage from './pages/UserProfilePage/index';
+import AllUsersPage from './pages/AllUsersPage/index';
+
 
 const router = createBrowserRouter([
     {
@@ -27,6 +29,10 @@ const router = createBrowserRouter([
             {
                 path: '/user/:username',
                 element: <UserProfilePage />,
+            },
+            {
+                path: '/users',
+                element: <AllUsersPage />,
             },
         ],
     }

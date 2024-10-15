@@ -31,10 +31,10 @@ function Navbar() {
         event.preventDefault();
         const searchVal = event.target.searchVal.value;
         if (await isUserExists(searchVal)) {
-            navigate(`./../user/${searchVal}`);
+            navigate(`/user/${searchVal}`);
             window.location.reload();
         } else {
-            console.log('noooo') // DEBUG This should redirect to a list of all users, but for now this is ok
+            navigate(`/users`);
         }
     };
 
