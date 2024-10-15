@@ -12,7 +12,6 @@ export function AuthProvider(props) {
         if (token) {
             const { exp } = jwtDecode(token)
             const expirationTime = (exp * 1000) - 60000
-            console.log(expirationTime)
             if (Date.now() >= expirationTime) {
                 setIsAuthenticated(false) 
             } else {
