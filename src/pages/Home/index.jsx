@@ -1,28 +1,33 @@
+import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { useAuth } from './../../hooks/AuthContext';
 
 export default function HomePage() {
 
+    const { isAuthenticated, checkAuth } = useAuth();
     const navigate = useNavigate();
+    
+    useEffect(() => {
+        checkAuth();
+    },[])
+
 
     function logout() {
         localStorage.removeItem("token");
+        checkAuth();
         navigate('/', { state: { successMessage: 'You have successfully logged out' } });
     }
 
-    function decodeToken() {
+    if (isAuthenticated) {
         const token = localStorage.token;
-        return jwtDecode(token);
-    }
-
-
-    if (localStorage.token) {
-        const decoded = decodeToken();
+        const decoded = jwtDecode(token);
+        const username = decoded.user.username;
         return (
             <main>
                 Home - You are logged in!
                 <Link to='/' onClick={logout}>Log out</Link>
-                <Link to={`/user/${decoded.user.username}`}>Profile</Link>
+                <Link to={`/user/${username}`}>Profile</Link>
             </main>
         )
     } else {

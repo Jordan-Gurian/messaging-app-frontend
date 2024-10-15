@@ -1,17 +1,26 @@
 import PropTypes from 'prop-types';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { useAuth } from './../hooks/AuthContext'
 
 export default function FollowButton(props) {
     
     const token = localStorage.token;
-    const decoded = jwtDecode(token);
-    const username = decoded.user.username;
-
-    const userToFollow = useParams()
+    const { isAuthenticated } = useAuth();
+    const navigate = useNavigate();
+    const userToFollow = useParams();
     const usernameToFollow = userToFollow.username;
-    const isFollow = !props.followedBy.some(user => user.username === username);
 
+    let decoded;
+    let username;
+    let isFollow = true; // show "Follow" for unauthenticated users
+
+    if (isAuthenticated) {
+        decoded = jwtDecode(token);
+        username = decoded.user.username;
+        isFollow = !props.followedBy.some(user => user.username === username);
+    }
+     
     async function followUser() { 
         const apiUrl = import.meta.env.VITE_API_URL
         const requestURL = `${apiUrl}/users/${username}/follow`
@@ -36,11 +45,13 @@ export default function FollowButton(props) {
 
         try {
             const response = await fetch(requestURL, requestOptions);
-            const user = await response.json();
-            props.onClick(user);
-
+            const responseDetails = await response.json();
+            if (responseDetails.error === 'token invalid') {
+                localStorage.removeItem("token");
+                navigate('/', { state: { successMessage: 'You have successfully logged out' } });
+            }
+            props.onClick(responseDetails);
         } catch (error) {
-            console.log(error)
             return { error }        
         }  
     }

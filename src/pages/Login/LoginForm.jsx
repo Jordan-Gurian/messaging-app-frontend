@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useAuth } from './../../hooks/AuthContext';
 
 export default function LoginForm(props) {
 
+    const { checkAuth } = useAuth();
     const navigate = useNavigate();
 
     const apiUrl = import.meta.env.VITE_API_URL
@@ -34,6 +36,7 @@ export default function LoginForm(props) {
             const responseDetails = await response.json();
             if (response.ok) {
                 localStorage.setItem("token", responseDetails.token);
+                checkAuth();
                 navigate('/', { state: { successMessage: 'You have successfully logged in' } });
             } else {
                 props.setCurrentError(responseDetails.message)

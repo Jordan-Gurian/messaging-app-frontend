@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import UserProfileImage from './../../components/UserProfileImage';
 import UserProfileBio from './../../components/UserProfileBio';
 import UserFollowing from './../../components/UserFollowing';
@@ -8,16 +8,28 @@ import UserChats from './../../components/UserChats';
 import FollowButton from './../../components/FollowButton';
 import { jwtDecode } from 'jwt-decode';
 import { createS3Client, getUserPresignedUrl } from './../../utils/s3Utils';
+import { useAuth } from './../../hooks/AuthContext';
 
 export default function UserProfilePage() {
 
+    const { isAuthenticated } = useAuth();
     const { username } = useParams();
     const [user, setUser] = useState({});
     const [presignedUrl, setPresignedUrl] = useState('');
 
+    const navigate = useNavigate();
     const token = localStorage.token;
-    const decoded = jwtDecode(token);
-    const isUser = decoded.user.username === username;
+    let decoded;
+    let isUser;
+
+    if (isAuthenticated) {
+        decoded = jwtDecode(token);
+        isUser = decoded.user.username === username;
+    } else {
+        isUser = false;
+    }
+    
+     
 
     const apiUrl = import.meta.env.VITE_API_URL;
     const requestURL = `${apiUrl}/users/${username}`;
@@ -41,8 +53,12 @@ export default function UserProfilePage() {
     }
 
     function handleFormSubmit(newUser) {
-        setUser(newUser);
-        // This will trigger a rerender
+        if (isAuthenticated) {
+            setUser(newUser);
+        } else {
+            localStorage.removeItem("token");
+            navigate('/', { state: { successMessage: 'You have successfully logged out' } });
+        }
     };
       
     useEffect(() => {
@@ -59,6 +75,7 @@ export default function UserProfilePage() {
     if (Object.keys(user).length > 0 && presignedUrl) {
         return (
             <main>
+                <div>{`${username}`}</div>
                 <UserProfileImage onFormSubmit={handleFormSubmit} presignedUrl={presignedUrl} isUser={isUser} />
                 <FollowButton onClick={handleFormSubmit} followedBy={user.followedBy} isUser={isUser} />
                 <UserProfileBio onFormSubmit={handleFormSubmit} profile_bio={user.profile_bio} isUser={isUser} />

@@ -50,7 +50,7 @@ export default function EditUserProfileImage(props) {
             await deleteS3Objects(s3, null, username)
             await uploadToS3(s3, fileResized, key);
             const user = await updateUserProfileUrl(key, username);
-            props.onFormSubmit()
+            props.onFormSubmit(user)
         } catch (error) {
             console.log(error)
             return { error }

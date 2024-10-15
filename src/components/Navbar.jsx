@@ -5,9 +5,14 @@ import EditIcon from './../assets/edit.png';
 function Navbar() {
 
     const token = localStorage.token;
-    const decoded = jwtDecode(token);
-    const username = decoded.user.username;
+    let decoded;
+    let username;
 
+    if (token) {
+        decoded = jwtDecode(token);
+        username = decoded.user.username;
+    }
+     
     const navigate = useNavigate();
 
     async function isUserExists(searchVal) {
@@ -22,7 +27,6 @@ function Navbar() {
         } 
     }
 
-
     async function handleSubmit(event) {
         event.preventDefault();
         const searchVal = event.target.searchVal.value;
@@ -34,31 +38,36 @@ function Navbar() {
         }
     };
 
-    return (
-        <header>
-            <nav>
-                <div className="nav-text"></div>
-                <div className="nav-links">
-                    <Link to="/">Home</Link>
-                    <Link to={`/user/${username}`} reloadDocument>Profile</Link>
-                </div>
-                <form id="form" onSubmit={handleSubmit}>
-                    <input 
-                        type="text"
-                        id="searchVal"
-                    />
-                    <button type="submit">
-                        <img 
-                            src={EditIcon}
-                            height='20px'
-                            width='20px'
-                            alt="404 not found"
+    if (token) {
+        return (
+            <header>
+                <nav>
+                    <div className="nav-text"></div>
+                    <div className="nav-links">
+                        <Link to="/">Home</Link>
+                        <Link to={`/user/${username}`} reloadDocument>Profile</Link>
+                    </div>
+                    <form id="form" onSubmit={handleSubmit}>
+                        <input 
+                            type="text"
+                            id="searchVal"
                         />
-                    </button>
-                </form>
-            </nav>
-        </header>
-    )
+                        <button type="submit">
+                            <img 
+                                src={EditIcon}
+                                height='20px'
+                                width='20px'
+                                alt="404 not found"
+                            />
+                        </button>
+                    </form>
+                </nav>
+            </header>
+        )
+    } else {
+        <header>Nothing</header>
+    }
+    
 }
 
 export default Navbar
