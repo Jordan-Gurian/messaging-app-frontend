@@ -12,21 +12,23 @@ export default function FollowBlock(props) {
 
 
     async function getPresignedUrls() {
-        props.followUsers.map(async(user) => {
-            try {
-                const userUrl = await getUserPresignedUrl(s3, user.profile_url);
-                setFollowingUrls(followingUrls => [...followingUrls, userUrl]);
-            } catch (error) {
-                return { error }
-            } 
-        });
-    }
+        try {
+            const userUrls = await Promise.all(
+                props.followUsers.map(async (user) => {
+                    return await getUserPresignedUrl(s3, user.profile_url);
+                })
+            );            
+            setFollowingUrls(userUrls)
+        } catch (error) {
+            return { error }
+        }
+    };
 
     useEffect(() => {
         getPresignedUrls();
-    }, [])
+    }, [props.followUsers])
 
-    if (props.followUsers.length > 0 && followingUrls.length > 0) {
+    if (props.followUsers.length > 0 && followingUrls.length === props.followUsers.length) {
         return (
             <div className='follow-block'>
                 {props.followUsers.map((user, index) => {
