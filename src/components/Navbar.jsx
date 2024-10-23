@@ -1,22 +1,27 @@
+import { useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import EditIcon from './../assets/edit.png';
 import IconImage from './IconImage';
+import { useAuth } from './../hooks/AuthContext';
 import './Navbar.css';
 
 export default function Navbar() {
 
-    const token = localStorage.token;
-    let decoded;
-    let username;
+    const { isAuthenticated, checkAuth } = useAuth();
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        checkAuth();
+    },[])
 
-    if (token) {
-        decoded = jwtDecode(token);
-        username = decoded.user.username;
+
+    function logout() {
+        localStorage.removeItem("token");
+        checkAuth();
+        navigate('/', { state: { successMessage: 'You have successfully logged out' } });
     }
      
-    const navigate = useNavigate();
-
     async function isUserExists(searchVal) {
         const apiUrl = import.meta.env.VITE_API_URL;
         const requestURL = `${apiUrl}/users`;
@@ -40,7 +45,10 @@ export default function Navbar() {
         }
     };
 
-    if (token) {
+    if (isAuthenticated) {
+        const token = localStorage.token;
+        const decoded = jwtDecode(token);
+        const username = decoded.user.username;
         return (
             <header>
                 <nav>
@@ -57,6 +65,7 @@ export default function Navbar() {
                     <div className="nav-links">
                         <Link to="/">Home</Link>
                         <Link to={`/user/${username}`} reloadDocument>Profile</Link>
+                        <Link to='/' onClick={logout}>Log out</Link>
                     </div>
                 </nav>
             </header>
