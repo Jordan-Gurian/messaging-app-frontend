@@ -1,0 +1,33 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 8px;
+}
+
+#form {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+}
+
+#searchVal {
+    display: inline-flex; /* Use inline-flex to allow dynamic sizing */
+}
+
+.search-button {
+    border-radius: 5px; /* Optional: add rounded corners */
+    padding: 4px; /* Remove padding to fit image */
+    display: inline-flex; /* Use inline-flex to allow dynamic sizing */
+    align-items: center; /* Center the image vertically */
+    justify-content: center; /* Center the image horizontally */
+}
+
+.icon-image {
+    display: block; /* Remove extra space below image */
+}

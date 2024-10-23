@@ -1,8 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import EditIcon from './../assets/edit.png';
+import IconImage from './IconImage';
+import './Navbar.css';
 
-function Navbar() {
+export default function Navbar() {
 
     const token = localStorage.token;
     let decoded;
@@ -42,32 +44,43 @@ function Navbar() {
         return (
             <header>
                 <nav>
-                    <div className="nav-text"></div>
-                    <div className="nav-links">
-                        <Link to="/">Home</Link>
-                        <Link to={`/user/${username}`} reloadDocument>Profile</Link>
-                    </div>
+                    <div className="nav-text">MessageXpress</div>
                     <form id="form" onSubmit={handleSubmit}>
                         <input 
                             type="text"
                             id="searchVal"
                         />
-                        <button type="submit">
-                            <img 
-                                src={EditIcon}
-                                height='20px'
-                                width='20px'
-                                alt="404 not found"
-                            />
+                        <button className="search-button" type="submit">
+                            <IconImage className="icon-image" icon={EditIcon} width="15px" />
                         </button>
                     </form>
+                    <div className="nav-links">
+                        <Link to="/">Home</Link>
+                        <Link to={`/user/${username}`} reloadDocument>Profile</Link>
+                    </div>
                 </nav>
             </header>
         )
     } else {
-        <header>Nothing</header>
+        return (
+        <header>
+            <nav>
+                <div className="nav-text">MessageXpress</div>
+                <form id="form" onSubmit={handleSubmit}>
+                    <input 
+                        type="text"
+                        id="searchVal"
+                    />
+                    <button className="search-button" type="submit">
+                        <IconImage className="icon-image" icon={EditIcon} width="15px" />
+                    </button>
+                </form>
+                <div className="nav-links">
+                    <Link to="/login">Login</Link>
+                    <Link to="/register">Register</Link>
+                </div>
+            </nav>
+        </header>
+        )
     }
-    
 }
-
-export default Navbar
