@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { createS3Client, uploadToS3, deleteS3Objects } from '../../utils/s3Utils';
 import Resizer from 'react-image-file-resizer';
 import PropTypes from 'prop-types';
+import IconImage from '../../components/IconImage';
 import EditIcon from './../../assets/edit.png';
 
 import './EditUserProfileImage.css';
@@ -108,13 +109,8 @@ export default function EditUserProfileImage(props) {
                 onChange={(event) => handleProfileImageUpdate(event, username)}
                 hidden
             />
-            <button type="submit">
-                <img 
-                    src={EditIcon}
-                    height='20px'
-                    width='20px'
-                    alt="404 not found"
-                />
+            <button className="search-button" type="submit">
+                <IconImage className="icon-image" icon={EditIcon} width="15px" />
             </button>
         </form>
     )

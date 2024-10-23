@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import PropTypes from 'prop-types';
+import IconImage from './../../components/IconImage';
 import EditIcon from './../../assets/edit.png';
 
 // import './EditUserProfileImage.css';
@@ -56,13 +57,8 @@ export default function EditUserProfileBio(props) {
                 type="text"
                 id="bio"
             />
-            <button type="submit">
-                <img 
-                    src={EditIcon}
-                    height='20px'
-                    width='20px'
-                    alt="404 not found"
-                />
+            <button className="search-button" type="submit">
+                <IconImage className="icon-image" icon={EditIcon} width="15px" />
             </button>
         </form>
     )
