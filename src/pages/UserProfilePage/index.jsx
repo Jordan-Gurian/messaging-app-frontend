@@ -10,6 +10,8 @@ import { jwtDecode } from 'jwt-decode';
 import { createS3Client, getUserPresignedUrl } from './../../utils/s3Utils';
 import { useAuth } from './../../hooks/AuthContext';
 
+import './index.css';
+
 export default function UserProfilePage() {
 
     const { isAuthenticated } = useAuth();
@@ -74,9 +76,9 @@ export default function UserProfilePage() {
 
     if (Object.keys(user).length > 0 && presignedUrl) {
         return (
-            <main>
-                <div>{`${username}`}</div>
+            <main className="profile-page-container">
                 <UserProfileImage onFormSubmit={handleFormSubmit} presignedUrl={presignedUrl} isUser={isUser} />
+                <div className="user-profile-name-container">{`${username}`}</div>
                 <FollowButton onClick={handleFormSubmit} followedBy={user.followedBy} isUser={isUser} />
                 <UserProfileBio onFormSubmit={handleFormSubmit} profile_bio={user.profile_bio} isUser={isUser} />
                 <UserFollowing following={user.following} />

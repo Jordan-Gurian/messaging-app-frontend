@@ -53,7 +53,7 @@ export default function Navbar() {
             <header>
                 <nav>
                     <div className="nav-text">MessageXpress</div>
-                    <form id="form" onSubmit={handleSubmit}>
+                    <form className="navbar-form" id="form" onSubmit={handleSubmit}>
                         <input 
                             type="text"
                             id="searchVal"

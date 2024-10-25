@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useAuth } from './../../hooks/AuthContext';
+import './LoginForm.css';
 
 export default function LoginForm(props) {
 
@@ -47,22 +48,24 @@ export default function LoginForm(props) {
     }
 
     return (
-        <form onSubmit={useLogin}>
-            <label htmlFor='username'>Username
+        <form className="login-form" onSubmit={useLogin}>   
+            <div className="form-input-container">
                 <input 
                     type='text'
                     id='username' 
                     name='username'
+                    aria-label='Username'
+                    placeholder='Username'
                 />
-            </label>
-            <label htmlFor='password'>Password
                 <input 
                     type='password'
                     id='password'
                     name='password'
+                    aria-label='Password'
+                    placeholder='Password'
                 />
-            </label>
-            <button type='submit'>Log In</button>
+                <button type='submit'>Log In</button>
+            </div>
         </form>
     )
 }

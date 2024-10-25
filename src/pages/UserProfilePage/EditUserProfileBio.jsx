@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import IconImage from './../../components/IconImage';
 import EditIcon from './../../assets/edit.png';
 
-// import './EditUserProfileImage.css';
-
 export default function EditUserProfileBio(props) {
 
     const usernameObj = useParams()

@@ -7,3 +7,13 @@ button, input[type="submit"], input[type="reset"] {
 	cursor: pointer;
 	outline: inherit;
 }
+
+.user-profile-img-form {
+    position: absolute;
+	bottom: 5px;
+    right: 5px;
+}
+
+.user-profile-img-form:hover {
+    opacity: .5;
+}

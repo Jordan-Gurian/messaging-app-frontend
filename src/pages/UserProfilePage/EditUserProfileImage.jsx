@@ -100,7 +100,7 @@ export default function EditUserProfileImage(props) {
     }
     
     return (
-        <form id="form" encType="multipart/form-data" onSubmit={handleFileInput}>
+        <form className="user-profile-img-form" id="form" encType="multipart/form-data" onSubmit={handleFileInput}>
             <input 
                 type="file"
                 id="file"
@@ -110,7 +110,7 @@ export default function EditUserProfileImage(props) {
                 hidden
             />
             <button className="search-button" type="submit">
-                <IconImage className="icon-image" icon={EditIcon} width="15px" />
+                <IconImage className="icon-image" icon={EditIcon} height="15px" />
             </button>
         </form>
     )

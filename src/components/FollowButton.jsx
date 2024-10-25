@@ -58,25 +58,25 @@ export default function FollowButton(props) {
 
     if (props.isUser) {
         return (
-            <div>
+            <div className="user-profile-follow-button-container">
             </div>
         )
     } else if (!props.followedBy) {
         return (
-            <button>
+            <button className="user-profile-follow-button-container">
                 <Link to="/register">Follow</Link>
             </button>
         )
     } else {
         if (props.followedBy && !isFollow) {
             return (
-                <button onClick={followUser}>
+                <button className="user-profile-follow-button-container" onClick={followUser}>
                     Unfollow
                 </button>
             )
         } else {
             return (
-                <button onClick={followUser}>
+                <button className="user-profile-follow-button-container" onClick={followUser}>
                     Follow
                 </button>
             )

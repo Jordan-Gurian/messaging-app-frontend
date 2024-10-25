@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import EditUserProfileBio from '../pages/UserProfilePage/EditUserProfileBio';
 
+import './UserProfileBio.css';
+
 export default function UserProfileBio(props) {
     if (props.isUser) {
         return (
-            <div>
+            <div className='user-profile-bio-container'>
                 <div className='user-profile-bio'>
                     {props.profile_bio}
                 </div>
@@ -13,7 +15,7 @@ export default function UserProfileBio(props) {
         )
     } else {
         return (
-            <div>
+            <div className='user-profile-bio-container'>
                 <div className='user-profile-bio'>
                     {props.profile_bio}
                 </div>

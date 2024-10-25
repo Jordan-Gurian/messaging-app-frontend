@@ -1,3 +1,15 @@
 .user-profile-img-blur {
     filter: blur(3.5px);
 }
+
+.user-profile-img-container {
+    /* display: flex; */
+    position: relative;
+    max-width: 400px; /* Set a maximum width for the container */
+}
+
+.user-profile-img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Prevent extra space below the image */
+}

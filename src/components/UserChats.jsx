@@ -6,7 +6,7 @@ export default function UserChats(props) {
 
     if (props.chats.length > 0) {
         return (
-            <div className='chats-container'>
+            <div className='chats-container user-profile-chats-container'>
                 Chats:
                 {props.chats.map((chat) => {
                     return (
@@ -17,7 +17,7 @@ export default function UserChats(props) {
         )
     } else {
         return (
-            <div className='chats-container'>
+            <div className='chats-container user-profile-chats-container'>
                 Chats:
                 No active chats
             </div>

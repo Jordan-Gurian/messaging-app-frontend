@@ -3,7 +3,7 @@ import FollowBlock from './FollowBlock';
 
 export default function UserFollowedBy(props) {
     return (
-        <div className='followedBy'>
+        <div className='followedBy user-profile-follower-container'>
             <div className='follow-label'>Followers:</div>
             <FollowBlock followUsers={props.followedBy}></FollowBlock>
         </div>
