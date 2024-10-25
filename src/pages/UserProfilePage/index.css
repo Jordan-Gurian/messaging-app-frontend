@@ -1,11 +1,28 @@
-.profile-page-container {
-    display: grid;
+.profile-page-container, 
+.profile-page-left-container, 
+.profile-page-right-container {
+    display: flex;
     gap: 10px;
-    grid-auto-rows: minmax(100px, auto);
-    grid-template-columns: repeat(3, 1fr);
 }
 
-.user-profile-img-container {
+.profile-page-container {
+    width: 100%
+}
+
+.profile-page-left-container, .profile-page-right-container {
+    flex-direction: column;
+}
+
+.profile-page-left-container {
+    width: 66vw;
+}
+
+.profile-page-right-container {
+    width: auto;
+}
+
+
+/* .user-profile-img-container {
     grid-column: 1 / 3;
     grid-row: 1;
 }
@@ -38,4 +55,4 @@
 .user-profile-chat-container {
     grid-column: 1 / 3;
     grid-row: 4;
-}
+} */

@@ -74,16 +74,21 @@ export default function UserProfilePage() {
         }
     }, [user])
 
+    console.log(user);
     if (Object.keys(user).length > 0 && presignedUrl) {
         return (
             <main className="profile-page-container">
-                <UserProfileImage onFormSubmit={handleFormSubmit} presignedUrl={presignedUrl} isUser={isUser} />
-                <div className="user-profile-name-container">{`${username}`}</div>
-                <FollowButton onClick={handleFormSubmit} followedBy={user.followedBy} isUser={isUser} />
-                <UserProfileBio onFormSubmit={handleFormSubmit} profile_bio={user.profile_bio} isUser={isUser} />
-                <UserFollowing following={user.following} />
-                <UserFollowedBy followedBy={user.followedBy} />
-                <UserChats chats={user.chats} />
+                <div className="profile-page-left-container">
+                    <UserProfileImage onFormSubmit={handleFormSubmit} presignedUrl={presignedUrl} isUser={isUser} />
+                    <div className="user-profile-name-container">{`${username}`}</div>
+                    <FollowButton onClick={handleFormSubmit} followedBy={user.followedBy} isUser={isUser} />
+                    <UserProfileBio onFormSubmit={handleFormSubmit} profile_bio={user.profile_bio} isUser={isUser} />
+                    <UserChats chats={user.chats} />
+                </div>
+                <div className="profile-page-right-container">
+                    <UserFollowing following={user.following} />
+                    <UserFollowedBy followedBy={user.followedBy} />
+                </div>
             </main>
         )
     } else {

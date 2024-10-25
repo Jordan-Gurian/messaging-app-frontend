@@ -31,15 +31,17 @@ export default function EditUserProfileImage(props) {
             return new Promise((resolve, reject) => {
               Resizer.imageFileResizer(
                 file,
-                200,
-                200,
+                150,
+                150,
                 "JPEG",
                 100,
                 0,
                 (uri) => {
                   resolve(uri);
                 },
-                "file"
+                "file",
+                150,
+                150
               );
             });
           }
