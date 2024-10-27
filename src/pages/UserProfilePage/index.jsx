@@ -9,6 +9,7 @@ import FollowButton from './../../components/FollowButton';
 import { jwtDecode } from 'jwt-decode';
 import { createS3Client, getUserPresignedUrl } from './../../utils/s3Utils';
 import { useAuth } from './../../hooks/AuthContext';
+import EditUserProfileImage from './EditUserProfileImage'
 
 import './index.css';
 
@@ -18,6 +19,7 @@ export default function UserProfilePage() {
     const { username } = useParams();
     const [user, setUser] = useState({});
     const [presignedUrl, setPresignedUrl] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
 
     const navigate = useNavigate();
     const token = localStorage.token;
@@ -74,12 +76,11 @@ export default function UserProfilePage() {
         }
     }, [user])
 
-    console.log(user);
     if (Object.keys(user).length > 0 && presignedUrl) {
         return (
             <main className="profile-page-container">
                 <div className="profile-page-left-container">
-                    <UserProfileImage onFormSubmit={handleFormSubmit} presignedUrl={presignedUrl} isUser={isUser} />
+                    <UserProfileImage presignedUrl={presignedUrl} isUser={isUser} modalSetter={setModalOpen} height="300px" width="300px"/>
                     <div className="user-profile-name-container">{`${username}`}</div>
                     <FollowButton onClick={handleFormSubmit} followedBy={user.followedBy} isUser={isUser} />
                     <UserProfileBio onFormSubmit={handleFormSubmit} profile_bio={user.profile_bio} isUser={isUser} />
@@ -89,6 +90,12 @@ export default function UserProfilePage() {
                     <UserFollowing following={user.following} />
                     <UserFollowedBy followedBy={user.followedBy} />
                 </div>
+                {modalOpen && (
+                    <EditUserProfileImage
+                        updateAvatar={handleFormSubmit}
+                        closeModal={() => setModalOpen(false)}
+                    />
+                )}
             </main>
         )
     } else {

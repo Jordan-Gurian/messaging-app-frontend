@@ -1,65 +1,30 @@
-import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { jwtDecode } from 'jwt-decode';
-import { createS3Client, uploadToS3, deleteS3Objects } from '../../utils/s3Utils';
-import Resizer from 'react-image-file-resizer';
-import PropTypes from 'prop-types';
-import IconImage from '../../components/IconImage';
-import EditIcon from './../../assets/edit.png';
+import PropTypes from "prop-types";
+import CloseIcon from "./../../components/CloseIcon";
+import ImageCropper from "./../../components/ImageCropper";
+import { createS3Client, deleteS3Objects, uploadToS3 } from "./../../utils/s3Utils";
 
 import './EditUserProfileImage.css';
 
-export default function EditUserProfileImage(props) {
+export default function EditUserProfileImage({ updateAvatar, closeModal }) {
 
     const usernameObj = useParams()
     const username = usernameObj.username;
-    const fileUploadRef = useRef();
 
-    function handleFileInput(event) {
-        event.preventDefault();
-        fileUploadRef.current.click();    
-    }
-
-    async function handleProfileImageUpdate(event, username) {
-
-
-        const file = fileUploadRef.current.files[0];
+    async function handleUpdateAvatar(file) {
         const key = `${username}/${uuidv4()}`;
-
-        async function resizeFile(file) {
-            return new Promise((resolve, reject) => {
-              Resizer.imageFileResizer(
-                file,
-                150,
-                150,
-                "JPEG",
-                100,
-                0,
-                (uri) => {
-                  resolve(uri);
-                },
-                "file",
-                150,
-                150
-              );
-            });
-          }
-        
-        const fileResized = await resizeFile(file);
-
         try {
             const s3 = createS3Client();
             await deleteS3Objects(s3, null, username)
-            await uploadToS3(s3, fileResized, key);
+            await uploadToS3(s3, file, key);
             const user = await updateUserProfileUrl(key, username);
-            props.onFormSubmit(user)
+            updateAvatar(user)
         } catch (error) {
             console.log(error)
             return { error }
         }
-
-
     }
 
     async function updateUserProfileUrl(key, username) {
@@ -100,24 +65,33 @@ export default function EditUserProfileImage(props) {
             return { error }        
         }  
     }
-    
+
     return (
-        <form className="user-profile-img-form" id="form" encType="multipart/form-data" onSubmit={handleFileInput}>
-            <input 
-                type="file"
-                id="file"
-                accept=".png, .jpg, .jpeg"
-                ref={fileUploadRef}
-                onChange={(event) => handleProfileImageUpdate(event, username)}
-                hidden
-            />
-            <button className="search-button" type="submit">
-                <IconImage className="icon-image" icon={EditIcon} height="15px" />
-            </button>
-        </form>
-    )
+        <div role="dialog">
+            <div className="modal-overlay"></div>
+            <div className="modal-container">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <button
+                            type="button"
+                            className="close-button"
+                            onClick={closeModal}
+                        >
+                            <span>Close menu</span>
+                            <CloseIcon />
+                        </button>
+                        <ImageCropper 
+                            updateAvatar={handleUpdateAvatar}
+                            closeModal={closeModal}
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 EditUserProfileImage.propTypes = {
-    onFormSubmit: PropTypes.func.isRequired,
+    updateAvatar: PropTypes.func.isRequired,
+    closeModal: PropTypes.func.isRequired,
 };

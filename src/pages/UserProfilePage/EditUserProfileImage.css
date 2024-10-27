@@ -1,19 +1,55 @@
-button, input[type="submit"], input[type="reset"] {
-	background: none;
-	color: inherit;
-	border: none;
-	padding: 0;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(31, 41, 55, 0.75); 
+    backdrop-filter: blur(4px); /* Blurs the background */
+    transition: all 0.3s ease;
 }
 
-.user-profile-img-form {
+.modal-container {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.modal-content {
+    position: relative;
+    width: 95%;
+    max-width: 800px;
+    min-height: 60vh;
+    background-color: #1f2937;
+    border-radius: 1rem;
+    color: #e5e7eb;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.modal-header {
+    padding: 1rem 1.25rem;
+}
+
+.close-button {
     position: absolute;
-	bottom: 5px;
-    right: 5px;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.25rem;
+    border-radius: 0.375rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: #9ca3af;
+    transition: background-color 0.3s ease;
 }
 
-.user-profile-img-form:hover {
-    opacity: .5;
+.close-button:hover {
+    background-color: #374151;
+}
+
+.close-button:focus {
+    outline: none; /* Remove focus outline */
 }

@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import EditUserProfileImage from '../pages/UserProfilePage/EditUserProfileImage';
 import { useAuth } from './../hooks/AuthContext'
+import IconImage from './../components/IconImage';
+import EditIcon from './../assets/edit.png';
+
 import './UserProfileImage.css'
 
 export default function UserProfileImage(props) {
 
     const [isHover, setIsHover] = useState(false);
-    const height = props.height ? props.height : 'auto';
-    const width = props.width ? props.width : 'auto';
+    const height = props.height ? `${props.height}px` : 'auto';
+    const width = props.width ? `${props.width}px` : 'auto';
     const { isAuthenticated } = useAuth();
 
     const handleMouseEnter = () => {
@@ -18,12 +20,13 @@ export default function UserProfileImage(props) {
     const handleMouseLeave = () => {
         setIsHover(false); // Update state on mouse leave
     };
-
     if (props.isUser && isAuthenticated && isHover) {
         return (
             <div className="user-profile-img-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <img className='user-profile-img' src={props.presignedUrl} height={height} width={width}/>
-                <EditUserProfileImage onFormSubmit={props.onFormSubmit} />
+                <button className="search-button" onClick={() => props.modalSetter(true)}>
+                    <IconImage className="icon-image" icon={EditIcon} height="15px" />
+                </button>
             </div>
         )
     } else if (isAuthenticated) {
@@ -43,7 +46,6 @@ export default function UserProfileImage(props) {
 
 UserProfileImage.propTypes = {
     presignedUrl: PropTypes.string.isRequired,
-    onFormSubmit: PropTypes.func,
     isUser: PropTypes.bool.isRequired,
     height: PropTypes.oneOfType([
         PropTypes.number,
@@ -53,4 +55,5 @@ UserProfileImage.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
+    modalSetter: PropTypes.func,
 };

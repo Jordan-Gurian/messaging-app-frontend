@@ -1,0 +1,103 @@
+/* Container styles for the input and cropping area */
+.image-cropper-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    background-color: #1f2937; /* Tailwind gray-800 */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Styles for the file input */
+.file-input {
+    display: block;
+    margin-bottom: 0.75rem; /* 3 * 0.25rem, which is 12px by default */
+    width: fit-content;
+}
+
+.actual-file-input {
+    display: block;
+    width: 100%;
+    font-size: 0.875rem; /* 14px, equivalent to `text-sm` */
+    color: #64748b; /* Tailwind `slate-500` */
+}
+
+/* Styles for file input button */
+input[type="file"]::file-selector-button {
+    margin-right: 1rem; /* `file:mr-4` */
+    padding-top: 0.25rem; /* `file:py-1` */
+    padding-bottom: 0.25rem; /* `file:py-1` */
+    padding-left: 0.5rem; /* `file:px-2` */
+    padding-right: 0.5rem; /* `file:px-2` */
+    border-radius: 9999px; /* `file:rounded-full` */
+    border: 0; /* `file:border-0` */
+    font-size: 0.75rem; /* 12px, equivalent to `file:text-xs` */
+    background-color: #374151; /* Tailwind `gray-700` */
+    color: #38bdf8; /* Tailwind `sky-300` */
+}
+
+/* Hover state for file input button */
+input[type="file"]:hover::file-selector-button {
+    background-color: #4b5563; /* Tailwind `gray-600` */
+}
+
+.file-input input {
+    padding: 8px;
+    border-radius: 9999px; /* Full round */
+    background-color: #4b5563; /* Tailwind gray-700 */
+    color: #3b82f6; /* Tailwind sky-300 */
+    cursor: pointer;
+}
+
+.file-input input:hover {
+    background-color: #374151; /* Tailwind gray-600 */
+}
+
+/* Error message styles */
+.error-message {
+    color: #f87171; /* Tailwind red-400 */
+    font-size: 12px;
+}
+
+/* Styles for the react crop container */
+.react-crop-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Styles for the image cropper */
+.react-crop {
+    width: 100%;
+    max-height: 70vh;
+    border: 1px solid #374151; /* Tailwind gray-600 */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Crop button styles */
+.crop-button {
+    background-color: #3b82f6; /* Tailwind sky-500 */
+    color: white;
+    font-family: monospace;
+    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 9999px; /* Full round */
+    margin-top: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.crop-button:hover {
+    background-color: #2563eb; /* Tailwind sky-600 */
+}
+
+/* Styles for the canvas (if needed) */
+.hidden-canvas {
+    margin-top: 1rem; /* or 16px */  
+    display: none;
+    border: 1px solid black;
+    object-fit: contain;
+    width: 150px;
+    height: 150px;
+}
