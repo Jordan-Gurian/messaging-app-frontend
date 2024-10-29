@@ -1,0 +1,87 @@
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.crop-image-label {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+  
+.crop-image-input {
+    display: none;
+}
+  
+.file-input-button {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    color: #60a5fa;
+    background-color: #374151;
+    border: 0;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+  
+.file-input-button:hover {
+    background-color: #4b5563;
+}
+
+.error-text {
+    color: #f87171;
+    font-size: 0.75rem;
+}
+
+.crop-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.crop-image-button {
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    margin-top: 1rem;
+    background-color: #3b82f6;
+    transition: background-color 0.3s;
+}
+
+.crop-image-button:hover {
+    background-color: #2563eb;
+}
+
+.crop-image {
+    max-width: 100%;
+}
+
+.hidden-canvas {
+    display: none;
+    border: 1px solid black;
+    object-fit: contain;
+    width: 150px;
+    height: 150px;
+}
+
+@media (max-width: 768px) {
+    .error-text {
+        font-size: 0.65rem;
+    }
+
+    .crop-image-input {
+        padding: 0.2rem 0.4rem;
+    }
+
+    .crop-image-button {
+        padding: 0.4rem 0.8rem;
+    }
+}

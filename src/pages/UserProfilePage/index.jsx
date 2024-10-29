@@ -90,7 +90,7 @@ export default function UserProfilePage() {
                     <UserFollowing following={user.following} />
                     <UserFollowedBy followedBy={user.followedBy} />
                 </div>
-                {modalOpen && (
+                {modalOpen && isAuthenticated && (
                     <EditUserProfileImage
                         updateAvatar={handleFormSubmit}
                         closeModal={() => setModalOpen(false)}

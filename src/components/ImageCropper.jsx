@@ -3,29 +3,49 @@ import PropTypes from 'prop-types';
 import { ReactCrop, convertToPixelCrop, makeAspectCrop, centerCrop } from 'react-image-crop';
 import setCanvasPreview from './../hooks/setCanvasPreview';
 import 'react-image-crop/dist/ReactCrop.css';
+import './ImageCropper.css';
 
 export default function ImageCropper({ updateAvatar, closeModal }) {
 
     const MIN_DIMENSION = 150;
     const ASPECT_RATIO = 1;
+    
     const imgRef = useRef(null);
     const previewCanvasRef = useRef(null);
     const [imgSrc, setImgSrc] = useState(null);
     const [crop, setCrop] = useState({ unit: '%', width: 30, height: 30 });
     const [completedCrop, setCompletedCrop] = useState(null);
+    const [sizeError, setSizeError] = useState("");
+
 
     function onSelectFile(event) {
-        const file = event.target.files[0];
+        const file = event.target?.files[0];
         if (!file) return;
 
         const reader = new FileReader();
-        reader.onload = () => setImgSrc(reader.result);
-        reader.readAsDataURL(file);
+
+        reader.onload = () => {
+            const imageElement = new Image();
+            const imageUrl = reader.result?.toString() || "";
+            imageElement.src = imageUrl;
+      
+            imageElement.onload = (e) => {
+              if (sizeError) setSizeError("");
+              const { naturalWidth, naturalHeight } = e.currentTarget;
+              if (naturalWidth < MIN_DIMENSION || naturalHeight < MIN_DIMENSION) {
+                setSizeError(`Image must be at least ${MIN_DIMENSION} x ${MIN_DIMENSION} pixels.`);
+                console.log(11111)
+                return setImgSrc("");
+              }
+            };
+            setImgSrc(imageUrl);
+          };
+          reader.readAsDataURL(file);
     };
 
     function onImageLoad(event) {
         const { width, height } = event.currentTarget;
-        const cropWidthInPercent = (MIN_DIMENSION / width) * 100;
+        const cropWidthInPercent = Math.max((MIN_DIMENSION / width) * 100, 75);
 
         const crop = makeAspectCrop(
           {
@@ -42,9 +62,21 @@ export default function ImageCropper({ updateAvatar, closeModal }) {
 
     return (
         <div>
-            <input type="file" accept="image/*" onChange={onSelectFile} />
+            <label className="crop-image-label">
+                <span className="visually-hidden">Choose profile photo</span>
+                <input
+                type="file"
+                accept="image/*"
+                onChange={onSelectFile}
+                className="crop-image-input" 
+                />
+                <button className="file-input-button" onClick={() => document.querySelector('.crop-image-input').click()}>
+                    Choose File
+                </button>
+            </label>
+            {sizeError && <p className="error-text">{sizeError}</p>}
             {imgSrc && (
-                <div>
+                <div className="crop-image-container">
                     <ReactCrop
                         src={imgSrc}
                         crop={crop}
@@ -60,11 +92,11 @@ export default function ImageCropper({ updateAvatar, closeModal }) {
                             ref={imgRef}
                             src={imgSrc}
                             alt="Upload"
-                            className="react-crop"
+                            className="crop-image"
                             onLoad={onImageLoad}
                         />
                     </ReactCrop>
-                    <button onClick={() => {
+                    <button className="crop-image-button" onClick={() => {
                         setCanvasPreview(
                             imgRef.current, // HTMLImageElement
                             previewCanvasRef.current, // HTMLCanvasElement
@@ -88,7 +120,7 @@ export default function ImageCropper({ updateAvatar, closeModal }) {
                     >
                         Crop Image
                   </button>
-                    <canvas ref={previewCanvasRef} style={{ display: 'none' }} />
+                    <canvas className="hidden-canvas" ref={previewCanvasRef} />
                 </div>
             )}
         </div>

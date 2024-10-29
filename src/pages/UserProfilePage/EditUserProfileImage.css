@@ -21,14 +21,18 @@
     width: 95%;
     max-width: 800px;
     min-height: 60vh;
+    max-height: 90vh;
     background-color: #1f2937;
     border-radius: 1rem;
     color: #e5e7eb;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
+
 }
 
 .modal-header {
+    background-color: #1f2937;
+    border-radius: 1rem;
     padding: 1rem 1.25rem;
 }
 
