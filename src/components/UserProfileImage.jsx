@@ -38,7 +38,7 @@ export default function UserProfileImage(props) {
     } else {
         return (
             <div className="user-profile-img-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                <img className='user-profile-img-blur' src={props.presignedUrl} height={height} width={width}/>
+                <img className='user-profile-img blur' src={props.presignedUrl} height={height} width={width}/>
             </div>
         )
     }
