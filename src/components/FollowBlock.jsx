@@ -6,7 +6,7 @@ import { createS3Client, getUserPresignedUrl } from './../utils/s3Utils';
 import UserProfileImage from './UserProfileImage';
 import './FollowBlock.css'
 
-export default function FollowBlock(props) {
+export default function FollowBlock({ followUsers }) {
 
     const s3 = createS3Client();
     const [followingUrls, setFollowingUrls] = useState([]);
@@ -15,7 +15,7 @@ export default function FollowBlock(props) {
     async function getPresignedUrls() {
         try {
             const userUrls = await Promise.all(
-                props.followUsers.map(async (user) => {
+                followUsers.map(async (user) => {
                     return await getUserPresignedUrl(s3, user.profile_url);
                 })
             );            
@@ -27,12 +27,12 @@ export default function FollowBlock(props) {
 
     useEffect(() => {
         getPresignedUrls();
-    }, [props.followUsers])
+    }, [followUsers])
 
-    if (props.followUsers.length > 0 && followingUrls.length === props.followUsers.length) {
+    if (followUsers.length > 0 && followingUrls.length === followUsers.length) {
         return (
             <div className='follow-block'>
-                {props.followUsers.map((user, index) => {
+                {followUsers.map((user, index) => {
                     return (
                         <Link key={uuidv4()} className='follow-block-user' to={`./../${user.username}`} reloadDocument>
                             <UserProfileImage 

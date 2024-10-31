@@ -4,7 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
-export function AuthProvider(props) {
+export function AuthProvider({ children }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     function checkAuth() {
@@ -28,7 +28,7 @@ export function AuthProvider(props) {
 
     return (
         <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, checkAuth }}>
-            {props.children}
+            {children}
         </AuthContext.Provider>
     );
 };

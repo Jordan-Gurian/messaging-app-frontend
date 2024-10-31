@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useAuth } from './../../hooks/AuthContext';
 import './LoginForm.css';
 
-export default function LoginForm(props) {
+export default function LoginForm({ setCurrentError }) {
 
     const { checkAuth } = useAuth();
     const navigate = useNavigate();
@@ -40,10 +40,10 @@ export default function LoginForm(props) {
                 checkAuth();
                 navigate('/', { state: { successMessage: 'You have successfully logged in' } });
             } else {
-                props.setCurrentError(responseDetails.message)
+                setCurrentError(responseDetails.message)
             }  
         } catch {
-            props.setCurrentError("Login request was not received")
+            setCurrentError("Login request was not received")
         }        
     }
 

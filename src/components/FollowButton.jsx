@@ -5,7 +5,7 @@ import { useAuth } from './../hooks/AuthContext'
 
 import './FollowButton.css'
 
-export default function FollowButton(props) {
+export default function FollowButton({ onClick, isUser, followedBy }) {
     
     const token = localStorage.token;
     const { isAuthenticated } = useAuth();
@@ -20,7 +20,7 @@ export default function FollowButton(props) {
     if (isAuthenticated) {
         decoded = jwtDecode(token);
         username = decoded.user.username;
-        isFollow = !props.followedBy.some(user => user.username === username);
+        isFollow = !followedBy.some(user => user.username === username);
     }
      
     async function followUser() { 
@@ -52,20 +52,20 @@ export default function FollowButton(props) {
                 localStorage.removeItem("token");
                 navigate('/', { state: { successMessage: 'You have successfully logged out' } });
             }
-            props.onClick(responseDetails);
+            onClick(responseDetails);
         } catch (error) {
             return { error }        
         }  
     }
 
-    const buttonText = (props.followedBy && !isFollow) ? 'Unfollow' : 'Follow';
+    const buttonText = (followedBy && !isFollow) ? 'Unfollow' : 'Follow';
 
-    if (props.isUser) {
+    if (isUser) {
         return (
             <>
             </>
         )
-    } else if (!props.followedBy) {
+    } else if (!followedBy) {
         return (
             <button className="user-profile-follow-button-container">
                 <Link to="/register">Follow</Link>

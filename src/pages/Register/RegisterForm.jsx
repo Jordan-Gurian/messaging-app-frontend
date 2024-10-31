@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useAuth } from './../../hooks/AuthContext';
 
-export default function RegisterForm(props) {
+export default function RegisterForm({ setCurrentError }) {
 
     const { checkAuth } = useAuth();
     const navigate = useNavigate();
@@ -40,13 +40,13 @@ export default function RegisterForm(props) {
                 navigate('/', { state: { successMessage: 'You have successfully registered and logged in' } });
             } else {
                 if (responseDetails.errors) {
-                    props.setCurrentError(responseDetails.errors);
+                    setCurrentError(responseDetails.errors);
                 } else {
-                    props.setCurrentError(responseDetails.message);
+                    setCurrentError(responseDetails.message);
                 }
             }  
         } catch {
-            props.setCurrentError("Register request was not received")
+            setCurrentError("Register request was not received")
         }        
     }
 

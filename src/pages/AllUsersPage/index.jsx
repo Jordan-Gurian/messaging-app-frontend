@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import FollowBlock from './../../components/FollowBlock'
 
-export default function UserProfilePage() {
+export default function AllUsersPage() {
 
     const [users, setUsers] = useState([]);
 

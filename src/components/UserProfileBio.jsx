@@ -8,7 +8,7 @@ import EditIcon from './../assets/edit.png';
 
 import './UserProfileBio.css';
 
-export default function UserProfileBio(props) {
+export default function UserProfileBio({ profile_bio, onFormSubmit, isUser }) {
 
     const [isActiveEdit, setIsActiveEdit] = useState(false);
     const usernameObj = useParams()
@@ -62,7 +62,7 @@ export default function UserProfileBio(props) {
         try {
             const response = await fetch(requestURL, requestOptions);
             const user = await response.json();
-            props.onFormSubmit(user)
+            onFormSubmit(user)
             setIsActiveEdit(false);
         } catch (error) {
             console.log(error)
@@ -74,7 +74,7 @@ export default function UserProfileBio(props) {
         <div className='user-profile-bio-container'>
             <div className="user-profile-bio-header-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <header className="user-profile-bio-header">About Me</header>
-                {props.isUser && isAuthenticated && isHover && !isActiveEdit && (
+                {isUser && isAuthenticated && isHover && !isActiveEdit && (
                 <form id="form" onSubmit={(event) => changeEditStatus(event)}>
                     <textarea 
                         id="bio"
@@ -91,17 +91,17 @@ export default function UserProfileBio(props) {
             </div>
             { !isActiveEdit && (
                 <div className='user-profile-bio'>
-                    {props.profile_bio}
+                    {profile_bio}
                 </div>
             )}
-            {props.isUser && isAuthenticated && isActiveEdit && (
+            {isUser && isAuthenticated && isActiveEdit && (
                 <form className="user-profile-bio-form active-edit" id="form" onSubmit={(event) => updateUserProfileBio(event, username) }>
                     <textarea 
                         id="bio"
                         rows="4"
                         cols="50"
                         placeholder="Enter your bio here..."
-                        defaultValue={props.profile_bio}
+                        defaultValue={profile_bio}
                     />
                     <button className="search-button" type="submit">
                         <IconImage className="icon-image" icon={EditIcon} width="15px" />

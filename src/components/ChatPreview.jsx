@@ -1,19 +1,19 @@
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
-export default function ChatPreview(props) {
+export default function ChatPreview({ chat }) {
 
-    if (Object.keys(props.chat).length > 0) {
-        if (props.chat.name) {
+    if (Object.keys(chat).length > 0) {
+        if (chat.name) {
             return (
                 <div className='chat-preview-container'>
-                    {props.chat.name}
+                    {chat.name}
                 </div>
             )
         } else {
             return (
                 <div className='chat-preview-container'>
-                    {props.chat.users.map((user) => {
+                    {chat.users.map((user) => {
                         return (
                             <div key={uuidv4()} className='chat-member'>
                                 {user.username}

@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
-export default function ErrorMessage(props) {
+export default function ErrorMessage({ currentError }) {
 
-    if (Array.isArray(props.currentError)) {
+    if (Array.isArray(currentError)) {
         return (
             <div className='error-msg-container'>
-                {props.currentError.map((error) => {
+                {currentError.map((error) => {
                     return (
                         <div key={uuidv4()} className='error-msg'>
                             {error.msg}
@@ -18,7 +18,7 @@ export default function ErrorMessage(props) {
     } else {
         return (
             <div className='error-msg'>
-                {props.currentError}
+                {currentError}
             </div>
         )
     }
