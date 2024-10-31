@@ -1,0 +1,14 @@
+.following {
+    width: 50vw;
+}
+
+.user-profile-following-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.follow-label {
+    font-weight: bold;
+    font-size: 1.5rem;
+}

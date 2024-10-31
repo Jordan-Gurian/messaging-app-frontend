@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import UserProfileImage from './../../components/UserProfileImage';
 import UserProfileBio from './../../components/UserProfileBio';
-import UserFollowing from './../../components/UserFollowing';
-import UserFollowedBy from './../../components/UserFollowedBy';
+import UserFollowBlock from './../../components/UserFollowBlock';
 import UserChats from './../../components/UserChats';
 import FollowButton from './../../components/FollowButton';
 import { jwtDecode } from 'jwt-decode';
@@ -87,8 +86,8 @@ export default function UserProfilePage() {
                     <UserChats chats={user.chats} />
                 </div>
                 <div className="profile-page-right-container">
-                    <UserFollowing following={user.following} />
-                    <UserFollowedBy followedBy={user.followedBy} />
+                    <UserFollowBlock followLabel='Following' followBlockContent={user.following} />
+                    <UserFollowBlock followLabel='Followers' followBlockContent={user.followedBy} />
                 </div>
                 {modalOpen && isAuthenticated && (
                     <EditUserProfileImage

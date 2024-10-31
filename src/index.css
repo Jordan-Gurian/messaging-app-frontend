@@ -71,11 +71,6 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* Follow css */
-.follow-label {
-  font-weight: bold;
-}
-
 main {
   padding: 20px;
 }
