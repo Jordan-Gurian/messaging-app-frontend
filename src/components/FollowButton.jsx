@@ -3,6 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from './../hooks/AuthContext'
 
+import './FollowButton.css'
+
 export default function FollowButton(props) {
     
     const token = localStorage.token;
@@ -56,10 +58,12 @@ export default function FollowButton(props) {
         }  
     }
 
+    const buttonText = (props.followedBy && !isFollow) ? 'Unfollow' : 'Follow';
+
     if (props.isUser) {
         return (
-            <div className="user-profile-follow-button-container">
-            </div>
+            <>
+            </>
         )
     } else if (!props.followedBy) {
         return (
@@ -68,21 +72,14 @@ export default function FollowButton(props) {
             </button>
         )
     } else {
-        if (props.followedBy && !isFollow) {
-            return (
-                <button className="user-profile-follow-button-container" onClick={followUser}>
-                    Unfollow
-                </button>
-            )
-        } else {
-            return (
-                <button className="user-profile-follow-button-container" onClick={followUser}>
-                    Follow
-                </button>
-            )
-        }
-    }
-} 
+        return (
+            <button className="user-profile-follow-button-container" onClick={followUser}>
+                {buttonText}
+            </button>
+        )
+    } 
+}
+ 
 
 FollowButton.propTypes = {
     onClick: PropTypes.func.isRequired,
