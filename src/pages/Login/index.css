@@ -1,8 +1,8 @@
-.login-content {
+.login-page-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: var(--default-padding);
     height: 100%;
 }

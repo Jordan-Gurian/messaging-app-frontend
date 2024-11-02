@@ -1,6 +1,6 @@
 export default function ErrorPage() {
     return (
-        <main>
+        <main className="error-page-container">
             Error, page is inaccessible
         </main>
     )

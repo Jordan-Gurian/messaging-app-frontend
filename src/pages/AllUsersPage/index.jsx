@@ -24,13 +24,13 @@ export default function AllUsersPage() {
 
     if (Object.keys(users).length > 0) {
         return (
-            <main>
+            <main className='all-users-page-container'>
                 <FollowBlock followUsers={users}></FollowBlock>
             </main>
         )
     } else {
         return (
-            <main>
+            <main className='all-users-page-container'>
                 Loading...
             </main>
         )

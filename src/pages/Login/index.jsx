@@ -4,11 +4,10 @@ import ErrorMessage from './../../components/ErrorMessage';
 import './index.css'
 
 export default function LoginPage() {
-
     const [currentError, setCurrentError] = useState("");
 
     return (
-        <main className="login-content">
+        <main className="login-page-container">
             <LoginForm setCurrentError={setCurrentError}/>
             <ErrorMessage currentError={currentError}/>
         </main>

@@ -99,7 +99,7 @@ export default function UserProfilePage() {
         )
     } else {
         return (
-            <main>
+            <main className="profile-page-container">
                 Loading...
             </main>
         )
