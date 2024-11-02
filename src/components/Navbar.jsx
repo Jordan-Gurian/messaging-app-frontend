@@ -45,10 +45,15 @@ export default function Navbar() {
         }
     };
 
+    let token;
+    let decoded;
+    let username;
+
     if (isAuthenticated) {
-        const token = localStorage.token;
-        const decoded = jwtDecode(token);
-        const username = decoded.user.username;
+        token = localStorage.token;
+        decoded = jwtDecode(token);
+        username = decoded.user.username;
+    }
         return (
             <header>
                 <nav>
@@ -62,34 +67,21 @@ export default function Navbar() {
                             <IconImage className="icon-image" icon={EditIcon} width="15px" />
                         </button>
                     </form>
+                    { isAuthenticated ? (
+
                     <div className="nav-links">
                         <Link to="/">Home</Link>
                         <Link to={`/user/${username}`} reloadDocument>Profile</Link>
                         <Link to='/' onClick={logout}>Log out</Link>
                     </div>
+                    
+                    ) : (
+                        <div className="nav-links">
+                            <Link to="/login">Login</Link>
+                            <Link to="/register">Register</Link>
+                        </div>
+                    )} 
                 </nav>
             </header>
         )
-    } else {
-        return (
-        <header>
-            <nav>
-                <div className="nav-text">MessageXpress</div>
-                <form id="form" onSubmit={handleSubmit}>
-                    <input 
-                        type="text"
-                        id="searchVal"
-                    />
-                    <button className="search-button" type="submit">
-                        <IconImage className="icon-image" icon={EditIcon} width="15px" />
-                    </button>
-                </form>
-                <div className="nav-links">
-                    <Link to="/login">Login</Link>
-                    <Link to="/register">Register</Link>
-                </div>
-            </nav>
-        </header>
-        )
-    }
 }
