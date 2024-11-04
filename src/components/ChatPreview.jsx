@@ -1,37 +1,43 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
-export default function ChatPreview({ chat }) {
+import './ChatPreview.css';
+
+export default function ChatPreview({ chat, onClickChatId }) {
+
+    function handleChatClick() {
+        onClickChatId(chat.id)
+    }
 
     if (Object.keys(chat).length > 0) {
-        if (chat.name) {
-            return (
-                <div className='chat-preview-container'>
-                    {chat.name}
-                </div>
-            )
-        } else {
-            return (
-                <div className='chat-preview-container'>
-                    {chat.users.map((user) => {
-                        return (
-                            <div key={uuidv4()} className='chat-member'>
-                                {user.username}
-                            </div>
-                        )
-                    })}
-                </div>
-            )
-        }
+        return (
+            <div key={uuidv4()} className='chat-preview' onClick={handleChatClick}>
+                {chat.name ? (chat.name) : (
+                    chat.users.map((user, index) => {
+                        if (index !== chat.users.length - 1) {
+                            return (
+                                `${user.username}, `
+                            )
+                        } else {
+                            return (
+                                user.username
+                            )
+                        }
+                    })
+                )}
+            </div>
+        )
     } else {
         return (
             <div className='chat-preview-container'>
-                No active chat
+                No active chats
             </div>
         )
     }
 } 
 
 ChatPreview.propTypes = {
-    chat: PropTypes.object
+    chat: PropTypes.object.isRequired,
+    onClickChatId: PropTypes.func.isRequired,
 };

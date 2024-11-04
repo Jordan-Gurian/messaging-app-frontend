@@ -74,7 +74,6 @@ export default function UserProfilePage() {
             getPresignedUrl();
         }
     }, [user])
-
     if (Object.keys(user).length > 0 && presignedUrl) {
         return (
             <main className="profile-page-container">
@@ -83,7 +82,7 @@ export default function UserProfilePage() {
                     <div className="user-profile-name-container">{`${username}`}</div>
                     <FollowButton onClick={handleFormSubmit} followedBy={user.followedBy} isUser={isUser} />
                     <UserProfileBio onFormSubmit={handleFormSubmit} profile_bio={user.profile_bio} isUser={isUser} />
-                    <UserChats chats={user.chats} />
+                    {isAuthenticated && (<UserChats chats={user.chats} isUser={isUser} userId={decoded.user.id}/>)}
                 </div>
                 <div className="profile-page-right-container">
                     <UserFollowBlock followLabel='Following' followBlockContent={user.following} />

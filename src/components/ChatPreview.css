@@ -1,0 +1,7 @@
+.chat-preview {
+    cursor: pointer;
+}
+
+.chat-preview:hover {
+    font-weight: bold;
+}
