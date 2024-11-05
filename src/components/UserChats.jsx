@@ -6,10 +6,10 @@ import ChatWindow from './ChatWindow';
 
 import './UserChats.css'
 
-export default function UserChats({ onFormSubmit, chats, isUser=false, userId }) {
+export default function UserChats({ updateUser, chats, isUser=false, userId }) {
 
-    const [isHover, setIsHover] = useState(false);
     const [chatId, setChatId] = useState(null);
+    const [isHover, setIsHover] = useState(false);
 
     const handleMouseEnter = () => {
         setIsHover(true); // Update state on mouse enter
@@ -23,7 +23,7 @@ export default function UserChats({ onFormSubmit, chats, isUser=false, userId })
         <div className='chats-container user-profile-chats-container'>
             <div className="user-profile-chats-header-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <header className="user-profile-chats-header">Chats</header>
-                <CreateChat onFormSubmit={onFormSubmit} isUser={isUser} isHover={isHover}/>
+                <CreateChat updateUser={updateUser} isUser={isUser} isHover={isHover}/>
             </div>
 
             <div className="chat-preview-container">
@@ -31,7 +31,12 @@ export default function UserChats({ onFormSubmit, chats, isUser=false, userId })
                     chats.length > 0 && (
                         chats.map((chat) => {
                             return (
-                                <ChatPreview key={chat.id} chat={chat} onClickChatId={setChatId}/>
+                                <ChatPreview 
+                                    key={chat.id} 
+                                    chat={chat} 
+                                    onClickChatId={setChatId} 
+                                    updateUser={updateUser}
+                                />
                             )
                         })
                     )
@@ -41,7 +46,12 @@ export default function UserChats({ onFormSubmit, chats, isUser=false, userId })
                             let resultArray = chat.users.filter((user) => user.id === userId);
                             if (resultArray.length > 0) {
                                 return (
-                                    <ChatPreview key={chat.id} chat={chat} onClickChatId={setChatId}/>
+                                    <ChatPreview 
+                                        key={chat.id} 
+                                        chat={chat} 
+                                        onClickChatId={setChatId}
+                                        updateUser={updateUser}
+                                    />
                                 )
                             }
                         })
@@ -56,7 +66,7 @@ export default function UserChats({ onFormSubmit, chats, isUser=false, userId })
 } 
 
 UserChats.propTypes = {
-    onFormSubmit: PropTypes.func.isRequired,
+    updateUser: PropTypes.func.isRequired,
     chats: PropTypes.array,
     isUser: PropTypes.bool,
     userId: PropTypes.string,

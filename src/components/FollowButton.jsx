@@ -5,7 +5,7 @@ import { useAuth } from './../hooks/AuthContext'
 
 import './FollowButton.css'
 
-export default function FollowButton({ onClick, isUser, followedBy }) {
+export default function FollowButton({ updateUser, isUser, followedBy }) {
     
     const token = localStorage.token;
     const { isAuthenticated } = useAuth();
@@ -52,7 +52,7 @@ export default function FollowButton({ onClick, isUser, followedBy }) {
                 localStorage.removeItem("token");
                 navigate('/', { state: { successMessage: 'You have been logged out' } });
             }
-            onClick(responseDetails);
+            updateUser(true);
         } catch (error) {
             return { error }        
         }  
@@ -82,7 +82,7 @@ export default function FollowButton({ onClick, isUser, followedBy }) {
  
 
 FollowButton.propTypes = {
-    onClick: PropTypes.func.isRequired,
+    updateUser: PropTypes.func.isRequired,
     isUser: PropTypes.bool.isRequired,
     followedBy: PropTypes.array,
 }

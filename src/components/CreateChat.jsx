@@ -6,7 +6,7 @@ import { useAuth } from './../hooks/AuthContext'
 import IconImage from './../components/IconImage';
 import EditIcon from './../assets/edit.png';
 
-export default function CreateChat({ onFormSubmit, isUser=false, isHover=false }) {
+export default function CreateChat({ updateUser, isUser=false, isHover=false }) {
 
     const [isCreatingChat, setIsCreatingChat] = useState(false);
     const { isAuthenticated } = useAuth();
@@ -74,9 +74,7 @@ export default function CreateChat({ onFormSubmit, isUser=false, isHover=false }
                 localStorage.removeItem("token");
                 navigate('/', { state: { successMessage: 'You have been logged out' } });
             }
-            const updatedUser = await getUsers([responseDetails.users[0].username]);
-            console.log(updatedUser)
-            onFormSubmit(updatedUser[0]);
+            updateUser(true);
         } catch (error) {
             console.log(error);
             return { error }        
@@ -113,7 +111,7 @@ export default function CreateChat({ onFormSubmit, isUser=false, isHover=false }
 } 
 
 CreateChat.propTypes = {
-    onFormSubmit: PropTypes.func.isRequired,
+    updateUser: PropTypes.func.isRequired,
     isUser: PropTypes.bool,
     isHover: PropTypes.bool,
 };

@@ -20,7 +20,7 @@ export default function EditUserProfileImage({ updateAvatar, closeModal }) {
             await deleteS3Objects(s3, null, username)
             await uploadToS3(s3, file, key);
             const user = await updateUserProfileUrl(key, username);
-            updateAvatar(user)
+            updateAvatar(true);
         } catch (error) {
             console.log(error)
             return { error }

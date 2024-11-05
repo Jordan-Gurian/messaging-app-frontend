@@ -14,13 +14,14 @@ import './index.css';
 
 export default function UserProfilePage() {
 
+    const [resetUser, setResetUser] = useState(true);
+
     const { isAuthenticated } = useAuth();
     const { username } = useParams();
     const [user, setUser] = useState({});
     const [presignedUrl, setPresignedUrl] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
 
-    const navigate = useNavigate();
     const token = localStorage.token;
     let decoded;
     let isUser;
@@ -32,15 +33,13 @@ export default function UserProfilePage() {
         isUser = false;
     }
     
-     
-
     const apiUrl = import.meta.env.VITE_API_URL;
     const requestURL = `${apiUrl}/users/${username}`;
 
     async function getUserData() {
         try {
             const response = await fetch(requestURL);
-            setUser(await response.json());            
+            setUser(await response.json());
         } catch (error) {
             return { error }
         } 
@@ -55,18 +54,12 @@ export default function UserProfilePage() {
         } 
     }
 
-    function handleFormSubmit(newUser) {
-        if (isAuthenticated) {
-            setUser(newUser);
-        } else {
-            localStorage.removeItem("token");
-            navigate('/', { state: { successMessage: 'You have successfully logged out' } });
-        }
-    };
-      
     useEffect(() => {
-        getUserData();
-    }, []);
+        if (resetUser) {
+            getUserData();
+            setResetUser(false);          
+        }
+    }, [resetUser]);
 
 
     useEffect(() => {
@@ -79,19 +72,48 @@ export default function UserProfilePage() {
         return (
             <main className="profile-page-container">
                 <div className="profile-page-left-container">
-                    <UserProfileImage presignedUrl={presignedUrl} isUser={isUser} modalSetter={setModalOpen} height="300px" width="300px"/>
-                    <div className="user-profile-name-container">{`${username}`}</div>
-                    <FollowButton onClick={handleFormSubmit} followedBy={user.followedBy} isUser={isUser} />
-                    <UserProfileBio onFormSubmit={handleFormSubmit} profile_bio={user.profile_bio} isUser={isUser} />
-                    {isAuthenticated && (<UserChats onFormSubmit={handleFormSubmit} chats={user.chats} isUser={isUser} userId={decoded.user.id}/>)}
+                    <UserProfileImage 
+                        presignedUrl={presignedUrl} 
+                        isUser={isUser} 
+                        modalSetter={setModalOpen} 
+                        height="300px" 
+                        width="300px"
+                    />
+                    <div className="user-profile-name-container">
+                        {`${username}`}
+                    </div>
+                    <FollowButton 
+                        updateUser={setResetUser} 
+                        followedBy={user.followedBy} 
+                        isUser={isUser} 
+                    />
+                    <UserProfileBio 
+                        updateUser={setResetUser} 
+                        profile_bio={user.profile_bio} 
+                        isUser={isUser} 
+                    />
+                    {isAuthenticated && (
+                    <UserChats 
+                        updateUser={setResetUser} 
+                        chats={user.chats} 
+                        isUser={isUser} 
+                        userId={decoded.user.id}
+                    />
+                    )}
                 </div>
                 <div className="profile-page-right-container">
-                    <UserFollowBlock followLabel='Following' followBlockContent={user.following} />
-                    <UserFollowBlock followLabel='Followers' followBlockContent={user.followedBy} />
+                    <UserFollowBlock 
+                        followLabel='Following'
+                        followBlockContent={user.following} 
+                    />
+                    <UserFollowBlock 
+                        followLabel='Followers' 
+                        followBlockContent={user.followedBy} 
+                    />
                 </div>
                 {modalOpen && isAuthenticated && (
                     <EditUserProfileImage
-                        updateAvatar={handleFormSubmit}
+                        updateAvatar={setResetUser}
                         closeModal={() => setModalOpen(false)}
                     />
                 )}

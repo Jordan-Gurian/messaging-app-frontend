@@ -8,7 +8,7 @@ import EditIcon from './../assets/edit.png';
 
 import './UserProfileBio.css';
 
-export default function UserProfileBio({ profile_bio, onFormSubmit, isUser }) {
+export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
 
     const [isActiveEdit, setIsActiveEdit] = useState(false);
     const usernameObj = useParams()
@@ -62,7 +62,7 @@ export default function UserProfileBio({ profile_bio, onFormSubmit, isUser }) {
         try {
             const response = await fetch(requestURL, requestOptions);
             const user = await response.json();
-            onFormSubmit(user)
+            updateUser(true)
             setIsActiveEdit(false);
         } catch (error) {
             console.log(error)
@@ -117,6 +117,6 @@ export default function UserProfileBio({ profile_bio, onFormSubmit, isUser }) {
 
 UserProfileBio.propTypes = {
     profile_bio: PropTypes.string,
-    onFormSubmit: PropTypes.func.isRequired,
+    updateUser: PropTypes.func.isRequired,
     isUser: PropTypes.bool.isRequired,
 };
