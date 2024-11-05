@@ -50,7 +50,7 @@ export default function FollowButton({ onClick, isUser, followedBy }) {
             const responseDetails = await response.json();
             if (responseDetails.error === 'token invalid') {
                 localStorage.removeItem("token");
-                navigate('/', { state: { successMessage: 'You have successfully logged out' } });
+                navigate('/', { state: { successMessage: 'You have been logged out' } });
             }
             onClick(responseDetails);
         } catch (error) {

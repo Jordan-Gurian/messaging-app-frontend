@@ -9,7 +9,7 @@ export default function ChatPreview({ chat, onClickChatId }) {
     function handleChatClick() {
         onClickChatId(chat.id)
     }
-
+    
     if (Object.keys(chat).length > 0) {
         return (
             <div key={uuidv4()} className='chat-preview' onClick={handleChatClick}>

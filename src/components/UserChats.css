@@ -1,0 +1,11 @@
+.user-profile-chats-header-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.user-profile-chats-header {
+    font-size: 2rem;
+    font-weight: bold;
+}
+

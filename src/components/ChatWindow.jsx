@@ -1,17 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import PropTypes from 'prop-types';
-import { useAuth } from './../hooks/AuthContext'
 import IconImage from './../components/IconImage';
 import EditIcon from './../assets/edit.png';
-import { v4 as uuidv4 } from 'uuid';
 
 import './ChatWindow.css';
 
 export default function ChatWindow({ chatId }) {
-    // const { username } = useParams();
-    // const [user, setUser] = useState({});
     const [messages, setMessages] = useState([])
     const [formWidth, setFormWidth] = useState(0);
     const chatContainerRef = useRef(null);
@@ -19,18 +14,7 @@ export default function ChatWindow({ chatId }) {
 
     const token = localStorage.token;
     const decoded = jwtDecode(token);
-    const user = decoded.user;
-    // let decoded;
-    // let isUser;
-
-    // if (isAuthenticated) {
-    //     decoded = jwtDecode(token);
-    //     // isUser = decoded.user.username === username;
-    // } else {
-    //     // isUser = false;
-    // }
-    
-    
+    const user = decoded.user; 
 
     async function getChatMessages() {
         const apiUrl = import.meta.env.VITE_API_URL;
@@ -63,10 +47,6 @@ export default function ChatWindow({ chatId }) {
         
         console.log(1)
         const messageContent = event.target.message.value;
-
-        // if (decoded.user.username !== username) {
-        //     return new Error(`Cannot change another user's profile`);
-        // }
 
         const body = {
             content:  messageContent,
