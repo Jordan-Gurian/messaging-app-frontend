@@ -3,11 +3,12 @@ import { jwtDecode } from 'jwt-decode';
 import PropTypes from 'prop-types';
 import IconImage from './../components/IconImage';
 import EditIcon from './../assets/edit.png';
+import ChatUsernames from './ChatUsernames';
 
 import './ChatWindow.css';
 
 export default function ChatWindow({ chatId }) {
-    const [messages, setMessages] = useState([])
+    const [chat, setChat] = useState({ users: [], messages: [] })
     const [formWidth, setFormWidth] = useState(0);
     const chatContainerRef = useRef(null);
     const formContainerRef = useRef(null);
@@ -33,7 +34,7 @@ export default function ChatWindow({ chatId }) {
         try {
             const response = await fetch(requestURL, requestOptions);
             const chat = (await response.json());
-            setMessages(chat.messages);
+            setChat(chat);
         } catch (error) {
             return { error }        
         }  
@@ -45,7 +46,6 @@ export default function ChatWindow({ chatId }) {
         const apiUrl = import.meta.env.VITE_API_URL
         const requestURL = `${apiUrl}/messages`
         
-        console.log(1)
         const messageContent = event.target.message.value;
 
         const body = {
@@ -86,12 +86,15 @@ export default function ChatWindow({ chatId }) {
 
     useEffect(() => {
         chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }, [messages])
+    }, [chat.messages])
 
     return (
         <div className="chat-window"> 
+            <div className="chat-window-header">
+                <ChatUsernames chat={chat}/>
+            </div>
             <div className="message-container" ref={chatContainerRef}>
-                {messages.map((message) => {
+                {chat.messages.map((message) => {
                     return (
                         <div key={message.id} className={user.id === message.authorId ? "message user-message" : "message"}>
                             <div className="message-content">

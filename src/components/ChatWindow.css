@@ -2,6 +2,14 @@
     border: 2px solid white;
 }
 
+.chat-window-header {
+    display: flex;
+    background-color:cadetblue;
+    justify-content: center;
+    padding: var(--default-padding);
+    box-shadow: 0 0px 10px rgba(95, 158, 160, 0.16);
+}
+
 .message-container {
     display: flex;
     flex-direction: column;

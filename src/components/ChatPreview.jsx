@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
+import ChatUsernames from './ChatUsernames';
 
 import './ChatPreview.css';
 
@@ -39,30 +40,13 @@ export default function ChatPreview({ chat, onClickChatId, updateUser }) {
     
     if (Object.keys(chat).length > 0) {
         return (
-            <div key={uuidv4()} 
-                className='chat-preview' 
-                // onMouseEnter={()=> setHoveredChatId(chat.id)}
-            >
+            <div key={uuidv4()} className='chat-preview'>
                 <div className='chat-preview-name' onClick={handleChatClick}> 
-                    {chat.name ? (chat.name) : (
-                        chat.users.map((user, index) => {
-                            if (index !== chat.users.length - 1) {
-                                return (
-                                    `${user.username}, `
-                                )
-                            } else {
-                                return (
-                                    user.username
-                                )
-                            }
-                        })
-                    )}
+                    <ChatUsernames chat={chat}/>
                 </div>
-                {/* {hoveredChatId===chat.id && ( */}
                 <button className="delete-chat-button" onClick={deleteChat}>
                     Delete
                 </button>
-                {/* )} */}
             </div>
         )
     } else {
