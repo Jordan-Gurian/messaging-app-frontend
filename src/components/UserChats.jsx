@@ -59,7 +59,13 @@ export default function UserChats({ updateUser, chats, isUser=false, userId }) {
                 )}
             </div>
             {chatId && (
-            <ChatWindow key={chatId} chatId={chatId} isUser={isUser} userId={userId}/>
+            <ChatWindow 
+                key={chatId}
+                chatId={chatId}
+                isUser={isUser}
+                userId={userId}
+                updateUser={updateUser}
+            />
             )}
         </div>
     )

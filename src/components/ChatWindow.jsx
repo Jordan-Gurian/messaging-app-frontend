@@ -3,11 +3,11 @@ import { jwtDecode } from 'jwt-decode';
 import PropTypes from 'prop-types';
 import IconImage from './../components/IconImage';
 import EditIcon from './../assets/edit.png';
-import ChatUsernames from './ChatUsernames';
+import ChatWindowHeader from './ChatWindowHeader';
 
 import './ChatWindow.css';
 
-export default function ChatWindow({ chatId }) {
+export default function ChatWindow({ chatId, updateUser }) {
     const [chat, setChat] = useState({ users: [], messages: [] })
     const [formWidth, setFormWidth] = useState(0);
     const chatContainerRef = useRef(null);
@@ -17,7 +17,7 @@ export default function ChatWindow({ chatId }) {
     const decoded = jwtDecode(token);
     const user = decoded.user; 
 
-    async function getChatMessages() {
+    async function getChat() {
         const apiUrl = import.meta.env.VITE_API_URL;
         const requestURL = `${apiUrl}/chats/${chatId}`;
 
@@ -33,7 +33,7 @@ export default function ChatWindow({ chatId }) {
 
         try {
             const response = await fetch(requestURL, requestOptions);
-            const chat = (await response.json());
+            const chat = await response.json();
             setChat(chat);
         } catch (error) {
             return { error }        
@@ -69,7 +69,7 @@ export default function ChatWindow({ chatId }) {
 
         try {
             const response = await fetch(requestURL, requestOptions);
-            getChatMessages();
+            getChat();
             event.target.message.value = '';
         } catch (error) {
             console.log(error)
@@ -81,7 +81,7 @@ export default function ChatWindow({ chatId }) {
         if (formContainerRef.current) {
             setFormWidth(formContainerRef.current.offsetWidth);
         }
-        getChatMessages();
+        getChat();
     }, []);
 
     useEffect(() => {
@@ -90,8 +90,8 @@ export default function ChatWindow({ chatId }) {
 
     return (
         <div className="chat-window"> 
-            <div className="chat-window-header">
-                <ChatUsernames chat={chat}/>
+            <div className="chat-window-header-container">
+                <ChatWindowHeader chat={chat} updateUser={updateUser} setChat={setChat}/>
             </div>
             <div className="message-container" ref={chatContainerRef}>
                 {chat.messages.map((message) => {
@@ -127,4 +127,5 @@ export default function ChatWindow({ chatId }) {
 
 ChatWindow.propTypes = {
     chatId: PropTypes.string,
+    updateUser: PropTypes.func.isRequired,
 };

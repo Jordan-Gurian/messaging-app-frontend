@@ -19,6 +19,7 @@ export default function UserProfilePage() {
     const { isAuthenticated } = useAuth();
     const { username } = useParams();
     const [user, setUser] = useState({});
+    const [chats, setChats] = useState({});
     const [presignedUrl, setPresignedUrl] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -39,7 +40,9 @@ export default function UserProfilePage() {
     async function getUserData() {
         try {
             const response = await fetch(requestURL);
-            setUser(await response.json());
+            const user = await response.json();
+            setUser(user);
+            setChats(user.chats);
         } catch (error) {
             return { error }
         } 
@@ -95,7 +98,7 @@ export default function UserProfilePage() {
                     {isAuthenticated && (
                     <UserChats 
                         updateUser={setResetUser} 
-                        chats={user.chats} 
+                        chats={chats} 
                         isUser={isUser} 
                         userId={decoded.user.id}
                     />

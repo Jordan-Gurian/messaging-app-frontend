@@ -1,0 +1,76 @@
+import { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import PropTypes from 'prop-types';
+import IconImage from './../components/IconImage';
+import EditIcon from './../assets/edit.png';
+import ChatUsernames from './ChatUsernames';
+
+export default function ChatWindowHeader({ chat, updateUser, setChat }) {
+    
+    const [isActiveEdit, setIsActiveEdit] = useState(false);
+
+    const token = localStorage.token;
+    const decoded = jwtDecode(token);
+    const user = decoded.user; 
+      
+    async function updateUserChat(event) {
+        event.preventDefault();
+
+        const apiUrl = import.meta.env.VITE_API_URL
+        const requestURL = `${apiUrl}/chats/${chat.id}`
+        
+        const newChatName = event.target.chatName.value
+
+        const body = {
+            name:  newChatName,
+        };
+    
+        const bodyString = JSON.stringify(body);
+    
+        const headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        };
+    
+        const requestOptions = {
+            body: bodyString,
+            method: "PUT",
+            headers: headers,
+        }
+
+        try {
+            const response = await fetch(requestURL, requestOptions);
+            const chat = await response.json();
+            setChat(chat);
+            updateUser(true);
+            setIsActiveEdit(false);
+        } catch (error) {
+            console.log(error)
+            return { error }        
+        }  
+    }
+
+    return (
+        <div className="chat-window-header" onClick={() => setIsActiveEdit(true)}>
+            <ChatUsernames chat={chat}/>
+            { isActiveEdit && (
+            <form className="new-chat-name-form" id="form" onSubmit={(event) => updateUserChat(event) }>
+                <input 
+                    id="chatName"
+                    placeholder="Enter chat name here..."
+                    defaultValue={chat.name}
+                />
+                <button className="search-button" type="submit">
+                    <IconImage className="icon-image" icon={EditIcon} width="15px" />
+                </button>
+            </form>
+            )}
+        </div>
+    )
+}
+
+ChatWindowHeader.propTypes = {
+    chat: PropTypes.object.isRequired,
+    updateUser: PropTypes.func.isRequired,
+    setChat: PropTypes.func.isRequired,
+};
