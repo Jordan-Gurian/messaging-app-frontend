@@ -1,0 +1,13 @@
+#chatName {
+    all: unset;
+    box-sizing: border-box;
+    text-align: center;
+    background-color:hsla(180, 23%, 9%, 0.192);
+    border-radius: 1rem;
+}
+
+.new-chat-name-form {
+    display: flex;
+    gap: 10px;
+    
+}

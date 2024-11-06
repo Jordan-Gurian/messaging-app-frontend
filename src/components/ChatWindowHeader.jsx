@@ -5,6 +5,8 @@ import IconImage from './../components/IconImage';
 import EditIcon from './../assets/edit.png';
 import ChatUsernames from './ChatUsernames';
 
+import './ChatWindowHeader.css'
+
 export default function ChatWindowHeader({ chat, updateUser, setChat }) {
     
     const [isActiveEdit, setIsActiveEdit] = useState(false);
@@ -52,18 +54,20 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
 
     return (
         <div className="chat-window-header" onClick={() => setIsActiveEdit(true)}>
-            <ChatUsernames chat={chat}/>
-            { isActiveEdit && (
+            {isActiveEdit ? (
             <form className="new-chat-name-form" id="form" onSubmit={(event) => updateUserChat(event) }>
                 <input 
                     id="chatName"
                     placeholder="Enter chat name here..."
                     defaultValue={chat.name}
+                    autoFocus
                 />
                 <button className="search-button" type="submit">
                     <IconImage className="icon-image" icon={EditIcon} width="15px" />
                 </button>
             </form>
+            ) : (
+                <ChatUsernames chat={chat}/>
             )}
         </div>
     )

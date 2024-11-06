@@ -4,7 +4,7 @@
 
 .chat-window-header-container {
     display: flex;
-    background-color:cadetblue;
+    background-color:rgb(95, 158, 160);
     justify-content: center;
     padding: var(--default-padding);
     box-shadow: 0 0px 10px rgba(95, 158, 160, 0.16);
