@@ -34,7 +34,7 @@ export default function FollowBlock({ followUsers }) {
             <div className='follow-block'>
                 {followUsers.map((user, index) => {
                     return (
-                        <Link key={uuidv4()} className='follow-block-user' to={`./../${user.username}`} reloadDocument>
+                        <Link key={uuidv4()} className='follow-block-user' to={`/user/${user.username}`} reloadDocument>
                             <UserProfileImage 
                                 isUser={false}
                                 presignedUrl={followingUrls[index]}
