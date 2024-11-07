@@ -6,7 +6,7 @@ import ChatWindow from './ChatWindow';
 
 import './UserChats.css'
 
-export default function UserChats({ updateUser, chats, isUser=false, userId }) {
+export default function UserChats({ updateUser, chats, isUser=false, loggedInUserId }) {
 
     const [chatId, setChatId] = useState(null);
     const [isHover, setIsHover] = useState(false);
@@ -19,13 +19,21 @@ export default function UserChats({ updateUser, chats, isUser=false, userId }) {
         setIsHover(false); // Update state on mouse leave
     };
 
+    const hasChatWithLoggedInUser = chats.filter((chat) => {
+        return chat.users.some((user) => user.id === loggedInUserId) && chat.users.length === 2;
+    }).length > 0 || isUser;
+
     return (
         <div className='chats-container user-profile-chats-container'>
             <div className="user-profile-chats-header-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <header className="user-profile-chats-header">Chats</header>
-                <CreateChat updateUser={updateUser} isUser={isUser} isHover={isHover}/>
+                <CreateChat 
+                    updateUser={updateUser} 
+                    isUser={isUser} 
+                    isHover={isHover}
+                    hasChatWithLoggedInUser={hasChatWithLoggedInUser}
+                />
             </div>
-
             <div className="chat-preview-container">
                 {isUser ? (
                     chats.length > 0 && (
@@ -43,7 +51,7 @@ export default function UserChats({ updateUser, chats, isUser=false, userId }) {
                 ) : (
                     chats.length > 0 && (
                         chats.map((chat) => {
-                            let resultArray = chat.users.filter((user) => user.id === userId);
+                            let resultArray = chat.users.filter((user) => user.id === loggedInUserId);
                             if (resultArray.length > 0) {
                                 return (
                                     <ChatPreview 
@@ -63,7 +71,7 @@ export default function UserChats({ updateUser, chats, isUser=false, userId }) {
                 key={chatId}
                 chatId={chatId}
                 isUser={isUser}
-                userId={userId}
+                loggedInUserId={loggedInUserId}
                 updateUser={updateUser}
             />
             )}
@@ -75,5 +83,5 @@ UserChats.propTypes = {
     updateUser: PropTypes.func.isRequired,
     chats: PropTypes.array,
     isUser: PropTypes.bool,
-    userId: PropTypes.string,
+    loggedInUserId: PropTypes.string,
 };

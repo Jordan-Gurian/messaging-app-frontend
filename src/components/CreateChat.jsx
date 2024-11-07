@@ -1,16 +1,19 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from './../hooks/AuthContext'
 import IconImage from './../components/IconImage';
 import EditIcon from './../assets/edit.png';
 
-export default function CreateChat({ updateUser, isUser=false, isHover=false }) {
+import './CreateChat.css';
+
+export default function CreateChat({ updateUser, isUser=false, isHover=false, hasChatWithLoggedInUser=true}) {
 
     const [isCreatingChat, setIsCreatingChat] = useState(false);
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
+    const pageUserName = useParams();
 
     const token = localStorage.token;
 
@@ -48,8 +51,12 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false }) 
         const apiUrl = import.meta.env.VITE_API_URL
         const requestURL = `${apiUrl}/chats`
 
-        const users = await getUsers([username, event.target.chatUsers.value])
-        console.log(users);
+        let users;
+        if (event.target.chatUsers) {
+            users = await getUsers([username, event.target.chatUsers.value])
+        } else {
+            users = await getUsers([username, pageUserName.username])
+        }
         const body = {
             users: users,
         };
@@ -82,24 +89,25 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false }) 
     }
 
     return (
-        <div >
+        <div className="create-chat-container">
+        {!isUser && isAuthenticated && !isCreatingChat && !hasChatWithLoggedInUser && (
+            <form className="create-chat-form" id="form" onSubmit={(event) => createNewChat(event)}>
+                <button className="create-chat-button" type="submit">
+                    Create Chat
+                </button>
+            </form> 
+        )}
         {isUser && isHover && isAuthenticated && !isCreatingChat && (
-            <form id="form" onSubmit={(event) => {event.preventDefault(); setIsCreatingChat(true)}}>
-                <input 
-                    id="chatName"
-                    placeholder="Enter user to chat with..."
-                    hidden
-                />
+            <form className="create-chat-form" id="form" onSubmit={(event) => {event.preventDefault(); setIsCreatingChat(true)}}>
                 <button className="search-button" type="submit">
                     <IconImage className="icon-image" icon={EditIcon} width="15px" />
                 </button>
             </form> 
         )}
         {isCreatingChat && (
-            <form id="form" onSubmit={(event) => createNewChat(event)}>
+            <form className="create-chat-form" id="form" onSubmit={(event) => createNewChat(event)}>
                 <input 
                     id="chatUsers"
-                    placeholder="Enter user to chat with..."
                 />
                 <button className="search-button" type="submit">
                     <IconImage className="icon-image" icon={EditIcon} width="15px" />
@@ -114,4 +122,5 @@ CreateChat.propTypes = {
     updateUser: PropTypes.func.isRequired,
     isUser: PropTypes.bool,
     isHover: PropTypes.bool,
+    hasChatWithLoggedInUser: PropTypes.bool,
 };

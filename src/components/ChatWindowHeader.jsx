@@ -62,9 +62,6 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
                     defaultValue={chat.name}
                     autoFocus
                 />
-                <button className="search-button" type="submit">
-                    <IconImage className="icon-image" icon={EditIcon} width="15px" />
-                </button>
             </form>
             ) : (
                 <ChatUsernames chat={chat}/>

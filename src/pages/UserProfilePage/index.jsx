@@ -100,7 +100,7 @@ export default function UserProfilePage() {
                         updateUser={setResetUser} 
                         chats={chats} 
                         isUser={isUser} 
-                        userId={decoded.user.id}
+                        loggedInUserId={decoded.user.id}
                     />
                     )}
                 </div>
