@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from './../hooks/AuthContext'
+import UserToAdd from './UserToAdd';
 import IconImage from './../components/IconImage';
 import EditIcon from './../assets/edit.png';
 
@@ -12,13 +13,15 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
 
     const [isCreatingChat, setIsCreatingChat] = useState(false);
     const [usernameInputVal, setUsernameInputVal] = useState("");
-    const [usersInChat, setUsersInChat] = useState([]);
+    const [usersToAdd, setUsersToAdd] = useState([]);
     const [currentError, setCurrentError] = useState("")
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const pageUserName = useParams();
 
     const token = localStorage.token;
+    const decoded = jwtDecode(token);
+    const loggedInUsername = decoded.user.username;
 
     async function getUser(username) {
         const apiUrl = import.meta.env.VITE_API_URL;
@@ -50,7 +53,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
         const requestURL = `${apiUrl}/chats`
 
         const body = {
-            users: usersInChat,
+            users: usersToAdd,
         };
 
         const bodyString = JSON.stringify(body);
@@ -66,12 +69,15 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
             headers: headers,
         }
         try {
+            if (usersToAdd.length < 2) {
+                throw new Error("Must add users to create a chat")
+            }
             const response = await fetch(requestURL, requestOptions);
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error);
             }
-            setUsersInChat([usersInChat[0]]); // reset to just include loggedInUser
+            setUsersToAdd([usersToAdd[0]]); // reset to just include loggedInUser
             updateUser(true);
         } catch (error) {
             if (error.message === 'token invalid') {
@@ -85,21 +91,26 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
     }
 
     async function handleAddUser() {
-        try {
-            const user = await getUser(usernameInputVal);
-            if (usersInChat.filter((chatUser) => user.username === chatUser.username).length > 0) {
-                throw new Error("Cannot add a user more than once");
+        if (usernameInputVal) {
+            try {
+                const user = await getUser(usernameInputVal);
+                if (usersToAdd.filter((chatUser) => user.username === chatUser.username).length > 0) {
+                    throw new Error("Cannot add a user more than once");
+                }
+    
+                if (user.error) {
+                    throw new Error(user.error.message)
+                }
+    
+                setUsersToAdd((usersToAdd) => [...usersToAdd, user]);
+            } catch (error) {
+                console.log("Error fetching users:", error.message);
+                setCurrentError(error.message);
             }
-
-            if (user.error) {
-                throw new Error(user.error.message)
-            }
-
-            setUsersInChat((usersInChat) => [...usersInChat, user]);
-        } catch (error) {
-            console.log("Error fetching users:", error.message);
-            setCurrentError(error.message);
+        } else {
+            setCurrentError("Must input a username");
         }
+        
         setUsernameInputVal("");
 
     }
@@ -110,8 +121,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
     }
 
     useEffect(() => {
-        const decoded = jwtDecode(token);
-        const loggedInUsername = decoded.user.username;
+        
         let usernames;
 
         if (loggedInUsername === pageUserName.username) {
@@ -123,7 +133,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
         const fetchUsers = async () => {
             try {
                 const users = await Promise.all(usernames.map((username) => getUser(username)));
-                setUsersInChat([...users]);
+                setUsersToAdd([...users]);
             } catch (error) {
                 console.log("Error fetching users:", error.message);
                 setCurrentError(error.message);
@@ -164,12 +174,23 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
                     <button className="search-button" type="submit">
                         Create Chat
                     </button>
+                    <button className="close-button" type="button" onClick={() => { setUsersToAdd([usersToAdd[0]]); setIsCreatingChat(false)}}>
+                        X
+                    </button>
                 </div>
             </form> 
         )}
-        <div>
-            {usersInChat.map((user) => user.username)}
-        </div>
+            <div className="users-to-add">
+                {usersToAdd.map((user) => {
+                    return (user.username !== loggedInUsername && 
+                        <UserToAdd 
+                            key={user.id} 
+                            username={user.username} 
+                            usersToAdd={usersToAdd}
+                            setUsersToAdd={setUsersToAdd}/>
+                    )
+                })}
+            </div>
         </div>
     )
 } 
