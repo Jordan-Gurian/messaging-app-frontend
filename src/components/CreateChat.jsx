@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from './../hooks/AuthContext'
@@ -11,54 +11,48 @@ import './CreateChat.css';
 export default function CreateChat({ updateUser, isUser=false, isHover=false, hasChatWithLoggedInUser=true}) {
 
     const [isCreatingChat, setIsCreatingChat] = useState(false);
+    const [usernameInputVal, setUsernameInputVal] = useState("");
+    const [usersInChat, setUsersInChat] = useState([]);
+    const [currentError, setCurrentError] = useState("")
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const pageUserName = useParams();
 
     const token = localStorage.token;
 
-    async function getUsers(usernames) {
+    async function getUser(username) {
         const apiUrl = import.meta.env.VITE_API_URL;
-        const users = await Promise.all(
-            usernames.map(async (username) => {
-                const requestURL = `${apiUrl}/users/${username}`;
-    
-                try {
-                    const response = await fetch(requestURL);
-                    const responseDetails = await response.json();
-                    
-                    if (responseDetails.error === 'token invalid') {
-                        localStorage.removeItem("token");
-                        navigate('/', { state: { successMessage: 'You have been logged out' } });
-                    }
-    
-                    return responseDetails;
-                } catch (error) {
-                    return { error };
-                }
-            })
-        );
-    
-        return users;
+        const requestURL = `${apiUrl}/users/${username}`;
+        try {
+            const response = await fetch(requestURL);
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error);
+            }
+
+            const user = await response.json();
+            return user
+        } catch (error) {
+            if (error.message === 'token invalid') {
+                localStorage.removeItem("token");
+                navigate('/', { state: { successMessage: 'You have been logged out' } });
+            }   
+            console.log(error.message)
+            setCurrentError(error.message);
+            return { error };
+        }
     }
     
 
     async function createNewChat(event) {
         event.preventDefault();
 
-        const decoded = jwtDecode(token);
-        const username = decoded.user.username;
         const apiUrl = import.meta.env.VITE_API_URL
         const requestURL = `${apiUrl}/chats`
 
-        let users;
-        if (event.target.chatUsers) {
-            users = await getUsers([username, event.target.chatUsers.value])
-        } else {
-            users = await getUsers([username, pageUserName.username])
-        }
         const body = {
-            users: users,
+            users: usersInChat,
         };
     
         const bodyString = JSON.stringify(body);
@@ -73,20 +67,64 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
             method: "POST",
             headers: headers,
         }
-
         try {
             const response = await fetch(requestURL, requestOptions);
-            const responseDetails = await response.json();
-            if (responseDetails.error === 'token invalid') {
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error);
+            }
+            setUsersInChat([usersInChat[0]]); // reset to just include loggedInUser
+            updateUser(true);
+        } catch (error) {
+            if (error.message === 'token invalid') {
                 localStorage.removeItem("token");
                 navigate('/', { state: { successMessage: 'You have been logged out' } });
             }
-            updateUser(true);
-        } catch (error) {
-            console.log(error);
+            console.log(error.message)
+            setCurrentError(error.message);
             return { error }        
         }  
     }
+
+    async function handleAddUser() {
+        try {
+            const user = await getUser(usernameInputVal);
+            console.log(user)
+            setUsersInChat((usersInChat) => [...usersInChat, user]);
+            setUsernameInputVal("");
+        } catch (error) {
+            console.log("Error fetching users:", error.message);
+            setCurrentError(error.message);
+        }
+    }
+
+    function handleInputChange(event) {
+        setUsernameInputVal(event.target.value)
+    }
+
+    useEffect(() => {
+        const decoded = jwtDecode(token);
+        const loggedInUsername = decoded.user.username;
+        let usernames;
+
+        if (loggedInUsername === pageUserName.username) {
+            usernames = [loggedInUsername]
+        } else {
+            usernames = [loggedInUsername, pageUserName.username]
+        }
+
+        const fetchUsers = async () => {
+            try {
+                const users = await Promise.all(usernames.map((username) => getUser(username)));
+                setUsersInChat([...users]);
+            } catch (error) {
+                console.log("Error fetching users:", error.message);
+                setCurrentError(error.message);
+            }
+        };
+    
+        fetchUsers();
+    }, [])
 
     return (
         <div className="create-chat-container">
@@ -108,12 +146,22 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
             <form className="create-chat-form" id="form" onSubmit={(event) => createNewChat(event)}>
                 <input 
                     id="chatUsers"
+                    onChange={handleInputChange}
                 />
-                <button className="search-button" type="submit">
-                    <IconImage className="icon-image" icon={EditIcon} width="15px" />
-                </button>
+                {currentError && <p className="error-text">{currentError}</p>}
+                <div className="create-chat-form-button-container">
+                    <button className="search-button" type="button" onClick={handleAddUser}>
+                        Add User
+                    </button>
+                    <button className="search-button" type="submit">
+                        Create Chat
+                    </button>
+                </div>
             </form> 
         )}
+        <div>
+            {usersInChat.map((user) => user.username)}
+        </div>
         </div>
     )
 } 

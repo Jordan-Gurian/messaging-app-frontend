@@ -11,3 +11,14 @@
 .create-chat-button:hover {
     background-color: #2563eb;
 }
+
+.create-chat-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.create-chat-form-button-container {
+    display: flex;
+    gap: 10px;
+}
