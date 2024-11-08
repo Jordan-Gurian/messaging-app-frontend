@@ -9,3 +9,8 @@
     font-weight: bold;
 }
 
+.chat-preview-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

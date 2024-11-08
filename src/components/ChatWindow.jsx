@@ -9,6 +9,11 @@ import './ChatWindow.css';
 
 export default function ChatWindow({ chatId, updateUser }) {
     const [chat, setChat] = useState({ users: [], messages: [] })
+    
+    const [text, setText] = useState("");
+    const [rows, setRows] = useState(1);
+    const textareaRef = useRef(null);
+
     const [formWidth, setFormWidth] = useState(0);
     const chatContainerRef = useRef(null);
     const formContainerRef = useRef(null);
@@ -16,6 +21,22 @@ export default function ChatWindow({ chatId, updateUser }) {
     const token = localStorage.token;
     const decoded = jwtDecode(token);
     const user = decoded.user; 
+
+    const handleChange = (e) => {
+        const lineHeight = 24; // Adjust based on your styling
+        setText(e.target.value);
+
+        // Reset the height to auto to let it shrink when content is removed
+        textareaRef.current.style.height = 'auto';
+
+        // Calculate the new rows based on content height and limit it to maxRows
+        const newRows = Math.floor(textareaRef.current.scrollHeight / lineHeight)
+        setRows(newRows);
+
+        // Set the height to the calculated rows
+        textareaRef.current.style.height = `${newRows * lineHeight}px`;
+    };
+
 
     async function getChat() {
         const apiUrl = import.meta.env.VITE_API_URL;
@@ -35,6 +56,7 @@ export default function ChatWindow({ chatId, updateUser }) {
             const response = await fetch(requestURL, requestOptions);
             const chat = await response.json();
             setChat(chat);
+            handleChange;
         } catch (error) {
             return { error }        
         }  
@@ -46,10 +68,8 @@ export default function ChatWindow({ chatId, updateUser }) {
         const apiUrl = import.meta.env.VITE_API_URL
         const requestURL = `${apiUrl}/messages`
         
-        const messageContent = event.target.message.value;
-
         const body = {
-            content:  messageContent,
+            content:  text,
             authorId: user.id,
             chatId:   chatId,
         };
@@ -70,7 +90,7 @@ export default function ChatWindow({ chatId, updateUser }) {
         try {
             const response = await fetch(requestURL, requestOptions);
             getChat();
-            event.target.message.value = '';
+            setText('');
         } catch (error) {
             console.log(error)
             return { error }        
@@ -100,27 +120,41 @@ export default function ChatWindow({ chatId, updateUser }) {
                             <div className="message-content">
                                 {message.content}
                             </div>
-                            <div className="message-author">
-                                {message.author.username}
-                            </div>
-                            <div className="message-date">
-                                {message.date}
+                            <div className="message-subtext">   
+                                <div className="message-author">
+                                    {message.author.username}
+                                </div>
+                                <div className="message-date">
+                                    {message.date}
+                                </div>
                             </div>
                         </div>
                     )
                 })}
             </div>
-            <form className="new-message-form" id="form" ref={formContainerRef} onSubmit={(event) => updateUserChat(event) }>
-                    <textarea 
-                        id="message"
-                        rows="4"
-                        placeholder="Enter your message here..."
-                        style = {{width: `${formWidth * 0.95}px`}}
-                    />
-                    <button className="search-button" type="submit">
-                        <IconImage className="icon-image" icon={EditIcon} width="15px" />
-                    </button>
-                </form>
+            <form className="new-message-form" id="form" ref={formContainerRef} onSubmit={(event) => updateUserChat(event)}>
+                <textarea 
+                    ref={textareaRef}
+                    id="message"
+                    rows={rows}
+                    cols="30"
+                    value={text}
+                    onChange={handleChange}
+                    onKeyDown={(event) => {
+                        if (event.key === "Enter" && !event.shiftKey) {
+                            updateUserChat(event); // Submit form
+                        }
+                    }}
+                    placeholder="Enter your message here..."
+                    style={{
+                        overflowY: "hidden",
+                        lineHeight: "1.5",
+                    }}
+                />
+                <button className="search-button send-button" type="submit">
+                    <IconImage className="icon-image" icon={EditIcon} width="15px" />
+                </button>
+            </form>
         </div>
     )
 }

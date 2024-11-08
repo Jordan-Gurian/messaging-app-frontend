@@ -18,9 +18,10 @@
 .message-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
     overflow-y: scroll;
-    max-height: 50vh;
+    max-height: 25vh;
+    min-height: 300px;
+    gap: 10px;
     padding: 6px 10px;
 }
 
@@ -28,28 +29,60 @@
     align-self: flex-end;
 }
 
+.user-message.message {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
 .message {
     width: fit-content;
     max-width: 80%;
 }
 
+
+
 .message-content {
     background-color:blueviolet;
     border-radius: 1rem;
     padding: 6px 10px;
+    width: fit-content;
 }
 
-.message-author, .message-date {
+.user-message > .message-subtext {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     color: gray;
     font-size: .8rem;
 }
+
+.message-subtext {
+    color: gray;
+    font-size: .8rem;
+}
+
 .new-message-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
     padding: 6px 10px;
 }
 
 #message {
     border-radius: 1rem;
+    border: none;
+    outline: none;
+    resize: none;
     padding: 6px 10px;
+    padding-right: 40px;
+    resize: vertical;
+    flex-grow: 1;
+    flex-shrink: 1;
+    background-color: hsla(200, 4%, 17%, 0.651);
+    color: var(--main-header-color);
 }
 
 /* WebKit Browsers (Chrome, Safari) */
@@ -58,7 +91,6 @@
 }
 
 .message-container::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Track color */
     border-radius: 4px;
 }
 
@@ -70,4 +102,20 @@
 
 .message-container::-webkit-scrollbar-thumb:hover {
     background-color: #555; /* Darker thumb on hover */
+}
+
+.send-button {
+    position: absolute;
+    right: 12px;
+    bottom: 9px;
+    padding: 6px 6px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background-color: #45a049;
 }

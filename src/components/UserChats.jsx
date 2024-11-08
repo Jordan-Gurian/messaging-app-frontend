@@ -39,12 +39,21 @@ export default function UserChats({ updateUser, chats, isUser=false, loggedInUse
                     chats.length > 0 && (
                         chats.map((chat) => {
                             return (
-                                <ChatPreview 
-                                    key={chat.id} 
-                                    chat={chat} 
-                                    onClickChatId={setChatId} 
-                                    updateUser={updateUser}
-                                />
+                                <div key={chat.id}>
+                                    <ChatPreview 
+                                        chat={chat} 
+                                        onClickChatId={setChatId}
+                                        updateUser={updateUser}
+                                    />
+                                    {chatId===chat.id && (
+                                    <ChatWindow 
+                                        chatId={chat.id}
+                                        isUser={isUser}
+                                        loggedInUserId={loggedInUserId}
+                                        updateUser={updateUser}
+                                    />
+                                    )}
+                                </div>
                             )
                         })
                     )
@@ -54,27 +63,29 @@ export default function UserChats({ updateUser, chats, isUser=false, loggedInUse
                             let resultArray = chat.users.filter((user) => user.id === loggedInUserId);
                             if (resultArray.length > 0) {
                                 return (
-                                    <ChatPreview 
-                                        key={chat.id} 
-                                        chat={chat} 
-                                        onClickChatId={setChatId}
-                                        updateUser={updateUser}
-                                    />
+                                    <div key={chat.id}>
+                                        <ChatPreview 
+                                            key={chat.id} 
+                                            chat={chat} 
+                                            onClickChatId={setChatId}
+                                            updateUser={updateUser}
+                                        />
+                                        {chatId===chat.id && (
+                                        <ChatWindow 
+                                            key={chat.id}
+                                            chatId={chat.id}
+                                            isUser={isUser}
+                                            loggedInUserId={loggedInUserId}
+                                            updateUser={updateUser}
+                                        />
+                                        )}
+                                    </div>
                                 )
                             }
                         })
                     )
                 )}
             </div>
-            {chatId && (
-            <ChatWindow 
-                key={chatId}
-                chatId={chatId}
-                isUser={isUser}
-                loggedInUserId={loggedInUserId}
-                updateUser={updateUser}
-            />
-            )}
         </div>
     )
 } 
