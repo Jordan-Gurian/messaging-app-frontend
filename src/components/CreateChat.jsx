@@ -25,15 +25,13 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
         const requestURL = `${apiUrl}/users/${username}`;
         try {
             const response = await fetch(requestURL);
-            
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error);
             }
-
-            const user = await response.json();
-            return user
+            return await response.json()
         } catch (error) {
+            console.log(error)
             if (error.message === 'token invalid') {
                 localStorage.removeItem("token");
                 navigate('/', { state: { successMessage: 'You have been logged out' } });
@@ -54,7 +52,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
         const body = {
             users: usersInChat,
         };
-    
+
         const bodyString = JSON.stringify(body);
     
         const headers = {
@@ -89,17 +87,26 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
     async function handleAddUser() {
         try {
             const user = await getUser(usernameInputVal);
-            console.log(user)
+            if (usersInChat.filter((chatUser) => user.username === chatUser.username).length > 0) {
+                throw new Error("Cannot add a user more than once");
+            }
+
+            if (user.error) {
+                throw new Error(user.error.message)
+            }
+
             setUsersInChat((usersInChat) => [...usersInChat, user]);
-            setUsernameInputVal("");
         } catch (error) {
             console.log("Error fetching users:", error.message);
             setCurrentError(error.message);
         }
+        setUsernameInputVal("");
+
     }
 
     function handleInputChange(event) {
-        setUsernameInputVal(event.target.value)
+        setUsernameInputVal(event.target.value);
+        setCurrentError("");
     }
 
     useEffect(() => {
@@ -147,6 +154,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
                 <input 
                     id="chatUsers"
                     onChange={handleInputChange}
+                    value={usernameInputVal}
                 />
                 {currentError && <p className="error-text">{currentError}</p>}
                 <div className="create-chat-form-button-container">
