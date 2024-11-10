@@ -9,6 +9,8 @@ import { jwtDecode } from 'jwt-decode';
 import { createS3Client, getUserPresignedUrl } from './../../utils/s3Utils';
 import { useAuth } from './../../hooks/AuthContext';
 import EditUserProfileImage from './EditUserProfileImage'
+import DefaultProfilePic from './../../assets/profile-default.png';
+
 
 import './index.css';
 
@@ -68,6 +70,8 @@ export default function UserProfilePage() {
     useEffect(() => {
         if (user.profile_url) {
             getPresignedUrl();
+        } else {
+            setPresignedUrl(DefaultProfilePic);
         }
     }, [user])
 
