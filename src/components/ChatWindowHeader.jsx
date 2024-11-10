@@ -58,6 +58,7 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
             <form className="new-chat-name-form" id="form" onSubmit={(event) => updateUserChat(event) }>
                 <input 
                     id="chatName"
+                    className="default-input-format"
                     placeholder="Enter chat name here..."
                     defaultValue={chat.name}
                     autoFocus

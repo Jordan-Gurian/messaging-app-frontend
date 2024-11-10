@@ -71,20 +71,6 @@
     padding: 6px 10px;
 }
 
-#message {
-    border-radius: 1rem;
-    border: none;
-    outline: none;
-    resize: none;
-    padding: 6px 10px;
-    padding-right: 40px;
-    resize: vertical;
-    flex-grow: 1;
-    flex-shrink: 1;
-    background-color: hsla(200, 4%, 17%, 0.651);
-    color: var(--main-header-color);
-}
-
 /* WebKit Browsers (Chrome, Safari) */
 .message-container::-webkit-scrollbar {
     width: 8px; /* Width of the scrollbar */

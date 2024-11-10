@@ -136,6 +136,7 @@ export default function ChatWindow({ chatId, updateUser }) {
                 <textarea 
                     ref={textareaRef}
                     id="message"
+                    className="default-input-format" 
                     rows={rows}
                     cols="30"
                     value={text}

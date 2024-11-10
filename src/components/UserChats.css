@@ -1,6 +1,6 @@
 .user-profile-chats-header-container {
     display: flex;
-    gap: 10px;
+    gap: 2px;
     align-items: flex-start;
 }
 

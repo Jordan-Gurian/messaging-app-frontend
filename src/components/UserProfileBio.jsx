@@ -83,8 +83,8 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
                         placeholder="Enter your bio here..."
                         hidden
                     />
-                    <button className="search-button" type="submit">
-                        <IconImage className="icon-image" icon={EditIcon} width="15px" />
+                    <button className="edit-button edit-bio" type="submit">
+                        <IconImage className="icon-image" icon={EditIcon} width="28px" />
                     </button>
                 </form>
                 )}
@@ -103,11 +103,11 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
                         placeholder="Enter your bio here..."
                         defaultValue={profile_bio}
                     />
-                    <button className="search-button" type="submit">
-                        <IconImage className="icon-image" icon={EditIcon} width="15px" />
+                    <button className="edit-button edit-bio" type="submit">
+                        <IconImage className="icon-image" icon={EditIcon} width="28px" />
                     </button>
-                    <button className="search-button" onClick={(event) => changeEditStatus(event)}>
-                        Discard
+                    <button className="close-button edit-bio" onClick={(event) => changeEditStatus(event)}>
+                        X
                     </button>
                 </form>
             )}

@@ -34,11 +34,6 @@
     background-color: #4b5563;
 }
 
-.error-text {
-    color: #f87171;
-    font-size: 0.75rem;
-}
-
 .crop-image-container {
     display: flex;
     flex-direction: column;

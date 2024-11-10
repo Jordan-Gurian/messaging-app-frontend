@@ -19,6 +19,9 @@
   --header-font-size: 1.7rem;
   --header-height: 10vh;
   --default-padding: 10px 20px;
+  --default-gap: 10px;
+  --input-box-color: #2a2c2da6;
+  --search-or-edit-btn-color: #2a2c2d00;
 }
 
 #root {
@@ -26,6 +29,7 @@
   width:100%;
   display: flex;
   flex-direction: column;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 
@@ -72,9 +76,12 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.close-button {
+button {
   all: unset; 
   cursor: pointer;
+}
+
+.close-button {
   font-size: 1.25rem;
   line-height: 1;
   font-weight: bold;
@@ -94,8 +101,53 @@ button:focus-visible {
   color: #353535;
 }
 
-.close-button:focus {
+button:focus {
   outline: none;
+}
+
+.error-text {
+  color: #f87171;
+  font-size: 0.9rem;
+}
+
+.default-input-format {
+  border-radius: 1rem;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 6px 10px;
+  padding-right: 40px;
+  resize: vertical;
+  flex-grow: 1;
+  flex-shrink: 1;
+  background-color: var(--input-box-color);
+  color: var(--main-header-color);
+  font-size: 1rem;
+}
+
+.submit-button {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  color: var(--main-font-color);
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  background-color: #3b82f6;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #2563eb;
+}
+
+.search-button, .edit-button {
+  border-radius: 50%;
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
 }
 
 @media (prefers-color-scheme: light) {

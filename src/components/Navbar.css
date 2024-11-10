@@ -2,7 +2,9 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: var(--default-padding);
+    font-size: 2rem;
+    gap: var(--default-gap);
 }
 
 .nav-links {
@@ -12,30 +14,31 @@ nav {
 
 .navbar-form {
     display: flex;
-    gap: 8px;
+    gap: var(--default-gap);
     align-items: stretch;
 }
 
 #searchVal {
-    display: inline-flex; /* Use inline-flex to allow dynamic sizing */
+    display: inline-flex;
+    font-size: 1.5rem;
 }
 
-.search-button {
-    border-radius: 5px; /* Optional: add rounded corners */
-    padding: 4px; /* Remove padding to fit image */
-    display: inline-flex; /* Use inline-flex to allow dynamic sizing */
-    align-items: center; /* Center the image vertically */
-    justify-content: center; /* Center the image horizontally */
+.nav-search { 
+    height: 15px;
+    width: 15px;
+    background-color: var(--search-or-edit-btn-color);
+    position: relative;
+    top: 4px;
+    right: 48px;
 }
 
 .icon-image {
-    display: block; /* Remove extra space below image */
+    display: block;
 }
 
 @media screen and (max-width: 600px) {
     nav {
         flex-direction: column;
-        gap: 12px;  
         width: 100%;
     }
 

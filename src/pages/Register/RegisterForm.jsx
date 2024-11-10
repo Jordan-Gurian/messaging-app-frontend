@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useAuth } from './../../hooks/AuthContext';
 
+import './RegisterForm.css'
+
 export default function RegisterForm({ setCurrentError }) {
 
     const { checkAuth } = useAuth();
@@ -51,22 +53,22 @@ export default function RegisterForm({ setCurrentError }) {
     }
 
     return (
-        <form onSubmit={registerUser}>
-            <label htmlFor='username'>Username
-                <input 
-                    type='text'
-                    id='username' 
-                    name='username'
-                />
-            </label>
-            <label htmlFor='password'>Password
-                <input 
-                    type='password'
-                    id='password'
-                    name='password'
-                />
-            </label>
-            <button type='submit'>Register</button>
+        <form className="register-form" onSubmit={registerUser}>
+            <input 
+                type='text'
+                id='username'
+                className="default-input-format"
+                name='username'
+                placeholder="Username"
+            />
+            <input 
+                type='password'
+                id='password'
+                className="default-input-format"
+                name='password'
+                placeholder="Password"
+            />
+            <button type='submit' className="submit-button register-button">Register</button>
         </form>
     )
 }

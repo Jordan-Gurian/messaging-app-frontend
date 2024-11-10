@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
-import EditIcon from './../assets/edit.png';
+import SearchIcon from './../assets/search.png';
 import IconImage from './IconImage';
 import { useAuth } from './../hooks/AuthContext';
 import './Navbar.css';
@@ -62,9 +62,11 @@ export default function Navbar() {
                         <input 
                             type="text"
                             id="searchVal"
+                            className="default-input-format"
+                            placeholder="Search for other users..."
                         />
-                        <button className="search-button" type="submit">
-                            <IconImage className="icon-image" icon={EditIcon} width="15px" />
+                        <button className="search-button nav-search" type="submit">
+                            <IconImage className="icon-image" icon={SearchIcon} width="15px" height="15px"/>
                         </button>
                     </form>
                     { isAuthenticated ? (

@@ -8,7 +8,7 @@ export default function ErrorMessage({ currentError }) {
             <div className='error-msg-container'>
                 {currentError.map((error) => {
                     return (
-                        <div key={uuidv4()} className='error-msg'>
+                        <div key={uuidv4()} className='error-msg error-text'>
                             {error.msg}
                         </div>
                     )
@@ -17,7 +17,7 @@ export default function ErrorMessage({ currentError }) {
         )
     } else {
         return (
-            <div className='error-msg'>
+            <div className='error-msg error-text'>
                 {currentError}
             </div>
         )

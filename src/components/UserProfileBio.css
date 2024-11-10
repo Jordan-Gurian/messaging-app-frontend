@@ -1,7 +1,7 @@
 .user-profile-bio-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--default-gap);
     width: 66vw;
 }
 
@@ -12,12 +12,16 @@
 
 .user-profile-bio-header-container {
     display: flex;
-    gap: 10px;
+    gap: 2px;
     align-items: center;
 }
 
 .user-profile-bio-form.active-edit {
     display: flex;
-    gap: 10px;
+    gap: 2px;
     align-items: center;
+}
+
+.edit-bio {
+    background-color: var(--search-or-edit-btn-color);
 }

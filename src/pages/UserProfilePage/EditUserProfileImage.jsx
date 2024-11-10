@@ -74,7 +74,7 @@ export default function EditUserProfileImage({ updateAvatar, closeModal }) {
                     <div className="modal-header">
                         <button
                             type="button"
-                            className="close-button"
+                            className="close-button close-profile-image"
                             onClick={closeModal}
                         >
                             <span>Close menu</span>

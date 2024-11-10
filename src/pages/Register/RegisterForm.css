@@ -1,4 +1,4 @@
-.login-form {
+.register-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -7,12 +7,12 @@
     align-items: center;
 }
 
-.login-button {
+#username, #password, .register-button {
     font-size: 1.5rem;
 }
 
 @media screen and (max-width: 600px) {
-    .login-form {
+    .register-form {
         width: 90vw;
     }
 }

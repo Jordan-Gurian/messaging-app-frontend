@@ -14,9 +14,13 @@
     display: inline-block;
 }
 
-.delete-chat-button {
+.delete-chat-button.submit-button {
     display: none;
     background-color: maroon;
-    color: white;
     border: 1rem;
+    width: none;
+}
+
+.delete-chat-button.submit-button:hover {
+    background-color: rgba(128, 0, 0, 0.575);
 }

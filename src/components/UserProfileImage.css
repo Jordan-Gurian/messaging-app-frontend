@@ -8,10 +8,11 @@
     max-width: 300px; /* Set a maximum width for the container */
 }
 
-.user-profile-img-container > .search-button {
+.user-profile-img-container > .edit-button {
     position: absolute;
-    right: 30px;
-    bottom: 30px;
+    right: 18px;
+    bottom: 24px;
+    background-color: var(--search-or-edit-btn-color);
 }
 
 .user-profile-img {

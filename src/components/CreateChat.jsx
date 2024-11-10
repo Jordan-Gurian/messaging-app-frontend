@@ -78,6 +78,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
                 throw new Error(errorData.error);
             }
             setUsersToAdd([usersToAdd[0]]); // reset to just include loggedInUser
+            setIsCreatingChat(false);
             updateUser(true);
         } catch (error) {
             if (error.message === 'token invalid') {
@@ -103,6 +104,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
                 }
     
                 setUsersToAdd((usersToAdd) => [...usersToAdd, user]);
+                setUsernameInputVal("");
             } catch (error) {
                 console.log("Error fetching users:", error.message);
                 setCurrentError(error.message);
@@ -110,9 +112,6 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
         } else {
             setCurrentError("Must input a username");
         }
-        
-        setUsernameInputVal("");
-
     }
 
     function handleInputChange(event) {
@@ -144,18 +143,18 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
     }, [])
 
     return (
-        <div className="create-chat-container">
+        <div className="create-chat-container" style={isCreatingChat ? {paddingLeft: "30px"} : {}}>
         {!isUser && isAuthenticated && !isCreatingChat && !hasChatWithLoggedInUser && (
-            <form className="create-chat-form" id="form" onSubmit={(event) => createNewChat(event)}>
-                <button className="create-chat-button" type="submit">
+            <form className="create-chat-form other-user-chat" id="form" onSubmit={(event) => createNewChat(event)}>
+                <button className="submit-button" type="submit">
                     Create Chat
                 </button>
             </form> 
         )}
         {isUser && isHover && isAuthenticated && !isCreatingChat && (
             <form className="create-chat-form" id="form" onSubmit={(event) => {event.preventDefault(); setIsCreatingChat(true)}}>
-                <button className="search-button" type="submit">
-                    <IconImage className="icon-image" icon={EditIcon} width="15px" />
+                <button className="edit-button start-chat" type="submit">
+                    <IconImage className="icon-image" icon={EditIcon} width="28px" />
                 </button>
             </form> 
         )}
@@ -164,14 +163,15 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
                 <input 
                     id="chatUsers"
                     onChange={handleInputChange}
+                    placeholder="Enter username here..."
                     value={usernameInputVal}
                 />
-                {currentError && <p className="error-text">{currentError}</p>}
+                {currentError && <span className="error-text">{currentError}</span>}
                 <div className="create-chat-form-button-container">
-                    <button className="search-button" type="button" onClick={handleAddUser}>
+                    <button className="submit-button" type="button" onClick={handleAddUser}>
                         Add User
                     </button>
-                    <button className="search-button" type="submit">
+                    <button className="submit-button" type="submit">
                         Create Chat
                     </button>
                     <button className="close-button" type="button" onClick={() => { setUsersToAdd([usersToAdd[0]]); setIsCreatingChat(false)}}>
@@ -180,6 +180,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
                 </div>
             </form> 
         )}
+        {isUser && (
             <div className="users-to-add">
                 {usersToAdd.map((user) => {
                     return (user.username !== loggedInUsername && 
@@ -191,6 +192,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
                     )
                 })}
             </div>
+        )}
         </div>
     )
 } 

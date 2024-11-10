@@ -49,23 +49,23 @@ export default function LoginForm({ setCurrentError }) {
 
     return (
         <form className="login-form" onSubmit={useLogin}>   
-            <div className="form-input-container">
-                <input 
-                    type='text'
-                    id='username' 
-                    name='username'
-                    aria-label='Username'
-                    placeholder='Username'
-                />
-                <input 
-                    type='password'
-                    id='password'
-                    name='password'
-                    aria-label='Password'
-                    placeholder='Password'
-                />
-                <button type='submit'>Log In</button>
-            </div>
+            <input 
+                type='text'
+                id='username'
+                className="default-input-format" 
+                name='username'
+                aria-label='Username'
+                placeholder='Username'
+            />
+            <input 
+                type='password'
+                id='password'
+                className="default-input-format" 
+                name='password'
+                aria-label='Password'
+                placeholder='Password'
+            />
+            <button type='submit' className="submit-button login-button">Log In</button>
         </form>
     )
 }

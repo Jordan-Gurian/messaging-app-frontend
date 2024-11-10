@@ -21,9 +21,9 @@ export default function UserProfileImage({ presignedUrl, isUser, height='auto', 
     if (isUser && isAuthenticated && isHover) {
         return (
             <div className="user-profile-img-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                <img className='user-profile-img' src={presignedUrl} height={height} width={width}/>
-                <button className="search-button" onClick={() => modalSetter(true)}>
-                    <IconImage className="icon-image" icon={EditIcon} height="15px" />
+                <img className='user-profile-img' src={presignedUrl} height={height} width={width} alt="NOTHING"/>
+                <button className="edit-button" onClick={() => modalSetter(true)}>
+                    <IconImage className="icon-image" icon={EditIcon} height="32px" />
                 </button>
             </div>
         )

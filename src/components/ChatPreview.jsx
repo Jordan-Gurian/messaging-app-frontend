@@ -44,7 +44,7 @@ export default function ChatPreview({ chat, onClickChatId, updateUser }) {
                 <div className='chat-preview-name' onClick={handleChatClick}> 
                     <ChatUsernames chat={chat}/>
                 </div>
-                <button className="delete-chat-button" onClick={deleteChat}>
+                <button className="delete-chat-button submit-button" onClick={deleteChat}>
                     Delete
                 </button>
             </div>

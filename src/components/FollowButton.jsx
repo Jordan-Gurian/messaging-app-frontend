@@ -67,13 +67,13 @@ export default function FollowButton({ updateUser, isUser, followedBy }) {
         )
     } else if (!followedBy) {
         return (
-            <button className="user-profile-follow-button-container">
+            <button className="submit-button">
                 <Link to="/register">Follow</Link>
             </button>
         )
     } else {
         return (
-            <button className="user-profile-follow-button-container" onClick={followUser}>
+            <button className="user-profile-follow-button-container submit-button" onClick={followUser}>
                 {buttonText}
             </button>
         )
