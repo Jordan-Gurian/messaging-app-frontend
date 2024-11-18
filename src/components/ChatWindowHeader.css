@@ -4,9 +4,16 @@
     text-align: center;
     background-color:hsla(180, 23%, 9%, 0.192);
     border-radius: 1rem;
+    width: 100%;
+}
+
+#chatName::placeholder {
+    color: var(--main-font-color);
 }
 
 .new-chat-name-form {
     display: flex;
-    gap: 10px;
+    align-content: center;
+    justify-content: center;
+    gap: var(--default-gap);
 }

@@ -4,12 +4,16 @@
 
 .chat-window-header-container {
     display: flex;
-    background-color:rgb(95, 158, 160);
+    background-color: #34B297;
     justify-content: center;
     padding: var(--default-padding);
     box-shadow: 0 0px 10px rgba(95, 158, 160, 0.16);
 }
 
+.chat-window-header {
+    text-align: center;
+    width: 100%;
+}
 .chat-window-header-container:hover {
     cursor: pointer;
 }
@@ -67,7 +71,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    gap: var(--default-gap);
     padding: 6px 10px;
 }
 
@@ -91,17 +95,14 @@
 }
 
 .send-button {
+    all: unset;
     position: absolute;
-    right: 12px;
-    bottom: 9px;
-    padding: 6px 6px;
-    background-color: #4CAF50;
-    color: white;
+    right: 4px;
+    bottom: 2px;
     border: none;
-    border-radius: 50%;
     cursor: pointer;
 }
 
 .send-button:hover {
-    background-color: #45a049;
+    opacity: 0.5;
 }

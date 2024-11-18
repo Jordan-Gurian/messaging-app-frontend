@@ -12,5 +12,5 @@
 .chat-preview-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: calc(var(--default-gap) / 5);
 }

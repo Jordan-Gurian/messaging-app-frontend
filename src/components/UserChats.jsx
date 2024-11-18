@@ -39,7 +39,7 @@ export default function UserChats({ updateUser, chats, isUser=false, loggedInUse
                     chats.length > 0 && (
                         chats.map((chat) => {
                             return (
-                                <div key={chat.id}>
+                                <div className="chat-preview-item"key={chat.id}>
                                     <ChatPreview 
                                         chat={chat} 
                                         onClickChatId={setChatId}

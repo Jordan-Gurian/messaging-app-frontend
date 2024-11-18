@@ -50,10 +50,10 @@
     transition: background-color 0.3s ease;
 }
 
-.close-button:hover {
+.close-profile-image:hover {
     background-color: #374151;
 }
 
-.close-button:focus {
+.close-profile-image:focus {
     outline: none; /* Remove focus outline */
 }

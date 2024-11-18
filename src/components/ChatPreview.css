@@ -1,13 +1,14 @@
 .chat-preview {
     cursor: pointer;
     display: flex;
-    gap: 10px;
+    gap: var(--default-padding);
     align-items: center;
-    height: 40px;
+    height: 30px;
 }
 
 .chat-preview:hover {
     font-weight: bold;
+    font-size: 0.9rem;
 }
 
 .chat-preview:hover .delete-chat-button {
@@ -17,8 +18,7 @@
 .delete-chat-button.submit-button {
     display: none;
     background-color: maroon;
-    border: 1rem;
-    width: none;
+    font-size: 0.7rem;
 }
 
 .delete-chat-button.submit-button:hover {

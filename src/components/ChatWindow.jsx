@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import PropTypes from 'prop-types';
 import IconImage from './../components/IconImage';
-import EditIcon from './../assets/edit.png';
+import SendIcon from './../assets/send.png';
 import ChatWindowHeader from './ChatWindowHeader';
 
 import './ChatWindow.css';
@@ -153,7 +153,7 @@ export default function ChatWindow({ chatId, updateUser }) {
                     }}
                 />
                 <button className="search-button send-button" type="submit">
-                    <IconImage className="icon-image" icon={EditIcon} width="15px" />
+                    <IconImage className="icon-image" icon={SendIcon} width="28px" />
                 </button>
             </form>
         </div>

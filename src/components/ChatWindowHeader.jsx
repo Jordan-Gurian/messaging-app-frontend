@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import PropTypes from 'prop-types';
-import IconImage from './../components/IconImage';
-import EditIcon from './../assets/edit.png';
 import ChatUsernames from './ChatUsernames';
 
 import './ChatWindowHeader.css'

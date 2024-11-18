@@ -1,8 +1,7 @@
 .user-profile-bio-container {
     display: flex;
     flex-direction: column;
-    gap: var(--default-gap);
-    width: 66vw;
+    gap: calc(var(--default-gap) / 5);
 }
 
 .user-profile-bio-header {

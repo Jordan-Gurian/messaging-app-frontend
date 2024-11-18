@@ -51,7 +51,7 @@ export default function ChatPreview({ chat, onClickChatId, updateUser }) {
         )
     } else {
         return (
-            <div className='chat-preview-container'>
+            <div className='chat-preview'>
                 No active chats
             </div>
         )
