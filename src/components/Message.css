@@ -1,0 +1,29 @@
+.user-message {
+    align-self: flex-end;
+}
+
+.user-message.message {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.message {
+    width: fit-content;
+    max-width: 80%;
+}
+
+.message-content {
+    background-color:blueviolet;
+    border-radius: 1rem;
+    padding: 6px 10px;
+    width: fit-content;
+}
+
+.user-message > .message-subtext {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    color: gray;
+    font-size: .8rem;
+}

@@ -3,6 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import PropTypes from 'prop-types';
 import ChatWindowHeader from './ChatWindowHeader';
 import TextInputBox from './TextInputBox';
+import Message from './Message';
 
 import './ChatWindow.css';
 
@@ -64,7 +65,7 @@ export default function ChatWindow({ chatId, updateUser }) {
         }
 
         try {
-            const response = await fetch(requestURL, requestOptions);
+            await fetch(requestURL, requestOptions);
             getChat();
         } catch (error) {
             console.log(error)
@@ -88,19 +89,7 @@ export default function ChatWindow({ chatId, updateUser }) {
             <div className="message-container" ref={chatContainerRef}>
                 {chat.messages.map((message) => {
                     return (
-                        <div key={message.id} className={user.id === message.authorId ? "message user-message" : "message"}>
-                            <div className="message-content">
-                                {message.content}
-                            </div>
-                            <div className="message subtext">   
-                                <div className="message-author">
-                                    {message.author.username}
-                                </div>
-                                <div className="message-date">
-                                    {message.date}
-                                </div>
-                            </div>
-                        </div>
+                        <Message key={message.id} message={message} userId={user.id}/>
                     )
                 })}
             </div>
