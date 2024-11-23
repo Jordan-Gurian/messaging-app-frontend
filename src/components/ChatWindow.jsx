@@ -9,7 +9,6 @@ import './ChatWindow.css';
 export default function ChatWindow({ chatId, updateUser }) {
     const [chat, setChat] = useState({ users: [], messages: [] })
     
-    // const [text, setText] = useState("");
     const chatContainerRef = useRef(null);
 
     const token = localStorage.token;
@@ -106,30 +105,6 @@ export default function ChatWindow({ chatId, updateUser }) {
                 })}
             </div>
             <TextInputBox sendText={updateUserChat}/>
-            {/* <form className="new-message-form" id="form" ref={formContainerRef} onSubmit={(event) => updateUserChat(event)}>
-                <textarea 
-                    ref={textareaRef}
-                    id="message"
-                    className="default-input-format" 
-                    rows={rows}
-                    cols="30"
-                    value={text}
-                    onChange={handleChange}
-                    onKeyDown={(event) => {
-                        if (event.key === "Enter" && !event.shiftKey) {
-                            updateUserChat(event); // Submit form
-                        }
-                    }}
-                    placeholder="Enter your message here..."
-                    style={{
-                        overflowY: "hidden",
-                        lineHeight: "1.5",
-                    }}
-                /> */}
-                {/* <button className="search-button send-button" type="submit">
-                    <IconImage className="icon-image" icon={SendIcon} width="28px" />
-                </button>
-            </form> */}
         </div>
     )
 }
