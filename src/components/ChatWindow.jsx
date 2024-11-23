@@ -1,42 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import PropTypes from 'prop-types';
-import IconImage from './../components/IconImage';
-import SendIcon from './../assets/send.png';
 import ChatWindowHeader from './ChatWindowHeader';
+import TextInputBox from './TextInputBox';
 
 import './ChatWindow.css';
 
 export default function ChatWindow({ chatId, updateUser }) {
     const [chat, setChat] = useState({ users: [], messages: [] })
     
-    const [text, setText] = useState("");
-    const [rows, setRows] = useState(1);
-    const textareaRef = useRef(null);
-
-    const [formWidth, setFormWidth] = useState(0);
+    // const [text, setText] = useState("");
     const chatContainerRef = useRef(null);
-    const formContainerRef = useRef(null);
 
     const token = localStorage.token;
     const decoded = jwtDecode(token);
     const user = decoded.user; 
-
-    const handleChange = (e) => {
-        const lineHeight = 24; // Adjust based on your styling
-        setText(e.target.value);
-
-        // Reset the height to auto to let it shrink when content is removed
-        textareaRef.current.style.height = 'auto';
-
-        // Calculate the new rows based on content height and limit it to maxRows
-        const newRows = Math.floor(textareaRef.current.scrollHeight / lineHeight)
-        setRows(newRows);
-
-        // Set the height to the calculated rows
-        textareaRef.current.style.height = `${newRows * lineHeight}px`;
-    };
-
 
     async function getChat() {
         const apiUrl = import.meta.env.VITE_API_URL;
@@ -56,13 +34,12 @@ export default function ChatWindow({ chatId, updateUser }) {
             const response = await fetch(requestURL, requestOptions);
             const chat = await response.json();
             setChat(chat);
-            handleChange;
         } catch (error) {
             return { error }        
         }  
     }
       
-    async function updateUserChat(event) {
+    async function updateUserChat(event, text) {
         event.preventDefault();
 
         const apiUrl = import.meta.env.VITE_API_URL
@@ -90,7 +67,6 @@ export default function ChatWindow({ chatId, updateUser }) {
         try {
             const response = await fetch(requestURL, requestOptions);
             getChat();
-            setText('');
         } catch (error) {
             console.log(error)
             return { error }        
@@ -98,9 +74,6 @@ export default function ChatWindow({ chatId, updateUser }) {
     }
 
     useEffect(() => {
-        if (formContainerRef.current) {
-            setFormWidth(formContainerRef.current.offsetWidth);
-        }
         getChat();
     }, []);
 
@@ -120,7 +93,7 @@ export default function ChatWindow({ chatId, updateUser }) {
                             <div className="message-content">
                                 {message.content}
                             </div>
-                            <div className="message-subtext">   
+                            <div className="message subtext">   
                                 <div className="message-author">
                                     {message.author.username}
                                 </div>
@@ -132,7 +105,8 @@ export default function ChatWindow({ chatId, updateUser }) {
                     )
                 })}
             </div>
-            <form className="new-message-form" id="form" ref={formContainerRef} onSubmit={(event) => updateUserChat(event)}>
+            <TextInputBox sendText={updateUserChat}/>
+            {/* <form className="new-message-form" id="form" ref={formContainerRef} onSubmit={(event) => updateUserChat(event)}>
                 <textarea 
                     ref={textareaRef}
                     id="message"
@@ -151,11 +125,11 @@ export default function ChatWindow({ chatId, updateUser }) {
                         overflowY: "hidden",
                         lineHeight: "1.5",
                     }}
-                />
-                <button className="search-button send-button" type="submit">
+                /> */}
+                {/* <button className="search-button send-button" type="submit">
                     <IconImage className="icon-image" icon={SendIcon} width="28px" />
                 </button>
-            </form>
+            </form> */}
         </div>
     )
 }

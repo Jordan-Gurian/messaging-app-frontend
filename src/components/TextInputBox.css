@@ -1,0 +1,21 @@
+.new-message-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--default-gap);
+    padding: 6px 10px;
+}
+
+.send-button {
+    all: unset;
+    position: absolute;
+    right: 4px;
+    bottom: 2px;
+    border: none;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    opacity: 0.5;
+}
