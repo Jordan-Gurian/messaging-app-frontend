@@ -25,8 +25,7 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
         setIsHover(false); // Update state on mouse leave
     };
 
-    function changeEditStatus(event) {
-        event.preventDefault();
+    function changeEditStatus() {
         setIsActiveEdit(!isActiveEdit);
     }
 
@@ -76,7 +75,7 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
             <div className="user-profile-bio-header-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <header className="profile-page-section-label">About Me</header>
                 {!isActiveEdit && isHover && (
-                    <EditButton handleSubmit={(event) => changeEditStatus(event)} width={"28px"}/>
+                    <EditButton handleClick={() => changeEditStatus()} width={"28px"}/>
                 )}
             </div>
             { !isActiveEdit && (
@@ -96,7 +95,7 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
                     <button className="edit-button edit-bio" type="submit">
                         <IconImage className="icon-image" icon={EditIcon} width="28px" />
                     </button>
-                    <button className="close-button edit-bio" onClick={(event) => changeEditStatus(event)}>
+                    <button className="close-button edit-bio" onClick={() => changeEditStatus()}>
                         X
                     </button>
                 </form>

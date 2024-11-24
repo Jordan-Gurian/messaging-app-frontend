@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from './../hooks/AuthContext'
 import UserToAdd from './UserToAdd';
+import EditButton from './EditButton';
 import IconImage from './../components/IconImage';
 import EditIcon from './../assets/edit.png';
 
@@ -152,11 +153,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
             </form> 
         )}
         {isUser && isHover && isAuthenticated && !isCreatingChat && (
-            <form className="create-chat-form" id="form" onSubmit={(event) => {event.preventDefault(); setIsCreatingChat(true)}}>
-                <button className="edit-button start-chat" type="submit">
-                    <IconImage className="icon-image" icon={EditIcon} width="28px" />
-                </button>
-            </form> 
+            <EditButton handleClick={() => setIsCreatingChat(true)} width={"28px"}/>
         )}
         {isCreatingChat && (
             <form className="create-chat-form" id="form" onSubmit={(event) => createNewChat(event)}>
