@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import UserProfileImage from './UserProfileImage';
+import PostHeader from './PostHeader';
+import PostContent from './PostContent';
 import LikeButton from './LikeButton';
-import EditForm from './EditForm';
-import EditButton from './EditButton';
+import PostMetrics from './PostMetrics';
 import { useLoggedInUser } from './../hooks/useLoggedInUser';
 
 
@@ -113,46 +113,24 @@ export default function Post({ postId, postAuthor = {} }) {
     return (
         Object.keys(post).length > 0 && Object.keys(author).length > 0 ? (
             <div className='post-container'>
-                <div className='post-header'>
-                    <UserProfileImage
-                        profileUrl={author.profile_url}
-                        allowEdit={false}
-                        presignedUrl={author.profile_url}
-                        height='50px'
-                        width='50px'
-                    />
-                    <div className='post-header user-info'>
-                        <div className='post top-line'>
-                            <div className='post author'>{author.username}</div>
-                            {loggedInUser.id === author.id && !isActiveEdit && (
-                                <EditButton onClick={() => changeEditStatus()} width='18px'/>
-                            )}
-                        </div>
-                        <div className='post date subtext'>{post.date}</div>
-                    </div>
-                </div>
-                {isActiveEdit ? (
-                    <EditForm
-                        onSubmit={updatePost}
-                        content={post.content}
-                        textAreaStyle={{height: "4em"}}
-                    >
-                        <EditButton type='submit' width='28px'/>
-                        <button className="close-button" onClick={() => changeEditStatus()}>
-                            X
-                        </button>
-                    </EditForm>
-                ) : (
-                    <div className='post content'>{post.content}</div>
-                )}
-                
-                <div className='post metrics subtext'>
-                    <div className='post likes'>{post.usersThatLiked.length} Likes</div>
-                    <div className='post comments'>{post.comments.length} Comments</div>
-                </div>
-                <div className='post buttons'>
-                    <LikeButton post={post} updateLikes={setPostUpdate}/>
-                </div>
+                <PostHeader
+                    author={author}
+                    post={post}
+                    onClick={changeEditStatus}
+                    loggedInUser={loggedInUser}
+                    isActiveEdit={isActiveEdit}
+                />
+                <PostContent
+                    onEditFormSubmit={updatePost}
+                    post={post}
+                    closeButtonOnClick={changeEditStatus}
+                    isActiveEdit={isActiveEdit}
+                />
+                <PostMetrics
+                    likes={post.usersThatLiked.length}
+                    comments={post.comments.length}
+                />
+                <LikeButton post={post} updateLikes={setPostUpdate}/>
             </div>
         ) : (
             <div>

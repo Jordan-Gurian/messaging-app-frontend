@@ -1,0 +1,21 @@
+.post-header {
+    display: flex;
+    gap: var(--default-gap);
+    padding-bottom: 8px;
+}
+
+.post-header.user-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: calc(var(--default-gap) * -1);
+}
+
+.post-header.top-line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-header.author {
+    font-weight: bold;
+}

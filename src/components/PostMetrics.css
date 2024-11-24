@@ -1,0 +1,4 @@
+.post.metrics {
+    display: flex;
+    gap: var(--default-gap);
+}
