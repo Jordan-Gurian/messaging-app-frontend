@@ -75,7 +75,7 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
             <div className="user-profile-bio-header-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <header className="profile-page-section-label">About Me</header>
                 {!isActiveEdit && isHover && (
-                    <EditButton handleClick={() => changeEditStatus()} width={"28px"}/>
+                    <EditButton onClick={() => changeEditStatus()} width={"28px"}/>
                 )}
             </div>
             { !isActiveEdit && (

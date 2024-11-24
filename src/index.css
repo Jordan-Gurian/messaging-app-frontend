@@ -169,6 +169,24 @@ button:focus {
   cursor: pointer;
 }
 
+.edit-button {
+  background-color: var(--search-or-edit-btn-color);
+}
+
+.profile-page-section-label {
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+button:hover {
+  opacity: 0.5;
+}
+
+.subtext {
+  color: gray;
+  font-size: .8rem;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

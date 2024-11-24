@@ -5,7 +5,7 @@ import IconImage from './../components/IconImage';
 import EditIcon from './../assets/edit.png';
 import { useLoggedInUser } from './../hooks/useLoggedInUser';
 
-export default function EditButton({ handleClick, width }) {
+export default function EditButton({ type = 'button', onClick, icon = EditIcon, width='auto' }) {
     
     const usernameObj = useParams()
     const username = usernameObj.username;
@@ -21,14 +21,20 @@ export default function EditButton({ handleClick, width }) {
 
     return (
         isUser && isAuthenticated && (
-            <button className="edit-button" onClick={handleClick}>
-                <IconImage className="icon-image" icon={EditIcon} width={width} />
+            <button
+                className="edit-button"
+                type={type}
+                onClick={type === 'button' ? onClick : null}
+            >
+                <IconImage className="icon-image" icon={icon} width={width} />
             </button>
         )
     )
 }
 
 EditButton.propTypes = {
-    handleClick: PropTypes.func.isRequired,
-    width: PropTypes.string.isRequired,
+    type: PropTypes.oneOf(['button', 'submit', 'reset']),
+    onClick: PropTypes.func,
+    icon: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    width: PropTypes.string,
 };

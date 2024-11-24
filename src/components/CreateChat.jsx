@@ -146,14 +146,12 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
     return (
         <div className="create-chat-container" style={isCreatingChat ? {paddingLeft: "30px"} : {}}>
         {!isUser && isAuthenticated && !isCreatingChat && !hasChatWithLoggedInUser && (
-            <form className="create-chat-form other-user-chat" id="form" onSubmit={(event) => createNewChat(event)}>
-                <button className="submit-button" type="submit">
-                    Create Chat
-                </button>
-            </form> 
+            <button className="other-user-chat submit-button " type="submit" onClick={(event) => createNewChat(event)}>
+                Create Chat
+            </button>
         )}
         {isUser && isHover && isAuthenticated && !isCreatingChat && (
-            <EditButton handleClick={() => setIsCreatingChat(true)} width={"28px"}/>
+            <EditButton onClick={() => setIsCreatingChat(true)} width={"28px"}/>
         )}
         {isCreatingChat && (
             <form className="create-chat-form" id="form" onSubmit={(event) => createNewChat(event)}>
