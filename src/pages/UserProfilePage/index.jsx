@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import UserProfileImage from './../../components/UserProfileImage';
 import UserProfileBio from './../../components/UserProfileBio';
 import UserFollowBlock from './../../components/UserFollowBlock';
+import UserPosts from './../../components/UserPosts';
 import UserChats from './../../components/UserChats';
 import FollowButton from './../../components/FollowButton';
 import { jwtDecode } from 'jwt-decode';
@@ -48,8 +49,14 @@ export default function UserProfilePage() {
 
     useEffect(() => {
         if (resetUser) {
-            getUserData();
-            setResetUser(false);          
+            const fetchUser = async () => {
+                const currentUser = await getUserData();
+                setUser(currentUser);
+                setChats(currentUser.chats);
+                setResetUser(false);      
+            }
+            fetchUser();
+                
         }
     }, [resetUser]);
 
@@ -77,14 +84,13 @@ export default function UserProfilePage() {
                         profile_bio={user.profile_bio} 
                         isUser={isUser} 
                     />
-                    {isAuthenticated && (
-                    <UserChats 
-                        updateUser={setResetUser} 
-                        chats={chats} 
-                        isUser={isUser} 
-                        loggedInUserId={decoded.user.id}
+                    <UserPosts
+                        user={user}
+                        posts={user.posts}
+                        postsLabel={'Posts'}
+                    
                     />
-                    )}
+                    
                 </div>
                 <div className="profile-page-right-container">
                     <UserFollowBlock 
@@ -95,6 +101,14 @@ export default function UserProfilePage() {
                         followLabel='Followers' 
                         followBlockContent={user.followedBy} 
                     />
+                    {isAuthenticated && (
+                    <UserChats 
+                        updateUser={setResetUser} 
+                        chats={chats} 
+                        isUser={isUser} 
+                        loggedInUserId={decoded.user.id}
+                    />
+                    )}
                 </div>
                 {modalOpen && isAuthenticated && (
                     <EditUserProfileImage

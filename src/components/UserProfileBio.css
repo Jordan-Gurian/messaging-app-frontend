@@ -10,12 +10,8 @@
     align-items: center;
 }
 
-.user-profile-bio-form.active-edit {
+.active-edit {
     display: flex;
     gap: 2px;
     align-items: center;
-}
-
-.edit-bio {
-    background-color: var(--search-or-edit-btn-color);
 }

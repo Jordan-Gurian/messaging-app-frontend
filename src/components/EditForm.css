@@ -1,0 +1,9 @@
+.active-edit-form {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+}
+
+.active-edit-text-area {
+    width: 75%;
+}

@@ -1,0 +1,41 @@
+.post-container {
+    border: 2px solid white;
+    padding: 8px;
+}
+
+.post-header {
+    display: flex;
+    gap: var(--default-gap);
+    padding-bottom: 8px;
+}
+
+.post-header.user-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: calc(var(--default-gap) * -1);
+}
+
+.post.top-line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post.author {
+    font-weight: bold;
+}
+
+.post.edit {
+    background-color: var(--main-bg-color);
+    padding: 0px;
+    margin: 0px;
+}
+
+.post.edit:hover {
+    opacity: 0.5;
+}
+
+.post.metrics {
+    display: flex;
+    gap: var(--default-gap);
+}

@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import PropTypes from 'prop-types';
 import { useAuth } from './../hooks/AuthContext'
-import IconImage from './IconImage';
-import EditIcon from '../assets/edit.png'
+import EditForm from './EditForm';
 import EditButton from './EditButton';
 
 import './UserProfileBio.css';
@@ -29,8 +28,7 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
         setIsActiveEdit(!isActiveEdit);
     }
 
-    async function updateUserProfileBio(event, username) {
-        event.preventDefault();
+    async function updateUserProfileBio(newBio) {
 
         const apiUrl = import.meta.env.VITE_API_URL
         const requestURL = `${apiUrl}/users/${username}`
@@ -43,7 +41,7 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
         }
 
         const body = {
-            profile_bio: event.target.bio.value,
+            profile_bio: newBio,
         };
     
         const bodyString = JSON.stringify(body);
@@ -84,21 +82,17 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
                 </div>
             )}
             {isUser && isAuthenticated && isActiveEdit && (
-                <form className="user-profile-bio-form active-edit" id="form" onSubmit={(event) => updateUserProfileBio(event, username) }>
-                    <textarea 
-                        id="bio"
-                        rows="4"
-                        cols="50"
-                        placeholder="Enter your bio here..."
-                        defaultValue={profile_bio}
-                    />
-                    <button className="edit-button edit-bio" type="submit">
-                        <IconImage className="icon-image" icon={EditIcon} width="28px" />
-                    </button>
-                    <button className="close-button edit-bio" onClick={() => changeEditStatus()}>
+                <EditForm
+                    onSubmit={updateUserProfileBio}
+                    content={profile_bio}
+                    placeholder='Enter your bio here...'
+                    textAreaStyle={{height: "4em"}}
+                >
+                    <EditButton type='submit' width='28px'/>
+                    <button className="close-button" onClick={() => changeEditStatus()}>
                         X
                     </button>
-                </form>
+                </EditForm>
             )}
         </div>
     )
