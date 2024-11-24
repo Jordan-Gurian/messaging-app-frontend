@@ -86,7 +86,7 @@ export default function ChatWindow({ chatId, updateUser }) {
             <div className="chat-window-header-container">
                 <ChatWindowHeader chat={chat} updateUser={updateUser} setChat={setChat}/>
             </div>
-            <div className="message-container" ref={chatContainerRef}>
+            <div className="message-container default-scrollbar" ref={chatContainerRef}>
                 {chat.messages.map((message) => {
                     return (
                         <Message key={message.id} message={message} userId={user.id}/>
