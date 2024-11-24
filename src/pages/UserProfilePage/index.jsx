@@ -64,7 +64,7 @@ export default function UserProfilePage() {
                         height="300px" 
                         width="300px"
                     />
-                    <div className="user-profile-name-container">
+                    <div className="user-profile-name-container profile-page-section-label">
                         {`${username}`}
                     </div>
                     <FollowButton 
