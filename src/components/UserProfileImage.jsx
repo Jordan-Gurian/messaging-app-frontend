@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useAuth } from './../hooks/AuthContext'
-import IconImage from './../components/IconImage';
-import EditIcon from './../assets/edit.png';
+import { createS3Client, getUserPresignedUrl } from './../utils/s3Utils';
+import DefaultProfilePic from './../assets/profile-default.png';
+import EditButton from './EditButton';
 
 import './UserProfileImage.css'
 
-export default function UserProfileImage({ presignedUrl, isUser, height='auto', width='auto', modalSetter }) {
+export default function UserProfileImage({ profileUrl, allowEdit, height='auto', width='auto', modalSetter }) {
 
     const [isHover, setIsHover] = useState(false);
+    const [presignedUrl, setPresignedUrl] = useState(''); 
     const { isAuthenticated } = useAuth();
 
     const handleMouseEnter = () => {
@@ -18,13 +20,37 @@ export default function UserProfileImage({ presignedUrl, isUser, height='auto', 
     const handleMouseLeave = () => {
         setIsHover(false); // Update state on mouse leave
     };
-    if (isUser && isAuthenticated && isHover) {
+
+
+    async function getPresignedUrl() {
+        try {
+            const s3 = createS3Client();
+            const url = await getUserPresignedUrl(s3, profileUrl);
+            return url
+        } catch (error) {
+            return { error }
+        } 
+    }
+
+    useEffect(() => {
+        if (profileUrl) {
+            const fetchPresignedUrl = async ()  => {
+                const url = await getPresignedUrl();
+                setPresignedUrl(url);
+            }
+            fetchPresignedUrl();
+        } else {
+            setPresignedUrl(DefaultProfilePic);
+        }
+    }, [])
+
+    if (allowEdit && isAuthenticated && isHover) {
         return (
             <div className="user-profile-img-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <img className='user-profile-img' src={presignedUrl} height={height} width={width} alt="NOTHING"/>
-                <button className="edit-button" onClick={() => modalSetter(true)}>
-                    <IconImage className="icon-image" icon={EditIcon} height="32px" />
-                </button>
+                <div className="edit-button-container"> {/* Need div container for formatting */}
+                    <EditButton handleSubmit={() => modalSetter(true)} width={"32px"}/>
+                </div>
             </div>
         )
     } else if (isAuthenticated) {
@@ -43,8 +69,8 @@ export default function UserProfileImage({ presignedUrl, isUser, height='auto', 
 } 
 
 UserProfileImage.propTypes = {
-    presignedUrl: PropTypes.string.isRequired,
-    isUser: PropTypes.bool.isRequired,
+    profileUrl: PropTypes.string.isRequired,
+    allowEdit: PropTypes.bool.isRequired,
     height: PropTypes.string,
     width: PropTypes.string,
     modalSetter: PropTypes.func,

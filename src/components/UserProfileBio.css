@@ -4,11 +4,6 @@
     gap: calc(var(--default-gap) / 5);
 }
 
-.user-profile-bio-header {
-    font-size: 2rem;
-    font-weight: bold;
-}
-
 .user-profile-bio-header-container {
     display: flex;
     gap: 2px;

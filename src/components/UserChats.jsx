@@ -6,7 +6,7 @@ import ChatWindow from './ChatWindow';
 
 import './UserChats.css'
 
-export default function UserChats({ updateUser, chats, isUser=false, loggedInUserId }) {
+export default function UserChats({ updateUser, chats, isUser = false, loggedInUserId, chatsLabel = 'Chats' }) {
 
     const [chatId, setChatId] = useState(null);
     const [isHover, setIsHover] = useState(false);
@@ -26,7 +26,7 @@ export default function UserChats({ updateUser, chats, isUser=false, loggedInUse
     return (
         <div className='chats-container user-profile-chats-container'>
             <div className="user-profile-chats-header-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                <header className="user-profile-chats-header">Chats</header>
+                <header className="profile-page-section-label">{chatsLabel}</header>
                 <CreateChat 
                     updateUser={updateUser} 
                     isUser={isUser} 
@@ -95,4 +95,5 @@ UserChats.propTypes = {
     chats: PropTypes.array,
     isUser: PropTypes.bool,
     loggedInUserId: PropTypes.string,
+    chatsLabel: PropTypes.string,
 };

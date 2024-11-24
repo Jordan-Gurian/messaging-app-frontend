@@ -8,7 +8,7 @@
     max-width: 300px; /* Set a maximum width for the container */
 }
 
-.user-profile-img-container > .edit-button {
+.user-profile-img-container > .edit-button-container {
     position: absolute;
     right: 18px;
     bottom: 24px;

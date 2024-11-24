@@ -4,13 +4,9 @@
     align-items: flex-start;
 }
 
-.user-profile-chats-header {
-    font-size: 2rem;
-    font-weight: bold;
-}
-
 .chat-preview-container {
     display: flex;
+    max-width: 95%;
     flex-direction: column;
     gap: calc(var(--default-gap) / 5);
 }

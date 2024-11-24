@@ -3,8 +3,9 @@ import { useParams } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import PropTypes from 'prop-types';
 import { useAuth } from './../hooks/AuthContext'
-import IconImage from './../components/IconImage';
-import EditIcon from './../assets/edit.png';
+import IconImage from './IconImage';
+import EditIcon from '../assets/edit.png'
+import EditButton from './EditButton';
 
 import './UserProfileBio.css';
 
@@ -73,20 +74,9 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
     return (
         <div className='user-profile-bio-container'>
             <div className="user-profile-bio-header-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                <header className="user-profile-bio-header">About Me</header>
-                {isUser && isAuthenticated && isHover && !isActiveEdit && (
-                <form id="form" onSubmit={(event) => changeEditStatus(event)}>
-                    <textarea 
-                        id="bio"
-                        rows="4"
-                        cols="50"
-                        placeholder="Enter your bio here..."
-                        hidden
-                    />
-                    <button className="edit-button edit-bio" type="submit">
-                        <IconImage className="icon-image" icon={EditIcon} width="28px" />
-                    </button>
-                </form>
+                <header className="profile-page-section-label">About Me</header>
+                {!isActiveEdit && isHover && (
+                    <EditButton handleSubmit={(event) => changeEditStatus(event)} width={"28px"}/>
                 )}
             </div>
             { !isActiveEdit && (
