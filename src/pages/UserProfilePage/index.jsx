@@ -6,11 +6,8 @@ import UserFollowBlock from './../../components/UserFollowBlock';
 import UserChats from './../../components/UserChats';
 import FollowButton from './../../components/FollowButton';
 import { jwtDecode } from 'jwt-decode';
-import { createS3Client, getUserPresignedUrl } from './../../utils/s3Utils';
 import { useAuth } from './../../hooks/AuthContext';
 import EditUserProfileImage from './EditUserProfileImage'
-import DefaultProfilePic from './../../assets/profile-default.png';
-
 
 import './index.css';
 
@@ -22,9 +19,9 @@ export default function UserProfilePage() {
     const { username } = useParams();
     const [user, setUser] = useState({});
     const [chats, setChats] = useState({});
-    const [presignedUrl, setPresignedUrl] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
 
+    
     const token = localStorage.token;
     let decoded;
     let isUser;
@@ -42,18 +39,8 @@ export default function UserProfilePage() {
     async function getUserData() {
         try {
             const response = await fetch(requestURL);
-            const user = await response.json();
-            setUser(user);
-            setChats(user.chats);
-        } catch (error) {
-            return { error }
-        } 
-    }
-
-    async function getPresignedUrl() {
-        try {
-            const s3 = createS3Client();
-            setPresignedUrl(await getUserPresignedUrl(s3, user.profile_url));
+            const currentUser = await response.json();
+            return currentUser;
         } catch (error) {
             return { error }
         } 
@@ -66,22 +53,13 @@ export default function UserProfilePage() {
         }
     }, [resetUser]);
 
-
-    useEffect(() => {
-        if (user.profile_url) {
-            getPresignedUrl();
-        } else {
-            setPresignedUrl(DefaultProfilePic);
-        }
-    }, [user])
-
-    if (Object.keys(user).length > 0 && presignedUrl) {
+    if (Object.keys(user).length > 0) {
         return (
             <main className="profile-page-container">
                 <div className="profile-page-left-container">
                     <UserProfileImage 
-                        presignedUrl={presignedUrl} 
-                        isUser={isUser} 
+                        profileUrl={user.profile_url} 
+                        allowEdit={isUser} 
                         modalSetter={setModalOpen} 
                         height="300px" 
                         width="300px"
