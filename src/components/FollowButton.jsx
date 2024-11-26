@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from './../hooks/AuthContext'
+import { useLoggedInUser } from './../hooks/useLoggedInUser';
 
 import './FollowButton.css'
 
@@ -12,20 +13,17 @@ export default function FollowButton({ updateUser, isUser, followedBy }) {
     const navigate = useNavigate();
     const userToFollow = useParams();
     const usernameToFollow = userToFollow.username;
+    const loggedInUser = useLoggedInUser();
 
-    let decoded;
-    let username;
     let isFollow = true; // show "Follow" for unauthenticated users
 
-    if (isAuthenticated) {
-        decoded = jwtDecode(token);
-        username = decoded.user.username;
-        isFollow = !followedBy.some(user => user.username === username);
+    if (isAuthenticated && loggedInUser) {
+        isFollow = !followedBy.some(user => user.username === loggedInUser.username);
     }
      
     async function followUser() { 
         const apiUrl = import.meta.env.VITE_API_URL
-        const requestURL = `${apiUrl}/users/${username}/follow`
+        const requestURL = `${apiUrl}/users/${loggedInUser.id}/follow`
 
         const body = {
             usernameToFollow: usernameToFollow,

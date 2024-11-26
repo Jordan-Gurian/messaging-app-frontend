@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { useLoggedInUser } from './../../hooks/useLoggedInUser';
 import UserProfileImage from './../../components/UserProfileImage';
 import UserProfileBio from './../../components/UserProfileBio';
 import UserFollowBlock from './../../components/UserFollowBlock';
 import UserPosts from './../../components/UserPosts';
 import UserChats from './../../components/UserChats';
 import FollowButton from './../../components/FollowButton';
-import { jwtDecode } from 'jwt-decode';
 import { useAuth } from './../../hooks/AuthContext';
 import EditUserProfileImage from './EditUserProfileImage'
 
@@ -21,15 +21,12 @@ export default function UserProfilePage() {
     const [user, setUser] = useState({});
     const [chats, setChats] = useState({});
     const [modalOpen, setModalOpen] = useState(false);
+    const loggedInUser = useLoggedInUser();
 
-    
-    const token = localStorage.token;
-    let decoded;
     let isUser;
 
     if (isAuthenticated) {
-        decoded = jwtDecode(token);
-        isUser = decoded.user.username === username;
+        isUser = loggedInUser.username === username;
     } else {
         isUser = false;
     }
@@ -85,7 +82,6 @@ export default function UserProfilePage() {
                         isUser={isUser} 
                     />
                     <UserPosts
-                        user={user}
                         posts={user.posts}
                         postsLabel={'Posts'}
                     
@@ -106,7 +102,7 @@ export default function UserProfilePage() {
                         updateUser={setResetUser} 
                         chats={chats} 
                         isUser={isUser} 
-                        loggedInUserId={decoded.user.id}
+                        loggedInUserId={loggedInUser.id}
                     />
                     )}
                 </div>
