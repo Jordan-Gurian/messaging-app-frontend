@@ -4,15 +4,16 @@ import PostHeader from './PostHeader';
 import PostContent from './PostContent';
 import LikeButton from './LikeButton';
 import PostMetrics from './PostMetrics';
+import PostCommentBox from './PostCommentBox';
 import { useLoggedInUser } from './../hooks/useLoggedInUser';
 
 
 import './Post.css'
 
-export default function Post({ postId, postAuthor = {} }) {
+export default function Post({ postId }) {
       
     const [post, setPost] = useState({});
-    const [author, setAuthor] = useState(postAuthor);
+    const [author, setAuthor] = useState({});
     const [postUpdate, setPostUpdate] = useState(true);
     const [isActiveEdit, setIsActiveEdit] = useState(false);
     const loggedInUser = useLoggedInUser();
@@ -99,15 +100,13 @@ export default function Post({ postId, postAuthor = {} }) {
     }, [postUpdate])
 
     useEffect(() => {
-        if (!postAuthor && post.authorId) {
-            const fetchAuthor = async () => {
-                if (!postAuthor && post) {
-                    const author = await getAuthor(post.authorId);
-                    setAuthor(author);
-                }
+        const fetchAuthor = async () => {
+            if (post.authorId) {
+                const author = await getAuthor(post.authorId);
+                setAuthor(author);
             }
-            fetchAuthor();
         }
+        fetchAuthor();
     }, [post])
 
     return (
@@ -130,7 +129,8 @@ export default function Post({ postId, postAuthor = {} }) {
                     likes={post.usersThatLiked.length}
                     comments={post.comments.length}
                 />
-                <LikeButton post={post} updateLikes={setPostUpdate}/>
+                <LikeButton objToLike={post} updateLikes={setPostUpdate}/>
+                <PostCommentBox post={post}/>
             </div>
         ) : (
             <div>

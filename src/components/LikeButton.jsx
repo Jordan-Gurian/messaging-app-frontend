@@ -1,29 +1,42 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
-import { useAuth } from './../hooks/AuthContext'
+import { useLoggedInUser } from './../hooks/useLoggedInUser';
+import LikeIconDark from './../assets/heart.png';
+import LikeIconColor from './../assets/heartColor.png'
+import IconImage from './IconImage';
 
-export default function LikeButton({ post, updateLikes }) {
+import './LikeButton.css'
+
+export default function LikeButton({ objToLike, updateLikes }) {
     
-    const [username, setUsername] = useState('');
-    const [postIsLiked, setPostIsLiked] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
     const token = localStorage.token;
-    const { isAuthenticated } = useAuth();
+    const loggedInUser = useLoggedInUser();
     const navigate = useNavigate();
 
-    async function likePost() { 
+    async function likeObjToLike() { 
         const apiUrl = import.meta.env.VITE_API_URL
-        const requestURL = `${apiUrl}/posts/${post.id}`
+
+        let requestIdentifier;
+        
+        if (objToLike.postId) {
+            requestIdentifier = 'comments';
+        } else {
+            requestIdentifier = 'posts';
+        }
+
+        const requestURL = `${apiUrl}/${requestIdentifier}/${objToLike.id}`;
+
         let body;
 
-        if (postIsLiked) {
+        if (isLiked) {
             body = {
-                usersThatLikedToRemove: username,
+                usersThatLikedToRemove: loggedInUser.username,
             };
         } else {
             body = {
-                usersThatLikedToAdd: username,
+                usersThatLikedToAdd: loggedInUser.username,
             };
         }
     
@@ -48,35 +61,29 @@ export default function LikeButton({ post, updateLikes }) {
                 navigate('/login', { state: { successMessage: 'You have been logged out' } });
             }
             updateLikes(true);
-            setPostIsLiked(!postIsLiked);
+            setIsLiked(!isLiked);
         } catch (error) {
             return { error }        
         }  
     }
 
     useEffect(() => {
-        if (isAuthenticated) {
-            const decoded = jwtDecode(token);
-            const username = decoded.user.username;
-            setUsername(username);
+        if (loggedInUser) {
+            setIsLiked(objToLike.usersThatLiked.some((user) => user.username === loggedInUser.username))
         }
-    }, [])
+    }, [loggedInUser])
 
-    useEffect(() => {
-        setPostIsLiked(post.usersThatLiked.some((user) => user.username === username))
-    }, [username])
-
-    const buttonText = postIsLiked ? 'Unlike' : 'Like';
+    const likeIcon = isLiked ? LikeIconColor : LikeIconDark;
     
     return (
-        <button className="post like-button submit-button" onClick={likePost}>
-            {buttonText}
+        <button className="like-button" onClick={likeObjToLike}>
+            <IconImage icon={likeIcon} height='18px'/>
         </button>
     )
 }
  
 
 LikeButton.propTypes = {
-    post: PropTypes.object.isRequired,
+    objToLike: PropTypes.object.isRequired,
     updateLikes: PropTypes.func.isRequired,
 }

@@ -1,0 +1,9 @@
+.comment-author {
+    font-weight: bold;
+    color: rgb(18, 224, 145);
+}
+
+.comment-bottom {
+    display: flex;
+    gap: var(--default-gap);
+}

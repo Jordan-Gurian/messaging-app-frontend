@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Post from './Post';
 
-export default function UserPosts({ user, posts, postsLabel = 'Posts' }) {
+export default function UserPosts({ posts, postsLabel = 'Posts' }) {
 
     return (
         <div className='posts-section-container'>
@@ -12,7 +12,6 @@ export default function UserPosts({ user, posts, postsLabel = 'Posts' }) {
                         <Post 
                             key={post.id}
                             postId={post.id}
-                            postAuthor={user}
                         />
                     )
                 })}
