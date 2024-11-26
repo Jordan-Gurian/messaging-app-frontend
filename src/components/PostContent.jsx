@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import EditForm from './EditForm';
 import EditButton from './EditButton';
 
-export default function PostMetrics({ onEditFormSubmit, post, closeButtonOnClick, isActiveEdit }) {
+export default function PostContent({ onEditFormSubmit, post, closeButtonOnClick, isActiveEdit }) {
     return (
         (isActiveEdit ? (
             <EditForm
@@ -21,7 +21,7 @@ export default function PostMetrics({ onEditFormSubmit, post, closeButtonOnClick
     );
 }
 
-PostMetrics.propTypes = {
+PostContent.propTypes = {
     onEditFormSubmit: PropTypes.func.isRequired,
     post: PropTypes.object.isRequired,
     closeButtonOnClick: PropTypes.func.isRequired,
