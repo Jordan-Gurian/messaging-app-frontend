@@ -25,7 +25,7 @@ export default function UserProfilePage() {
 
     let isUser;
 
-    if (isAuthenticated) {
+    if (isAuthenticated && loggedInUser) {
         isUser = loggedInUser.username === username;
     } else {
         isUser = false;
@@ -84,7 +84,7 @@ export default function UserProfilePage() {
                     <UserPosts
                         posts={user.posts}
                         postsLabel={'Posts'}
-                    
+                        updateUser={setResetUser}
                     />
                     
                 </div>

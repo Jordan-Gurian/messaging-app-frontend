@@ -10,7 +10,7 @@ import { useLoggedInUser } from './../hooks/useLoggedInUser';
 
 import './Post.css'
 
-export default function Post({ postId }) {
+export default function Post({ postId, updateUser }) {
       
     const [post, setPost] = useState({});
     const [author, setAuthor] = useState({});
@@ -84,6 +84,36 @@ export default function Post({ postId }) {
         }  
     }
 
+    async function deletePost() {
+        
+        const apiUrl = import.meta.env.VITE_API_URL
+        const requestURL = `${apiUrl}/posts/${postId}`
+        
+        const token = localStorage.token;
+    
+        const headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        };
+    
+        const requestOptions = {
+            method: "DELETE",
+            headers: headers,
+        }
+
+        try {
+            if (loggedInUser.username !== author.username) {
+                return new Error(`Cannot change another user's profile`);
+            }
+            const response = await fetch(requestURL, requestOptions);
+            await response.json();
+            updateUser(true);
+        } catch (error) {
+            console.log(error)
+            return { error }        
+        }  
+    }
+
     function changeEditStatus() {
         setIsActiveEdit(!isActiveEdit);
     }
@@ -115,7 +145,8 @@ export default function Post({ postId }) {
                 <PostHeader
                     author={author}
                     post={post}
-                    onClick={changeEditStatus}
+                    onClickEdit={changeEditStatus}
+                    onClickDelete={deletePost}
                     loggedInUser={loggedInUser}
                     isActiveEdit={isActiveEdit}
                 />
@@ -125,11 +156,14 @@ export default function Post({ postId }) {
                     closeButtonOnClick={changeEditStatus}
                     isActiveEdit={isActiveEdit}
                 />
-                <PostMetrics
-                    likes={post.usersThatLiked.length}
-                    comments={post.comments.length}
-                />
-                <LikeButton objToLike={post} updateLikes={setPostUpdate}/>
+                <div className="post-bottom">
+                    <LikeButton objToLike={post} updateLikes={setPostUpdate}/>
+                    <PostMetrics
+                        likes={post.usersThatLiked.length}
+                        comments={post.comments.length}
+                    />
+                </div>
+                
                 <PostCommentBox post={post}/>
             </div>
         ) : (
@@ -143,5 +177,5 @@ export default function Post({ postId }) {
 
 Post.propTypes = {
     postId: PropTypes.string.isRequired,
-    postAuthor: PropTypes.object,
+    updateUser: PropTypes.func.isRequired,
 };

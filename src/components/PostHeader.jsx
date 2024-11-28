@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
 import UserProfileImage from './UserProfileImage';
 import EditButton from './EditButton';
+import DeleteIcon from './../assets/delete.png'
 
 import './PostHeader.css'
 
-export default function PostHeader({ author, post, onClick, loggedInUser=null, isActiveEdit=false }) {
+export default function PostHeader({ author, post, onClickEdit, onClickDelete, loggedInUser=null, isActiveEdit=false }) {
     return (
         <div className='post-header'>
             <UserProfileImage
@@ -18,8 +19,12 @@ export default function PostHeader({ author, post, onClick, loggedInUser=null, i
                 <div className='post-header top-line'>
                     <div className='post-header author'>{author.username}</div>
                     {loggedInUser.id === author.id && !isActiveEdit && (
-                        <EditButton onClick={() => onClick()} width='18px'/>
+                        <div className='mod-buttons'>
+                            <EditButton onClick={() => onClickEdit()} width='18px'/>
+                            <EditButton icon={DeleteIcon} onClick={() => onClickDelete()} width='18px'/>
+                        </div>
                     )}
+                    
                 </div>
                 <div className='post-header date subtext'>{post.date}</div>
             </div>
@@ -30,7 +35,8 @@ export default function PostHeader({ author, post, onClick, loggedInUser=null, i
 PostHeader.propTypes = {
     author: PropTypes.object.isRequired,
     post: PropTypes.object.isRequired,
-    onClick: PropTypes.func.isRequired,
+    onClickEdit: PropTypes.func.isRequired,
+    onClickDelete: PropTypes.func.isRequired,
     loggedInUser: PropTypes.object,
     isActiveEdit: PropTypes.bool,
 };

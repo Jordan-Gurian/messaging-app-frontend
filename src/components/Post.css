@@ -2,3 +2,8 @@
     border: 2px solid white;
     padding: 8px;
 }
+
+.post-bottom {
+    display: flex;
+    gap: var(--default-gap);
+}
