@@ -11,16 +11,15 @@
     font-size: 0.9rem;
 }
 
-.chat-preview:hover .delete-chat-button {
-    display: inline-block;
+.chat-preview:hover .hover-toggle {
+    opacity: 1;
 }
 
-.delete-chat-button.submit-button {
-    display: none;
-    background-color: maroon;
-    font-size: 0.7rem;
+.chat-preview:hover .hover-toggle:hover {
+    opacity: 0.5;
 }
 
-.delete-chat-button.submit-button:hover {
-    background-color: rgba(128, 0, 0, 0.575);
+.edit-button.hover-toggle {
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }

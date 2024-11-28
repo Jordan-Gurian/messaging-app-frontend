@@ -5,8 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useAuth } from './../hooks/AuthContext'
 import UserToAdd from './UserToAdd';
 import EditButton from './EditButton';
-import IconImage from './../components/IconImage';
-import EditIcon from './../assets/edit.png';
+import DeleteIcon from './../assets/delete.png'
 
 import './CreateChat.css';
 
@@ -169,9 +168,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
                     <button className="submit-button" type="submit">
                         Create Chat
                     </button>
-                    <button className="close-button" type="button" onClick={() => { setUsersToAdd([usersToAdd[0]]); setIsCreatingChat(false)}}>
-                        X
-                    </button>
+                    <EditButton icon={DeleteIcon} onClick={() => { setUsersToAdd([usersToAdd[0]]); setIsCreatingChat(false)}} width='28px'/>
                 </div>
             </form> 
         )}

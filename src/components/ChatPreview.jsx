@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import ChatUsernames from './ChatUsernames';
+import EditButton from './EditButton';
+import DeleteIcon from './../assets/delete.png'
+
 
 import './ChatPreview.css';
 
@@ -44,9 +47,7 @@ export default function ChatPreview({ chat, onClickChatId, updateUser }) {
                 <div className='chat-preview-name' onClick={handleChatClick}> 
                     <ChatUsernames chat={chat}/>
                 </div>
-                <button className="delete-chat-button submit-button" onClick={deleteChat}>
-                    Delete
-                </button>
+                <EditButton icon={DeleteIcon} onClick={deleteChat} width='18px' hoverToggle={true}/>
             </div>
         )
     } else {

@@ -5,7 +5,7 @@ import IconImage from './../components/IconImage';
 import EditIcon from './../assets/edit.png';
 import { useLoggedInUser } from './../hooks/useLoggedInUser';
 
-export default function EditButton({ type = 'button', onClick, icon = EditIcon, width='auto' }) {
+export default function EditButton({ type = 'button', onClick, icon = EditIcon, width='auto', hoverToggle=false, isHover }) {
     
     const usernameObj = useParams()
     const username = usernameObj.username;
@@ -22,11 +22,11 @@ export default function EditButton({ type = 'button', onClick, icon = EditIcon, 
     return (
         isUser && isAuthenticated && (
             <button
-                className="edit-button"
+                className={hoverToggle ? "edit-button hover-toggle" : "edit-button"}
                 type={type}
                 onClick={type === 'button' ? onClick : null}
             >
-                <IconImage className="icon-image" icon={icon} width={width} />
+                <IconImage icon={icon} width={width} />
             </button>
         )
     )
@@ -37,4 +37,5 @@ EditButton.propTypes = {
     onClick: PropTypes.func,
     icon: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     width: PropTypes.string,
+    hoverToggle: PropTypes.bool,
 };

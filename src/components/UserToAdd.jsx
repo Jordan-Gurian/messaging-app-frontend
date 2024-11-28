@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import EditButton from './EditButton';
+import DeleteIcon from './../assets/delete.png'
 
 import './UserToAdd.css';
 
@@ -12,7 +14,7 @@ export default function UserToAdd({ username, usersToAdd, setUsersToAdd }) {
     return (
        <div className="user-to-add-container">
             <div className="user-to-add-username">{username}</div>
-            <button className="close-button" onClick={removeUserFromAddList}>X</button>
+            <EditButton icon={DeleteIcon} onClick={removeUserFromAddList} width='18px'/>
        </div>
     )
 } 

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 export default function IconImage({icon, height="auto", width="auto"}) {
     return (
         <img
+            className="icon-image"
             src={icon}
             height={height}
             width={width}

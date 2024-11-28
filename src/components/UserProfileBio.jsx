@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { useAuth } from './../hooks/AuthContext'
 import EditForm from './EditForm';
 import EditButton from './EditButton';
+import DeleteIcon from './../assets/delete.png'
 
 import './UserProfileBio.css';
 
@@ -89,9 +90,7 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
                     textAreaStyle={{height: "4em"}}
                 >
                     <EditButton type='submit' width='28px'/>
-                    <button className="close-button" onClick={() => changeEditStatus()}>
-                        X
-                    </button>
+                    <EditButton icon={DeleteIcon} onClick={() => changeEditStatus()} width='28px'/>
                 </EditForm>
             )}
         </div>

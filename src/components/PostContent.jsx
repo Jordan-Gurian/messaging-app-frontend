@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import EditForm from './EditForm';
 import EditButton from './EditButton';
+import DeleteIcon from './../assets/delete.png'
 
 export default function PostContent({ onEditFormSubmit, post, closeButtonOnClick, isActiveEdit }) {
     return (
@@ -8,12 +9,10 @@ export default function PostContent({ onEditFormSubmit, post, closeButtonOnClick
             <EditForm
                 onSubmit={onEditFormSubmit}
                 content={post.content}
-                textAreaStyle={{height: "4em"}}
+                textAreaStyle={{height: "4em", maxLength: 500}}
             >
                 <EditButton type='submit' width='28px'/>
-                <button className="close-button" onClick={() => closeButtonOnClick()}>
-                    X
-                </button>
+                <EditButton icon={DeleteIcon} onClick={() => closeButtonOnClick()} width='28px'/>
             </EditForm>
         ) : (
             <div className='post content'>{post.content}</div>
