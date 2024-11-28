@@ -1,0 +1,5 @@
+.comment-bottom {
+    display: flex;
+    gap: var(--default-gap);
+    align-items: center;
+}

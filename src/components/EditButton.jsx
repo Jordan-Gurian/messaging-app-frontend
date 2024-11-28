@@ -1,26 +1,10 @@
-import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useAuth } from './../hooks/AuthContext'
 import IconImage from './../components/IconImage';
 import EditIcon from './../assets/edit.png';
-import { useLoggedInUser } from './../hooks/useLoggedInUser';
 
-export default function EditButton({ type = 'button', onClick, icon = EditIcon, width='auto', hoverToggle=false, isHover }) {
-    
-    const usernameObj = useParams()
-    const username = usernameObj.username;
-    const loggedInUser = useLoggedInUser();
-
-    let isUser = false;
-
-    if (loggedInUser) {
-        isUser = username === loggedInUser.username;
-    }
-
-    const { isAuthenticated } = useAuth();
-
+export default function EditButton({ type = 'button', onClick, icon = EditIcon, width='auto', hoverToggle=false }) {
     return (
-        isUser && isAuthenticated && (
+        (
             <button
                 className={hoverToggle ? "edit-button hover-toggle" : "edit-button"}
                 type={type}

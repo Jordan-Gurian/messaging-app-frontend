@@ -1,7 +1,11 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import LikeButton from './LikeButton';
+import EditButton from './EditButton';
+import DeleteIcon from '../assets/delete.png';
 import { useLoggedInUser } from './../hooks/useLoggedInUser';
+import CommentContent from './CommentContent';
+import CommentBottom from './CommentBottom';
 import PostMetrics from './PostMetrics';
 
 import './Comment.css';
@@ -11,6 +15,7 @@ export default function Comment({ commentId }) {
     const [comment, setComment] = useState({});
     const [author, setAuthor] = useState({});
     const [commentUpdate, setCommentUpdate] = useState(true);
+    const [isActiveEdit, setIsActiveEdit] = useState(false);
     const loggedInUser = useLoggedInUser();
 
     async function getComment() {
@@ -41,6 +46,78 @@ export default function Comment({ commentId }) {
         }  
     }
 
+    async function updateComment(newCommentContent) {
+        
+        const apiUrl = import.meta.env.VITE_API_URL
+        const requestURL = `${apiUrl}/comments/${commentId}`
+        
+        const token = localStorage.token;
+
+        const body = {
+            content: newCommentContent,
+        };
+    
+        const bodyString = JSON.stringify(body);
+    
+        const headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        };
+    
+        const requestOptions = {
+            body: bodyString,
+            method: "PUT",
+            headers: headers,
+        }
+
+        try {
+            if (loggedInUser.username !== author.username) {
+                return new Error(`Cannot change another user's profile`);
+            }
+            const response = await fetch(requestURL, requestOptions);
+            await response.json();
+            setIsActiveEdit(false);
+            setCommentUpdate(true);
+        } catch (error) {
+            console.log(error)
+            return { error }        
+        }  
+    }
+
+    async function deleteComment() {
+        
+        const apiUrl = import.meta.env.VITE_API_URL
+        const requestURL = `${apiUrl}/comments/${commentId}/delete`
+        
+        const token = localStorage.token;
+    
+        const headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        };
+    
+        const requestOptions = {
+            method: "PUT",
+            headers: headers,
+        }
+
+        try {
+            if (loggedInUser.username !== author.username) {
+                return new Error(`Cannot change another user's profile`);
+            }
+            const response = await fetch(requestURL, requestOptions);
+            await response.json();
+            // updateUser(true);
+        } catch (error) {
+            console.log(error)
+            return { error }        
+        }  
+    }
+
+    function changeEditStatus() {
+        setIsActiveEdit(!isActiveEdit);
+    }
+
     useEffect(() => {
         if (commentUpdate) {
             const fetchComment = async () => {
@@ -69,20 +146,20 @@ export default function Comment({ commentId }) {
                     <span className="comment-author">
                         {`${author.username} `}
                     </span>
-                    <span className="comment-content">
-                        {comment.content}
-                    </span>
-                </div>
-                <div className="comment-bottom">
-                    <LikeButton objToLike={comment} updateLikes={setCommentUpdate}/>
-                    <PostMetrics
-                        likes={comment.usersThatLiked.length}
-                        comments={comment.comments.length}
+                    <CommentContent 
+                        onEditFormSubmit={updateComment}
+                        comment={comment}
+                        closeButtonOnClick={changeEditStatus}
+                        isActiveEdit={isActiveEdit}
                     />
-                    <div className="comment-date subtext">
-                        {comment.date}
-                    </div>
                 </div>
+                <CommentBottom 
+                    comment={comment}
+                    isUser={loggedInUser.id === author.id}
+                    setCommentUpdate={setCommentUpdate}
+                    changeEditStatus={changeEditStatus}
+                    deleteComment={deleteComment}
+                />
             </div>
         ) : (
             <div>
