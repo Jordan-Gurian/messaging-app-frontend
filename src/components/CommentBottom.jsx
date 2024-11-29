@@ -2,11 +2,12 @@ import PropTypes from 'prop-types';
 import LikeButton from './LikeButton';
 import EditButton from './EditButton';
 import DeleteIcon from '../assets/delete.png';
+import ReplyIcon from './../assets/reply.png';
 import PostMetrics from './PostMetrics';
 
 import './CommentBottom.css';
 
-export default function CommentBottom({ comment, isUser=false, setCommentUpdate, changeEditStatus, deleteComment }) {
+export default function CommentBottom({ comment, isUser=false, setCommentUpdate, changeEditStatus, changeReplyStatus, deleteComment }) {
 
     return (
         comment.isDeleted ? (
@@ -22,6 +23,7 @@ export default function CommentBottom({ comment, isUser=false, setCommentUpdate,
         ) : (
             <div className="comment-bottom">
                 <LikeButton objToLike={comment} updateLikes={setCommentUpdate}/>
+                <EditButton icon={ReplyIcon} onClick={() => changeReplyStatus()} width='16px'/>
                 <PostMetrics
                     likes={comment.usersThatLiked.length}
                     comments={comment.comments.length}
@@ -45,5 +47,6 @@ CommentBottom.propTypes = {
     isUser: PropTypes.bool,
     setCommentUpdate: PropTypes.func.isRequired,
     changeEditStatus: PropTypes.func.isRequired,
+    changeReplyStatus: PropTypes.func.isRequired,
     deleteComment: PropTypes.func.isRequired,
 };

@@ -19,6 +19,7 @@ export default function UserProfilePage() {
     const { isAuthenticated } = useAuth();
     const { username } = useParams();
     const [user, setUser] = useState({});
+    const [posts, setPosts] = useState({});
     const [chats, setChats] = useState({});
     const [modalOpen, setModalOpen] = useState(false);
     const loggedInUser = useLoggedInUser();
@@ -50,6 +51,7 @@ export default function UserProfilePage() {
                 const currentUser = await getUserData();
                 setUser(currentUser);
                 setChats(currentUser.chats);
+                setPosts(currentUser.posts);
                 setResetUser(false);      
             }
             fetchUser();
@@ -82,7 +84,7 @@ export default function UserProfilePage() {
                         isUser={isUser} 
                     />
                     <UserPosts
-                        posts={user.posts}
+                        posts={posts}
                         postsLabel={'Posts'}
                         updateUser={setResetUser}
                     />

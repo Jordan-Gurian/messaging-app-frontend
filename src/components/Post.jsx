@@ -3,8 +3,13 @@ import { useState, useEffect } from 'react';
 import PostHeader from './PostHeader';
 import PostContent from './PostContent';
 import LikeButton from './LikeButton';
+import EditForm from './EditForm';
+import EditButton from './EditButton';
+import DeleteIcon from './../assets/delete.png';
+import ReplyIcon from './../assets/reply.png' 
 import PostMetrics from './PostMetrics';
 import PostCommentBox from './PostCommentBox';
+import { useAuth } from './../hooks/AuthContext';
 import { useLoggedInUser } from './../hooks/useLoggedInUser';
 
 
@@ -14,9 +19,13 @@ export default function Post({ postId, updateUser }) {
       
     const [post, setPost] = useState({});
     const [author, setAuthor] = useState({});
+    const [isActiveReply, setIsActiveReply] = useState(false);
     const [postUpdate, setPostUpdate] = useState(true);
     const [isActiveEdit, setIsActiveEdit] = useState(false);
+    const { isAuthenticated } = useAuth();
     const loggedInUser = useLoggedInUser();
+
+    const replyPlaceholder = 'Reply to post...';
 
     async function getPost() {
         const apiUrl = import.meta.env.VITE_API_URL
@@ -42,6 +51,43 @@ export default function Post({ postId, updateUser }) {
             return author;
         } catch (error) {
             console.log(error)
+            return { error }        
+        }
+    }
+
+    async function createComment(content) {
+        const token = localStorage.token;
+        const apiUrl = import.meta.env.VITE_API_URL
+        const requestURL = `${apiUrl}/comments/`;
+
+        try {
+            const body = {
+                content: content,
+                authorId: loggedInUser.id,
+                postId: postId,
+            };
+
+            const bodyString = JSON.stringify(body);
+
+            const headers = {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            };
+
+            const requestOptions = {
+                body: bodyString,
+                method: "POST",
+                headers: headers,
+            }
+
+            const response = await fetch(requestURL, requestOptions);
+            if (response.ok) {
+                setIsActiveReply(false);
+                setPostUpdate(true);
+            } else {
+                throw Error("Comment must be between 1 and 250 characters")
+            }
+        } catch (error) {
             return { error }        
         }  
     }
@@ -118,6 +164,10 @@ export default function Post({ postId, updateUser }) {
         setIsActiveEdit(!isActiveEdit);
     }
 
+    function changeReplyStatus() {
+        setIsActiveReply(!isActiveReply);
+    }
+
     useEffect(() => {
         if (postUpdate) {
             const fetchPost = async () => {
@@ -158,13 +208,24 @@ export default function Post({ postId, updateUser }) {
                 />
                 <div className="post-bottom">
                     <LikeButton objToLike={post} updateLikes={setPostUpdate}/>
+                    <EditButton icon={ReplyIcon} onClick={() => changeReplyStatus()} width='16px'/>
                     <PostMetrics
                         likes={post.usersThatLiked.length}
                         comments={post.comments.length}
                     />
                 </div>
+                {isAuthenticated && isActiveReply && (
+                    <EditForm
+                        onSubmit={createComment}
+                        placeholder={replyPlaceholder}
+                        textAreaStyle={{height: "4em"}}
+                    >
+                        <EditButton type='submit' width='16px'/>
+                        <EditButton icon={DeleteIcon} onClick={() => changeReplyStatus()} width='16px'/>
+                    </EditForm>
+                )}
                 
-                <PostCommentBox post={post}/>
+                <PostCommentBox post={post} updateUser={updateUser}/>
             </div>
         ) : (
             <div>
