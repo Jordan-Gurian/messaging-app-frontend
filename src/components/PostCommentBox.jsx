@@ -25,14 +25,12 @@ export default function PostCommentBox({ post }) {
     async function orderComments(item, isPost = true, processedComments = new Set()) {
         let newArr = [];
     
-        // Process the current comment first if it's not the post and hasn't been processed
         if (!isPost && !processedComments.has(item.id)) {
-            item = await getComment(item.id); // Fetch the full comment data
-            newArr.push(item); // Add the current comment
-            processedComments.add(item.id); // Mark it as processed
+            item = await getComment(item.id);
+            newArr.push(item);
+            processedComments.add(item.id);
         }
     
-        // Then process the child comments recursively
         if (item.comments && item.comments.length > 0) {
             for (const nestedComment of item.comments) {
                 const orderedNestedComments = await orderComments(nestedComment, false, processedComments);

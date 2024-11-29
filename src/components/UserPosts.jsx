@@ -90,7 +90,7 @@ export default function UserPosts({ posts, postsLabel = 'Posts', updateUser }) {
         <div className='posts-section-container'>
             <div className="user-posts-header-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <header className='profile-page-section-label'>{postsLabel}</header>
-                {!isActiveEdit && isHover && (
+                {!isActiveEdit && isHover && isUser && isAuthenticated && (
                         <EditButton onClick={() => changeEditStatus()} width={"28px"}/>
                 )}
             </div>
