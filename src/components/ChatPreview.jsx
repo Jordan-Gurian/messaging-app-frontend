@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react'; 
 import { v4 as uuidv4 } from 'uuid';
 import ChatUsernames from './ChatUsernames';
 import EditButton from './EditButton';
@@ -9,8 +10,10 @@ import './ChatPreview.css';
 
 export default function ChatPreview({ chat, onClickChatId, updateUser }) {
 
+    const [chatIsOpen, setChatIsOpen] = useState(false);
+
     function handleChatClick() {
-        onClickChatId(chat.id)
+        setChatIsOpen(!chatIsOpen);
     }
 
     async function deleteChat() {
@@ -40,6 +43,15 @@ export default function ChatPreview({ chat, onClickChatId, updateUser }) {
             return { error }        
         }  
     }
+
+    useEffect(() => {
+        if (chatIsOpen) {
+            onClickChatId(chat.id);
+        } else {
+            onClickChatId(null);
+        }
+    }, [chatIsOpen])
+
     
     if (Object.keys(chat).length > 0) {
         return (
