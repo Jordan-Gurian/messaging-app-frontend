@@ -1,7 +1,16 @@
 .follow-block {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 150px);
-    gap: 10px;
-    grid-auto-rows: minmax(100px, auto);
-    justify-items: center;
+    gap: calc(var(--default-gap));
+    text-align: center;
+}
+
+.follow-user-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.follow-username {
+    text-align: center;
+    overflow-x: hidden;
 }

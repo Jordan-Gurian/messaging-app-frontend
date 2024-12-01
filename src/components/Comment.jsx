@@ -18,6 +18,7 @@ export default function Comment({ commentId, setUpdateBox }) {
     const [isActiveEdit, setIsActiveEdit] = useState(false);
     const { isAuthenticated } = useAuth();
     const loggedInUser = useLoggedInUser();
+    const MAX_INDENT_LEVEL = 8;
 
     const replyPlaceholder = 'Reply to comment...';
 
@@ -186,7 +187,7 @@ export default function Comment({ commentId, setUpdateBox }) {
 
     return (
         Object.keys(comment).length > 0 && Object.keys(author).length > 0 ? (
-            <div key={comment.id} className={loggedInUser.id === author.id ? "comment user-comment" : "comment"} style={{ marginLeft: `${comment.level * 16}px` }}>
+            <div key={comment.id} className={loggedInUser.id === author.id ? "comment user-comment" : "comment"} style={{ marginLeft: `${Math.min(comment.level, MAX_INDENT_LEVEL) * 16}px` }}>
                 <div className="comment-main-text">
                     <span className="comment-author">
                         {`${author.username} `}
