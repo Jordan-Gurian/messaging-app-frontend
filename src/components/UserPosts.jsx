@@ -21,7 +21,7 @@ export default function UserPosts({ posts, postsLabel = 'Posts', updateUser }) {
     const [errorMessage, setErrorMessage] = useState('');
 
     let isUser;
-    const placeholder = `Tell your followers what's on your minds...`;
+    const placeholder = `Tell your followers what's on your mind...`;
     
     if (loggedInUser) {
         isUser = loggedInUser.username === username;

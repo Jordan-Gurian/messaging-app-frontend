@@ -32,10 +32,10 @@ export default function UserProfilePage() {
         isUser = false;
     }
     
-    const apiUrl = import.meta.env.VITE_API_URL;
-    const requestURL = `${apiUrl}/users/${username}`;
-
     async function getUserData() {
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const requestURL = `${apiUrl}/users/${username}`;
+
         try {
             const response = await fetch(requestURL);
             const currentUser = await response.json();
