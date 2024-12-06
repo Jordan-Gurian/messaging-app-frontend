@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useLoggedInUser } from './../../hooks/useLoggedInUser';
 import { useAuth } from './../../hooks/AuthContext';
+import DefaultSpinner from './../../components/DefaultSpinner';
 import UserPosts from './../../components/UserPosts';
 
 import './index.css'
 
 export default function HomePage() {
 
-    const [resetUser, setResetUser] = useState(true);
     const { isAuthenticated, checkAuth } = useAuth();
     const [isUserLoading, setIsUserLoading] = useState(true);
+    const [isPostsLoading, setIsPostsLoading] = useState(true);
     const [currentUser, setCurrentUser] = useState({});
     const [posts, setPosts] = useState([]);
     const loggedInUser = useLoggedInUser();
@@ -46,28 +47,38 @@ export default function HomePage() {
     useEffect(() => {
         if (isAuthenticated && loggedInUser) {
             const fetchUser = async () => {
-                setIsUserLoading(true);
-                const user = await getUser();
-                setCurrentUser(user);
-                setIsUserLoading(false);
-                setResetUser(false);
+                try {
+                    setIsUserLoading(true);
+                    const user = await getUser();
+                    setCurrentUser(user);
+                    setIsUserLoading(false);
+                } catch (error) {
+                    console.error('Error fetching user:', error);
+                }
             }
             fetchUser();
         }
-    },[resetUser, isAuthenticated])
+    },[isAuthenticated])
 
     useEffect(() => {
-        if (isUserLoading || !currentUser || !currentUser.following || currentUser.following.length === 0) {
-            return;
-        }
-    
         const fetchPosts = async () => {
-            const homePagePosts = await getHomePagePosts();
-            setPosts(homePagePosts);
+            if (!isUserLoading && currentUser.following && currentUser.following.length > 0) {
+                setIsPostsLoading(true);
+                try {
+                    const homePagePosts = await getHomePagePosts();
+                    setPosts(homePagePosts);
+                    setIsPostsLoading(false);
+                } catch (error) {
+                    console.error('Error fetching posts:', error);
+                }
+            // Do not fetch posts if there is no user
+            } else if (!isUserLoading) {
+                setIsPostsLoading(false);
+            }
         };
-    
+
         fetchPosts();
-    }, [currentUser, isUserLoading]);
+    }, [isUserLoading, currentUser]);
 
     const homePageMessage = isAuthenticated ? `Home screen, but you're logged in!` : `Home screen, but you're not logged in :(`
     return (
@@ -77,7 +88,7 @@ export default function HomePage() {
                 <UserPosts
                     posts={posts}
                     postsLabel={'Home Page'}
-                    updateUser={setResetUser}
+                    updateUser={() => setIsUserLoading(true)}
                 />
             )}
         </main>

@@ -9,7 +9,16 @@ nav {
 
 .nav-links {
     display: flex;
-    gap: 8px;
+    gap: calc(var(--default-gap) / 2);
+}
+
+.nav-links-item, .item-hovered {
+    padding: 0px 4px;
+    background-color: var(--main-bg-color);
+}
+
+.item-hovered, .nav-links-item:hover {
+    opacity: 0.5;
 }
 
 .navbar-form {

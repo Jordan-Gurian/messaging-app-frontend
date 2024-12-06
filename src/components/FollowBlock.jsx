@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import UserProfileImage from './UserProfileImage';
+
 import './FollowBlock.css'
 
 export default function FollowBlock({ followUsers }) {

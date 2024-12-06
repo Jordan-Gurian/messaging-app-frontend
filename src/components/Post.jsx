@@ -12,7 +12,6 @@ import PostCommentBox from './PostCommentBox';
 import { useAuth } from './../hooks/AuthContext';
 import { useLoggedInUser } from './../hooks/useLoggedInUser';
 
-
 import './Post.css'
 
 export default function Post({ postId, updateUser }) {
@@ -190,7 +189,7 @@ export default function Post({ postId, updateUser }) {
     }, [post])
 
     return (
-        Object.keys(post).length > 0 && Object.keys(author).length > 0 ? (
+        Object.keys(post).length > 0 && Object.keys(author).length > 0 && (
             <div className='post-container'>
                 <PostHeader
                     author={author}
@@ -227,10 +226,6 @@ export default function Post({ postId, updateUser }) {
                 
                 <PostCommentBox post={post} updateUser={updateUser}/>
             </div>
-        ) : (
-            <div>
-                Loading...
-            </div> 
         )
     );
 

@@ -186,7 +186,7 @@ export default function Comment({ commentId, setUpdateBox }) {
     }, [comment])
 
     return (
-        Object.keys(comment).length > 0 && Object.keys(author).length > 0 ? (
+        Object.keys(comment).length > 0 && Object.keys(author).length > 0 && (
             <div key={comment.id} className={loggedInUser.id === author.id ? "comment user-comment" : "comment"} style={{ marginLeft: `${Math.min(comment.level, MAX_INDENT_LEVEL) * 16}px` }}>
                 <div className="comment-main-text">
                     <span className="comment-author">
@@ -218,11 +218,7 @@ export default function Comment({ commentId, setUpdateBox }) {
                 </EditForm>
             )}
             </div>
-        ) : (
-            <div>
-                Loading...
-            </div> 
-        )
+        ) 
     )
 }
 

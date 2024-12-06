@@ -7,16 +7,22 @@ import RegisterPage from './pages/Register/index';
 import UserProfilePage from './pages/UserProfilePage/index';
 import AllUsersPage from './pages/AllUsersPage/index';
 
+import './index.css';
 
+// if you want to show the loader when React loads data again
+const hideLoader = () => {
+    const loader = document.querySelector('.loader');
+    loader.classList.add('loader--hide');
+};
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: <App hideLoader={hideLoader}/>,
         errorElement: <ErrorPage />,
         children: [
             {
                 index: true,
-                element: <HomePage />,
+                element: <HomePage/>,
             },
             {
                 path: '/login',

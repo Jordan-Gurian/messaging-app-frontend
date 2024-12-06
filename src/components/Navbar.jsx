@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import SearchIcon from './../assets/search.png';
@@ -9,12 +9,15 @@ import './Navbar.css';
 export default function Navbar() {
 
     const { isAuthenticated, checkAuth } = useAuth();
+    const [hoveredItem, setHoveredItem] = useState(null);
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         checkAuth();
     },[])
 
+    const handleMouseEnter = (item) => setHoveredItem(item);
+    const handleMouseLeave = () => setHoveredItem(null);
 
     function logout() {
         localStorage.removeItem("token");
@@ -72,15 +75,45 @@ export default function Navbar() {
                     { isAuthenticated ? (
 
                     <div className="nav-links">
-                        <Link to="/">Home</Link>
-                        <Link to={`/user/${username}`} reloadDocument>Profile</Link>
-                        <Link to='/' onClick={logout}>Log out</Link>
+                        <div
+                            className={`nav-links-item ${hoveredItem === 'home' ? 'item-hovered' : ''}`}
+                            onMouseEnter={() => handleMouseEnter('home')}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            <Link to="/" reloadDocument>Home</Link>
+                        </div>
+                        <div
+                            className={`nav-links-item ${hoveredItem === 'profile' ? 'item-hovered' : ''}`}
+                            onMouseEnter={() => handleMouseEnter('profile')}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            <Link to={`/user/${username}`} reloadDocument>Profile</Link>
+                        </div>
+                        <div
+                            className={`nav-links-item ${hoveredItem === 'logout' ? 'item-hovered' : ''}`}
+                            onMouseEnter={() => handleMouseEnter('logout')}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            <Link to="/" onClick={logout}>Logout</Link>
+                        </div>
                     </div>
                     
                     ) : (
                         <div className="nav-links">
-                            <Link to="/login">Login</Link>
-                            <Link to="/register">Register</Link>
+                            <div
+                                className={`nav-links-item ${hoveredItem === 'login' ? 'item-hovered' : ''}`}
+                                onMouseEnter={() => handleMouseEnter('login')}
+                                onMouseLeave={handleMouseLeave}
+                            >
+                                <Link to="/login">Login</Link>
+                            </div>
+                            <div
+                                className={`nav-links-item ${hoveredItem === 'register' ? 'item-hovered' : ''}`}
+                                onMouseEnter={() => handleMouseEnter('register')}
+                                onMouseLeave={handleMouseLeave}
+                            >
+                                <Link to="/register">Register</Link>
+                            </div>
                         </div>
                     )} 
                 </nav>
