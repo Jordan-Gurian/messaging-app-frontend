@@ -31,15 +31,15 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
 
     async function updateUserProfileBio(newBio) {
 
-        const apiUrl = import.meta.env.VITE_API_URL
-        const requestURL = `${apiUrl}/users/${username}`
-
         const token = localStorage.token;
         const decoded = jwtDecode(token);
         
         if (decoded.user.username !== username) {
             return new Error(`Cannot change another user's profile`);
         }
+
+        const apiUrl = import.meta.env.VITE_API_URL
+        const requestURL = `${apiUrl}/users/${decoded.user.id}`
 
         const body = {
             profile_bio: newBio,

@@ -19,7 +19,7 @@ export default function EditUserProfileImage({ updateAvatar, closeModal }) {
             const s3 = createS3Client();
             await deleteS3Objects(s3, null, username)
             await uploadToS3(s3, file, key);
-            const user = await updateUserProfileUrl(key, username);
+            await updateUserProfileUrl(key);
             updateAvatar(true);
         } catch (error) {
             console.log(error)
@@ -27,10 +27,7 @@ export default function EditUserProfileImage({ updateAvatar, closeModal }) {
         }
     }
 
-    async function updateUserProfileUrl(key, username) {
-
-        const apiUrl = import.meta.env.VITE_API_URL
-        const requestURL = `${apiUrl}/users/${username}`
+    async function updateUserProfileUrl(key) {
 
         const token = localStorage.token;
         const decoded = jwtDecode(token);
@@ -39,6 +36,9 @@ export default function EditUserProfileImage({ updateAvatar, closeModal }) {
         if (decoded.user.username !== username) {
             return new Error(`Cannot change another user's profile`);
         }
+
+        const apiUrl = import.meta.env.VITE_API_URL
+        const requestURL = `${apiUrl}/users/${decoded.user.id}`
 
         const body = {
             profile_url: key,
