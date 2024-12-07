@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLoggedInUser } from './../../hooks/useLoggedInUser';
 import { useAuth } from './../../hooks/AuthContext';
-import DefaultSpinner from './../../components/DefaultSpinner';
 import UserPosts from './../../components/UserPosts';
 
 import './index.css'
@@ -79,6 +78,17 @@ export default function HomePage() {
 
         fetchPosts();
     }, [isUserLoading, currentUser]);
+
+    const hideLoader = () => {
+        const loader = document.querySelectorAll('.loader');
+        Array.from(loader).map((node) => node.classList.add("loader--hide"))
+    };
+    
+    useEffect(() => {
+        setTimeout(() => {
+          hideLoader()
+        }, 2500);
+      }, []);
 
     const homePageMessage = isAuthenticated ? `Home screen, but you're logged in!` : `Home screen, but you're not logged in :(`
     return (

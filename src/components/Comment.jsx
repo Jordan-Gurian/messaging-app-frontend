@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLoggedInUser } from './../hooks/useLoggedInUser';
 import CommentContent from './CommentContent';
 import CommentBottom from './CommentBottom';
@@ -9,7 +9,7 @@ import DeleteIcon from './../assets/delete.png';
 import { useAuth } from './../hooks/AuthContext';
 import './Comment.css';
 
-export default function Comment({ commentId, setUpdateBox }) {
+export default function Comment({ commentId, setUpdateBox, updateLoadCount }) {
 
     const [comment, setComment] = useState({});
     const [author, setAuthor] = useState({});
@@ -19,6 +19,7 @@ export default function Comment({ commentId, setUpdateBox }) {
     const { isAuthenticated } = useAuth();
     const loggedInUser = useLoggedInUser();
     const MAX_INDENT_LEVEL = 8;
+    const isLoaded = useRef(false);
 
     const replyPlaceholder = 'Reply to comment...';
 
@@ -169,6 +170,10 @@ export default function Comment({ commentId, setUpdateBox }) {
             const fetchComment = async () => {
                 const currentComment = await getComment();
                 setComment(currentComment);
+                if (updateLoadCount && !isLoaded.current) {
+                    updateLoadCount();
+                    isLoaded.current = true;
+                }
             }
             fetchComment();
             setCommentUpdate(false);
@@ -225,4 +230,5 @@ export default function Comment({ commentId, setUpdateBox }) {
 Comment.propTypes = {
     commentId: PropTypes.string.isRequired,
     setUpdateBox: PropTypes.func.isRequired,
+    updateLoadCount: PropTypes.func,
 };

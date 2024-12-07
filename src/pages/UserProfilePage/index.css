@@ -2,7 +2,7 @@
 .profile-page-left-container, 
 .profile-page-right-container {
     display: flex;
-    gap: 10px;
+    gap: calc(var(--default-gap) * 5);
 }
 
 .profile-page-container {
@@ -12,6 +12,7 @@
 
 .profile-page-left-container, .profile-page-right-container {
     flex-direction: column;
+    gap: var(--default-gap);
 }
 
 .profile-page-left-container {
@@ -19,6 +20,6 @@
 }
 
 .profile-page-right-container {
-    width: auto;
+    width: 40%;
 }
 

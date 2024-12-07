@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useAuth } from './../hooks/AuthContext'
 import { createS3Client, getUserPresignedUrl } from './../utils/s3Utils';
@@ -7,11 +7,13 @@ import EditButton from './EditButton';
 
 import './UserProfileImage.css'
 
-export default function UserProfileImage({ profileUrl, allowEdit, height='auto', width='auto', modalSetter }) {
+export default function UserProfileImage({ profileUrl, allowEdit, height='auto', width='auto', modalSetter, updateLoadCount }) {
 
     const [isHover, setIsHover] = useState(false);
     const [presignedUrl, setPresignedUrl] = useState(''); 
     const { isAuthenticated } = useAuth();
+
+    const isLoaded = useRef(false);
 
     const handleMouseEnter = () => {
         setIsHover(true); // Update state on mouse enter
@@ -41,6 +43,10 @@ export default function UserProfileImage({ profileUrl, allowEdit, height='auto',
             fetchPresignedUrl();
         } else {
             setPresignedUrl(DefaultProfilePic);
+        }
+        if (updateLoadCount && !isLoaded.current) {
+            updateLoadCount();
+            isLoaded.current = true;
         }
     }, [])
 
@@ -74,4 +80,5 @@ UserProfileImage.propTypes = {
     height: PropTypes.string,
     width: PropTypes.string,
     modalSetter: PropTypes.func,
+    updateLoadCount: PropTypes.func,
 };

@@ -44,6 +44,17 @@ export default function UserProfilePage() {
             return { error }
         } 
     }
+    
+    // const hideLoader = () => {
+    //     const loader = document.querySelectorAll('.loader');
+    //     Array.from(loader).map((node) => node.classList.add("loader--hide"))
+    // };
+    
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //       hideLoader()
+    //     }, 2500);
+    //   }, []);
 
     useEffect(() => {
         if (resetUser) {

@@ -34,8 +34,9 @@
 
 .loader {
   display: flex;
-  align-items: center;
-  position: fixed;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PostHeader from './PostHeader';
 import PostContent from './PostContent';
 import LikeButton from './LikeButton';
@@ -14,7 +14,7 @@ import { useLoggedInUser } from './../hooks/useLoggedInUser';
 
 import './Post.css'
 
-export default function Post({ postId, updateUser }) {
+export default function Post({ postId, updateUser, updateLoadCount }) {
       
     const [post, setPost] = useState({});
     const [author, setAuthor] = useState({});
@@ -23,6 +23,14 @@ export default function Post({ postId, updateUser }) {
     const [isActiveEdit, setIsActiveEdit] = useState(false);
     const { isAuthenticated } = useAuth();
     const loggedInUser = useLoggedInUser();
+
+    const [isCommentBoxLoaded, setIsCommentBoxLoaded] = useState(false);
+
+    function updateCommentBoxLoaded() {
+        updateLoadCount();
+        setIsCommentBoxLoaded(true);
+    }
+
 
     const replyPlaceholder = 'Reply to post...';
 
@@ -224,7 +232,7 @@ export default function Post({ postId, updateUser }) {
                     </EditForm>
                 )}
                 
-                <PostCommentBox post={post} updateUser={updateUser}/>
+                <PostCommentBox post={post} updateUser={updateUser} updateLoadCount={updateCommentBoxLoaded}/>
             </div>
         )
     );
@@ -234,4 +242,5 @@ export default function Post({ postId, updateUser }) {
 Post.propTypes = {
     postId: PropTypes.string.isRequired,
     updateUser: PropTypes.func.isRequired,
+    updateLoadCount: PropTypes.func
 };

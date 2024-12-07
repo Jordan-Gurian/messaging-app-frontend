@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Post from './Post';
@@ -7,6 +8,7 @@ import EditForm from './EditForm';
 import DeleteIcon from './../assets/delete.png'
 import { useLoggedInUser } from '../hooks/useLoggedInUser';
 import { useAuth } from './../hooks/AuthContext'
+import DefaultSpinner from './DefaultSpinner';
 
 import './UserPosts.css';
 
@@ -19,6 +21,13 @@ export default function UserPosts({ posts, postsLabel = 'Posts', updateUser }) {
     const loggedInUser = useLoggedInUser();
     const { isAuthenticated } = useAuth();
     const [errorMessage, setErrorMessage] = useState('');
+    const loadingKey = useRef(uuidv4());
+    const [postsLoadedCount, setPostsLoadedCount] = useState(0);
+    const [isPostsLoaded, setIsPostsLoaded] = useState(false);
+
+    function updatePostsLoadedCount() {
+        setPostsLoadedCount((prevCount) => prevCount + 1);
+    }
 
     let isUser;
     const placeholder = `Tell your followers what's on your mind...`;
@@ -86,6 +95,25 @@ export default function UserPosts({ posts, postsLabel = 'Posts', updateUser }) {
         }  
     }
 
+    const hideLoader = () => {
+        const loader = document.getElementById(loadingKey.current);
+        loader.classList.add("loader--hide");
+    };
+    
+    useEffect(() => {
+        if (postsLoadedCount === posts.length) {
+            setIsPostsLoaded(true);
+        }
+    }, [postsLoadedCount, posts.length]);
+
+    useEffect(() => {
+        if (isPostsLoaded) {
+            setTimeout(() => {
+                hideLoader()
+              }, 1000);
+        }
+      }, [isPostsLoaded]);
+
     return (
         <div className='posts-section-container'>
             <div className="user-posts-header-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -104,6 +132,7 @@ export default function UserPosts({ posts, postsLabel = 'Posts', updateUser }) {
                     <EditButton icon={DeleteIcon} onClick={() => changeEditStatus()} width='28px'/>
                 </EditForm>
             )}
+            
             <div className='posts-content-container'>
                 <span className='error-text'>{errorMessage}</span>
                 {posts.map((post) => {
@@ -112,9 +141,13 @@ export default function UserPosts({ posts, postsLabel = 'Posts', updateUser }) {
                             key={post.id}
                             postId={post.id}
                             updateUser={updateUser}
+                            updateLoadCount={updatePostsLoadedCount}
                         />
                     )
                 })}
+                <div id={loadingKey.current} className="loader">
+                    <DefaultSpinner/>
+                </div>
             </div>
         </div>
     )

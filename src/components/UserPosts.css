@@ -3,3 +3,10 @@
     gap: 2px;
     align-items: center;
 }
+
+.posts-content-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: relative;
+}

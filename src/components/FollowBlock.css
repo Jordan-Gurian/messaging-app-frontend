@@ -1,4 +1,5 @@
 .follow-block {
+    position: relative;
     display: grid;
     gap: calc(var(--default-gap));
     text-align: center;

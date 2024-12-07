@@ -80,7 +80,7 @@ export default function Navbar() {
                             onMouseEnter={() => handleMouseEnter('home')}
                             onMouseLeave={handleMouseLeave}
                         >
-                            <Link to="/" reloadDocument>Home</Link>
+                            <Link to="/">Home</Link>
                         </div>
                         <div
                             className={`nav-links-item ${hoveredItem === 'profile' ? 'item-hovered' : ''}`}
