@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Post from './Post';
 import EditButton from './EditButton';
 import EditForm from './EditForm';
 import DeleteIcon from './../assets/delete.png'
@@ -12,42 +11,32 @@ import DefaultSpinner from './DefaultSpinner';
 
 import './UserPosts.css';
 
-export default function UserPosts({ posts, postsLabel = 'Posts', updateUser }) {
+const Post = lazy(() => import('./Post'));
+
+export default function UserPosts({ posts, postsLabel = 'Posts', updateUser, numPostsPerLoad=5 }) {
 
     const usernameObj = useParams()
     const username = usernameObj.username;
     const [isHover, setIsHover] = useState(false);
     const [isActiveEdit, setIsActiveEdit] = useState(false);
+    const [visiblePosts, setVisiblePosts] = useState(numPostsPerLoad);
+    const [isLoading, setIsLoading] = useState(false);
     const loggedInUser = useLoggedInUser();
     const { isAuthenticated } = useAuth();
     const [errorMessage, setErrorMessage] = useState('');
     const loadingKey = useRef(uuidv4());
-    const [postsLoadedCount, setPostsLoadedCount] = useState(0);
-    const [isPostsLoaded, setIsPostsLoaded] = useState(false);
-
-    function updatePostsLoadedCount() {
-        setPostsLoadedCount((prevCount) => prevCount + 1);
-    }
-
-    let isUser;
-    const placeholder = `Tell your followers what's on your mind...`;
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
     
-    if (loggedInUser) {
-        isUser = loggedInUser.username === username;
-    }
+    const isUser = loggedInUser?.username === username;
+    const placeholder = `Tell your followers what's on your mind...`;
 
     function changeEditStatus() {
         setIsActiveEdit(!isActiveEdit);
         setErrorMessage('');
     }
 
-    const handleMouseEnter = () => {
-        setIsHover(true); // Update state on mouse enter
-    };
-
-    const handleMouseLeave = () => {
-        setIsHover(false); // Update state on mouse leave
-    };
+    const handleMouseEnter = () => setIsHover(true);
+    const handleMouseLeave = () => setIsHover(false);
 
     async function createPost(postContent) {
 
@@ -95,24 +84,36 @@ export default function UserPosts({ posts, postsLabel = 'Posts', updateUser }) {
         }  
     }
 
+    function loadMorePosts() {
+        if (visiblePosts < posts.length) {
+            setIsLoading(true);
+            setTimeout(() => {
+                setVisiblePosts((prev) => Math.min(prev + numPostsPerLoad, posts.length)); // Load 10 more posts
+                setIsLoading(false);
+            }, 500);
+        }
+    };
+
     const hideLoader = () => {
         const loader = document.getElementById(loadingKey.current);
-        loader.classList.add("loader--hide");
+        loader?.classList.add("loader--hide");
     };
+
+    const showLoader = () => {
+        const loader = document.getElementById(loadingKey.current);
+        loader?.classList.remove("loader--hide");
+    }
     
     useEffect(() => {
-        if (postsLoadedCount === posts.length) {
-            setIsPostsLoaded(true);
-        }
-    }, [postsLoadedCount, posts.length]);
-
-    useEffect(() => {
-        if (isPostsLoaded) {
+        if (!isLoading) {
             setTimeout(() => {
                 hideLoader()
+                if (isFirstLoad) setIsFirstLoad(false);
               }, 1000);
+        } else {
+            showLoader();
         }
-      }, [isPostsLoaded]);
+      }, [isLoading]);
 
     return (
         <div className='posts-section-container'>
@@ -135,19 +136,32 @@ export default function UserPosts({ posts, postsLabel = 'Posts', updateUser }) {
             
             <div className='posts-content-container'>
                 <span className='error-text'>{errorMessage}</span>
-                {posts.map((post) => {
-                    return (
+                {posts.slice(0, visiblePosts).map((post) => (
+                    <Suspense key={post.id}>
                         <Post 
-                            key={post.id}
                             postId={post.id}
                             updateUser={updateUser}
-                            updateLoadCount={updatePostsLoadedCount}
                         />
-                    )
-                })}
-                <div id={loadingKey.current} className="loader">
-                    <DefaultSpinner/>
-                </div>
+                    </Suspense>  
+                ))}
+                {visiblePosts < posts.length ? (
+                    <button className='edit-button load-more-button' onClick={loadMorePosts}>
+                        Load more posts...
+                        {!isFirstLoad && (
+                            <div id={loadingKey.current} className="loader">
+                                <DefaultSpinner size={10}/>
+                            </div>
+                        )
+                        }
+                    </button>
+                ) : (
+                    <div className='done-loading-msg'>end of post feed</div>
+                )}
+                {isFirstLoad && (
+                    <div id={loadingKey.current} className="loader">
+                        <DefaultSpinner/>
+                    </div>
+                )}
             </div>
         </div>
     )
@@ -157,4 +171,5 @@ UserPosts.propTypes = {
     posts: PropTypes.array,
     postsLabel: PropTypes.string,
     updateUser: PropTypes.func.isRequired,
+    numPostsPerLoad: PropTypes.number,
 };

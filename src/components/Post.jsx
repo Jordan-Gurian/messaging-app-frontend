@@ -14,7 +14,7 @@ import { useLoggedInUser } from './../hooks/useLoggedInUser';
 
 import './Post.css'
 
-export default function Post({ postId, updateUser, updateLoadCount }) {
+export default function Post({ postId, updateUser }) {
       
     const [post, setPost] = useState({});
     const [author, setAuthor] = useState({});
@@ -27,7 +27,6 @@ export default function Post({ postId, updateUser, updateLoadCount }) {
     const [isCommentBoxLoaded, setIsCommentBoxLoaded] = useState(false);
 
     function updateCommentBoxLoaded() {
-        updateLoadCount();
         setIsCommentBoxLoaded(true);
     }
 
@@ -242,5 +241,4 @@ export default function Post({ postId, updateUser, updateLoadCount }) {
 Post.propTypes = {
     postId: PropTypes.string.isRequired,
     updateUser: PropTypes.func.isRequired,
-    updateLoadCount: PropTypes.func
 };

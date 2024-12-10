@@ -10,3 +10,13 @@
     height: 100vh;
     position: relative;
 }
+
+.load-more-button, .done-loading-msg {
+    color: grey;
+    align-self: center;
+}
+
+.load-more-button {
+    position: relative;
+    text-decoration: underline;
+}

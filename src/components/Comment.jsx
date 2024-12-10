@@ -7,19 +7,21 @@ import EditForm from './EditForm';
 import EditButton from './EditButton';
 import DeleteIcon from './../assets/delete.png';
 import { useAuth } from './../hooks/AuthContext';
+import PostCommentBox from './PostCommentBox';
+
 import './Comment.css';
 
-export default function Comment({ commentId, setUpdateBox, updateLoadCount }) {
+export default function Comment({ commentId, setUpdateBox }) {
 
     const [comment, setComment] = useState({});
     const [author, setAuthor] = useState({});
     const [isActiveReply, setIsActiveReply] = useState(false);
     const [commentUpdate, setCommentUpdate] = useState(true);
     const [isActiveEdit, setIsActiveEdit] = useState(false);
+    const [isMinimized, setIsMinimized] = useState(false);
     const { isAuthenticated } = useAuth();
     const loggedInUser = useLoggedInUser();
     const MAX_INDENT_LEVEL = 8;
-    const isLoaded = useRef(false);
 
     const replyPlaceholder = 'Reply to comment...';
 
@@ -80,7 +82,7 @@ export default function Comment({ commentId, setUpdateBox, updateLoadCount }) {
             const response = await fetch(requestURL, requestOptions);
             if (response.ok) {
                 setIsActiveReply(false);
-                setUpdateBox(true);
+                setCommentUpdate(true);
             } else {
                 throw Error("Comment must be between 1 and 250 characters")
             }
@@ -170,10 +172,6 @@ export default function Comment({ commentId, setUpdateBox, updateLoadCount }) {
             const fetchComment = async () => {
                 const currentComment = await getComment();
                 setComment(currentComment);
-                if (updateLoadCount && !isLoaded.current) {
-                    updateLoadCount();
-                    isLoaded.current = true;
-                }
             }
             fetchComment();
             setCommentUpdate(false);
@@ -190,39 +188,52 @@ export default function Comment({ commentId, setUpdateBox, updateLoadCount }) {
         fetchAuthor();
     }, [comment])
 
+    function handleMinimize() {
+        setIsMinimized(!isMinimized);
+    }
+
+    const minButtonText = isMinimized ? "+" : "-";
+
     return (
         Object.keys(comment).length > 0 && Object.keys(author).length > 0 && (
-            <div key={comment.id} className={loggedInUser.id === author.id ? "comment user-comment" : "comment"} style={{ marginLeft: `${Math.min(comment.level, MAX_INDENT_LEVEL) * 16}px` }}>
-                <div className="comment-main-text">
-                    <span className="comment-author">
-                        {`${author.username} `}
-                    </span>
-                    <CommentContent 
-                        onEditFormSubmit={updateComment}
+            <div className="comment-container" style={{ marginLeft: `${Math.min(comment.level, MAX_INDENT_LEVEL) * 16}px` }}>
+                <button className="minimize-button" onClick={() => handleMinimize()}>{minButtonText}</button>
+                {!isMinimized && (
+                    <div key={comment.id} className={loggedInUser.id === author.id ? "comment user-comment" : "comment"}>
+                    <div className="comment-main-text">
+                        <span className="comment-author">
+                            {`${author.username} `}
+                        </span>
+                        <CommentContent 
+                            onEditFormSubmit={updateComment}
+                            comment={comment}
+                            closeButtonOnClick={changeEditStatus}
+                            isActiveEdit={isActiveEdit}
+                        />
+                    </div>
+                    <CommentBottom 
                         comment={comment}
-                        closeButtonOnClick={changeEditStatus}
-                        isActiveEdit={isActiveEdit}
+                        isUser={loggedInUser.id === author.id}
+                        setCommentUpdate={setCommentUpdate}
+                        changeEditStatus={changeEditStatus}
+                        changeReplyStatus={changeReplyStatus}
+                        deleteComment={deleteComment}
                     />
+                    <PostCommentBox post={comment} isPost={false}/>
+                    {isAuthenticated && isActiveReply && (
+                    <EditForm
+                        onSubmit={createComment}
+                        placeholder={replyPlaceholder}
+                        textAreaStyle={{height: "4em"}}
+                    >
+                        <EditButton type='submit' width='16px'/>
+                        <EditButton icon={DeleteIcon} onClick={() => changeReplyStatus()} width='16px'/>
+                    </EditForm>
+                    )}
                 </div>
-                <CommentBottom 
-                    comment={comment}
-                    isUser={loggedInUser.id === author.id}
-                    setCommentUpdate={setCommentUpdate}
-                    changeEditStatus={changeEditStatus}
-                    changeReplyStatus={changeReplyStatus}
-                    deleteComment={deleteComment}
-                />
-                {isAuthenticated && isActiveReply && (
-                <EditForm
-                    onSubmit={createComment}
-                    placeholder={replyPlaceholder}
-                    textAreaStyle={{height: "4em"}}
-                >
-                    <EditButton type='submit' width='16px'/>
-                    <EditButton icon={DeleteIcon} onClick={() => changeReplyStatus()} width='16px'/>
-                </EditForm>
-            )}
-            </div>
+                )}
+                
+            </div> 
         ) 
     )
 }

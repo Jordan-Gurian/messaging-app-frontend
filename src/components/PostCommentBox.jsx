@@ -1,34 +1,21 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect, useRef } from 'react';
 import Comment from './Comment';
+import { v4 as uuidv4 } from 'uuid';
+import DefaultSpinner from './DefaultSpinner';
+import { useLoggedInUser } from '../hooks/useLoggedInUser';
 
+import './PostCommentBox.css'
 
-export default function PostCommentBox({ post, updateLoadCount }) {
+export default function PostCommentBox({ post, isPost=true, numCommentsPerLoad=2 }) {
     
+    const [visibleComments, setVisibleComments] = useState(numCommentsPerLoad);
+    const [isLoading, setIsLoading] = useState(false);
     const [commentArray, setCommentArray] = useState([]);
     const [updateBox, setUpdateBox] = useState(true);
-    const [isCommentsLoaded, setIsCommentsLoaded] = useState(false);
-    const [commentsLoadedCount, setCommentsLoadedCount] = useState(0);
-    const isLoaded = useRef(false);
-
-    function updateCommentsLoadedCount() {
-        setCommentsLoadedCount((prevCount) => prevCount + 1);
-    }
-
-    useEffect(() => {
-        if (commentsLoadedCount === post.comments.length) {
-            setIsCommentsLoaded(true);
-        }
-    }, [commentsLoadedCount, post.comments.length]);
-
-    
-    useEffect(() => {
-        if (isCommentsLoaded && updateLoadCount && !isLoaded.current) {
-            updateLoadCount();
-            isLoaded.current = true;
-        }
-      }, [isCommentsLoaded]);
-
+    const loadingKey = useRef(uuidv4());
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
+    const loggedInUser = useLoggedInUser();
 
     async function getComment(commentId) {
         const apiUrl = import.meta.env.VITE_API_URL
@@ -45,45 +32,101 @@ export default function PostCommentBox({ post, updateLoadCount }) {
     }
 
 
-    async function orderComments(item, isPost = true, processedComments = new Set()) {
-        let newArr = [];
-    
-        if (!isPost && !processedComments.has(item.id)) {
-            item = await getComment(item.id);
-            newArr.push(item);
-            processedComments.add(item.id);
-        }
-    
-        if (item.comments && item.comments.length > 0) {
-            for (const nestedComment of item.comments) {
-                const orderedNestedComments = await orderComments(nestedComment, false, processedComments);
-                newArr = newArr.concat(orderedNestedComments);
-            }
-        }
-    
-        return newArr;
+    async function getAllNextLevelComments() {
+        let userComments = [];
+        let others = [];
+        await Promise.all(
+            post.comments.map(async (comment) => {
+                if (isPost && comment.level !== 0) {
+                    return;
+                } else {
+                    const fetchedComment = await getComment(comment.id);
+                    if (comment.authorId === loggedInUser.id) {
+                        userComments.push(fetchedComment);
+                    } else {
+                        others.push(fetchedComment);
+                    }
+                }
+            })
+        );
+
+        return [...userComments, ...others];
     }
+
+    function loadMoreComments() {
+        if (visibleComments < post.comments.length) {
+            setIsLoading(true);
+            setTimeout(() => {
+                setVisibleComments((prev) => Math.min(prev + numCommentsPerLoad, post.comments.length)); // Load 10 more posts
+                setIsLoading(false);
+            }, 500);
+        }
+    };
     
+    const hideLoader = () => {
+        const loader = document.getElementById(loadingKey.current);
+        loader?.classList.add("loader--hide");
+    };
+
+    const showLoader = () => {
+        const loader = document.getElementById(loadingKey.current);
+        loader?.classList.remove("loader--hide");
+    }
+
     useEffect(() => {
         const fetchCommentArray = async () => {
             if (post.authorId && ( post || updateBox) ) {
-                setCommentArray(await orderComments(post, true));
+                let newArr = await getAllNextLevelComments(post)
+                setCommentArray(newArr);
                 setUpdateBox(false);
             }
         }
         fetchCommentArray();
     }, [updateBox, post])
 
+    useEffect(() => {
+        if (!isFirstLoad && commentArray.length > visibleComments) {
+            setVisibleComments(visibleComments + 1);
+        }
+    }, [commentArray])
+
+    useEffect(() => {
+        if (!isLoading) {
+            setTimeout(() => {
+                hideLoader()
+                if (isFirstLoad) setIsFirstLoad(false);
+              }, 1000);
+        } else {
+            showLoader();
+        }
+      }, [isLoading]);
+
     return (
-        commentArray.map((comment) => {
+        <div>
+        {commentArray.slice(0, visibleComments).map((comment) => {
             return ( 
-                <Comment key={comment.id} commentId={comment.id} setUpdateBox={setUpdateBox} updateLoadCount={updateCommentsLoadedCount}/> 
-            )
-        })
+                <div key={comment.id} className="comment-box">
+                    <Comment commentId={comment.id} setUpdateBox={setUpdateBox}/>
+                </div>
+            );
+        })}
+    
+        {visibleComments < commentArray.length && (
+            <button className='edit-button load-more-button' onClick={loadMoreComments}>
+                Load more replies...
+                {(
+                    <div id={loadingKey.current} className="loader">
+                        <DefaultSpinner size={10} />
+                    </div>
+                )}
+            </button>
+        )}
+        </div>
     )
 }
 
 PostCommentBox.propTypes = {
     post: PropTypes.object.isRequired,
-    updateLoadCount: PropTypes.func,
+    isPost: PropTypes.bool,
+    numCommentsPerLoad: PropTypes.number,
 };
