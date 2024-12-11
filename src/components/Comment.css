@@ -1,7 +1,9 @@
 .comment-container {
     display: flex;
-    gap: var(--default-gap);
+    gap: calc(var(--default-gap) / 4);
     align-items: first baseline;
+    overflow-wrap: break-word;
+    border-left: 1px solid gray
 }
 
 .comment-author {

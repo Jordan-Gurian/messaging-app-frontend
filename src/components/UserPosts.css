@@ -7,6 +7,7 @@
 .posts-content-container {
     display: flex;
     flex-direction: column;
+    gap: var(--default-gap);
     height: 100vh;
     position: relative;
 }
@@ -19,4 +20,9 @@
 .load-more-button {
     position: relative;
     text-decoration: underline;
+}
+
+.posts-section-container {
+    min-width: 600px;
+    max-width: 30vw;
 }

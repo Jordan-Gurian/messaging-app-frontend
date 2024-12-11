@@ -90,10 +90,8 @@ export default function HomePage() {
         }, 2500);
       }, []);
 
-    const homePageMessage = isAuthenticated ? `Home screen, but you're logged in!` : `Home screen, but you're not logged in :(`
     return (
         <main className="home-page-container">
-            {homePageMessage}
             {isAuthenticated && posts && (
                 <UserPosts
                     posts={posts}

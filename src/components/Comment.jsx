@@ -21,7 +21,7 @@ export default function Comment({ commentId, setUpdateBox }) {
     const [isMinimized, setIsMinimized] = useState(false);
     const { isAuthenticated } = useAuth();
     const loggedInUser = useLoggedInUser();
-    const MAX_INDENT_LEVEL = 8;
+    const MAX_INDENT_LEVEL = 3;
 
     const replyPlaceholder = 'Reply to comment...';
 
@@ -193,10 +193,12 @@ export default function Comment({ commentId, setUpdateBox }) {
     }
 
     const minButtonText = isMinimized ? "+" : "-";
+    const useMargin = MAX_INDENT_LEVEL > comment.level ? 4 : 0;
+    console.log(comment.level)
 
     return (
         Object.keys(comment).length > 0 && Object.keys(author).length > 0 && (
-            <div className="comment-container" style={{ marginLeft: `${Math.min(comment.level, MAX_INDENT_LEVEL) * 16}px` }}>
+            <div className="comment-container" >
                 <button className="minimize-button" onClick={() => handleMinimize()}>{minButtonText}</button>
                 {!isMinimized && (
                     <div key={comment.id} className={loggedInUser.id === author.id ? "comment user-comment" : "comment"}>
@@ -211,7 +213,7 @@ export default function Comment({ commentId, setUpdateBox }) {
                             isActiveEdit={isActiveEdit}
                         />
                     </div>
-                    <CommentBottom 
+                    <CommentBottom
                         comment={comment}
                         isUser={loggedInUser.id === author.id}
                         setCommentUpdate={setCommentUpdate}
