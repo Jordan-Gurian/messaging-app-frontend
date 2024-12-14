@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import PostHeader from './PostHeader';
 import PostContent from './PostContent';
 import LikeButton from './LikeButton';
@@ -193,7 +193,7 @@ export default function Post({ postId, updateUser }) {
             }
         }
         fetchAuthor();
-    }, [post])
+    }, [post, author])
 
     return (
         Object.keys(post).length > 0 && Object.keys(author).length > 0 && (

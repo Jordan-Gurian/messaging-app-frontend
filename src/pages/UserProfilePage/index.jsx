@@ -55,7 +55,6 @@ export default function UserProfilePage() {
                 setResetUser(false);      
             }
             fetchUser();
-                
         }
     }, [resetUser]);
 

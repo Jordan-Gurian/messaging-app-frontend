@@ -48,7 +48,7 @@ export default function UserProfileImage({ profileUrl, allowEdit, height='auto',
             updateLoadCount();
             isLoaded.current = true;
         }
-    }, [])
+    }, [profileUrl])
 
     if (allowEdit && isAuthenticated && isHover) {
         return (
