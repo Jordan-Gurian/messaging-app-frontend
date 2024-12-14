@@ -10,6 +10,7 @@ import { useAuth } from './../hooks/AuthContext';
 import PostCommentBox from './PostCommentBox';
 
 import './Comment.css';
+import { Link } from 'react-router-dom';
 
 export default function Comment({ commentId }) {
 
@@ -21,7 +22,6 @@ export default function Comment({ commentId }) {
     const [isMinimized, setIsMinimized] = useState(false);
     const { isAuthenticated } = useAuth();
     const loggedInUser = useLoggedInUser();
-    const MAX_INDENT_LEVEL = 3;
 
     const replyPlaceholder = 'Reply to comment...';
 
@@ -202,7 +202,9 @@ export default function Comment({ commentId }) {
                     <div key={comment.id} className={loggedInUser.id === author.id ? "comment user-comment" : "comment"}>
                     <div className="comment-main-text">
                         <span className="comment-author">
-                            {`${author.username} `}
+                            <Link className="link-text" to={`/user/${author.username}`} reloadDocument>
+                                {`${author.username} `}
+                            </Link>
                         </span>
                         <CommentContent 
                             onEditFormSubmit={updateComment}

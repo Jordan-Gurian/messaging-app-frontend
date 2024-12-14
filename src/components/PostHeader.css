@@ -1,19 +1,19 @@
 .post-header {
     display: flex;
     gap: var(--default-gap);
-    padding-bottom: 8px;
+    padding-bottom: calc(var(--default-gap) / 2);
 }
 
 .post-header.user-info {
     display: flex;
-    flex-direction: column;
     width: 100%;
-    gap: calc(var(--default-gap) * -1);
+    justify-content: space-between;
 }
 
 .post-header.top-line {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 0px;
 }
 
 .post-header.author {

@@ -53,7 +53,7 @@ export default function FollowBlock({ followUsers }) {
             {followUsers.map((user) => {
                 return (
                     <Link key={uuidv4()}
-                        className='follow-block-user follow-user-flex'
+                        className='link-text follow-user-flex'
                         to={`/user/${user.username}`}
                         reloadDocument
                     >

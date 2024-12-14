@@ -60,8 +60,14 @@ export default function Navbar() {
         return (
             <header>
                 <nav>
-                    <div className="nav-text">MessageXpress</div>
-                    <form className="navbar-form" id="form" onSubmit={handleSubmit}>
+                    <div
+                        className={`nav-links-item ${hoveredItem === 'messageXpress' ? 'item-hovered' : ''}`}
+                        onMouseEnter={() => handleMouseEnter('messageXpress')}
+                        onMouseLeave={handleMouseLeave}
+                    >
+                        <Link className="link-text" to="/">MessageXpress</Link>
+                    </div>
+                        <form className="navbar-form" id="form" onSubmit={handleSubmit}>
                         <input 
                             type="text"
                             id="searchVal"
@@ -80,21 +86,21 @@ export default function Navbar() {
                             onMouseEnter={() => handleMouseEnter('home')}
                             onMouseLeave={handleMouseLeave}
                         >
-                            <Link to="/">Home</Link>
+                            <Link className="link-text" to="/">Home</Link>
                         </div>
                         <div
                             className={`nav-links-item ${hoveredItem === 'profile' ? 'item-hovered' : ''}`}
                             onMouseEnter={() => handleMouseEnter('profile')}
                             onMouseLeave={handleMouseLeave}
                         >
-                            <Link to={`/user/${username}`} reloadDocument>Profile</Link>
+                            <Link className="link-text" to={`/user/${username}`} reloadDocument>Profile</Link>
                         </div>
                         <div
                             className={`nav-links-item ${hoveredItem === 'logout' ? 'item-hovered' : ''}`}
                             onMouseEnter={() => handleMouseEnter('logout')}
                             onMouseLeave={handleMouseLeave}
                         >
-                            <Link to="/" onClick={logout}>Logout</Link>
+                            <Link className="link-text" to="/" onClick={logout}>Logout</Link>
                         </div>
                     </div>
                     
@@ -105,14 +111,14 @@ export default function Navbar() {
                                 onMouseEnter={() => handleMouseEnter('login')}
                                 onMouseLeave={handleMouseLeave}
                             >
-                                <Link to="/login">Login</Link>
+                                <Link className="link-text" to="/login">Login</Link>
                             </div>
                             <div
                                 className={`nav-links-item ${hoveredItem === 'register' ? 'item-hovered' : ''}`}
                                 onMouseEnter={() => handleMouseEnter('register')}
                                 onMouseLeave={handleMouseLeave}
                             >
-                                <Link to="/register">Register</Link>
+                                <Link className="link-text" to="/register">Register</Link>
                             </div>
                         </div>
                     )} 
