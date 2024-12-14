@@ -7,13 +7,12 @@ import DefaultSpinner from './DefaultSpinner';
 
 import './FollowBlock.css'
 
-export default function FollowBlock({ followUsers }) {
+export default function FollowBlock({ followUsers=[], numCols=4 }) {
 
     const loadingKey = useRef(uuidv4());
     const [isFollowersLoaded, setIsFollowersLoaded] = useState(false);
     const followersLoaded = useRef(0);
 
-    const numCols = 4;
     const gridColumnWidth = '150px';
     const gridRowHeight = '100px';
     const height = '75px';
@@ -47,7 +46,6 @@ export default function FollowBlock({ followUsers }) {
                 { 
                     gridTemplateColumns: `repeat(${numCols}, ${gridColumnWidth})`,
                     gridAutoRows: `minmax(${gridRowHeight}, auto)`,
-                    marginLeft: `calc(${width} / -2)`
                 }
             }>
             {followUsers.map((user) => {
@@ -76,5 +74,9 @@ export default function FollowBlock({ followUsers }) {
 } 
 
 FollowBlock.propTypes = {
-    followUsers: PropTypes.array
+    followUsers: PropTypes.array,
+    numCols: PropTypes.oneOfType([
+        PropTypes.number,        
+        PropTypes.oneOf(['auto', 'auto-fit', 'auto-fill'])
+    ]),
 };

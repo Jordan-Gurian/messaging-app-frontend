@@ -21,19 +21,11 @@ export default function AllUsersPage() {
         getUserData();
     }, []);
 
-
-    if (Object.keys(users).length > 0) {
-        return (
+    return ( 
+        Object.keys(users).length > 0 && (
             <main className='all-users-page-container'>
-                <FollowBlock followUsers={users}></FollowBlock>
+                <FollowBlock followUsers={users} numCols='auto-fit'></FollowBlock>
             </main>
         )
-    } else {
-        return (
-            <main className='all-users-page-container'>
-                Loading...
-            </main>
-        )
-    }
-
+    )
 }
