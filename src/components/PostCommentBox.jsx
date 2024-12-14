@@ -12,6 +12,7 @@ export default function PostCommentBox({ post, isPost=true, numCommentsPerLoad=2
     const [visibleComments, setVisibleComments] = useState(numCommentsPerLoad);
     const [isLoading, setIsLoading] = useState(false);
     const [commentArray, setCommentArray] = useState([]);
+    const [prevCommentArrayLength, setPrevCommentArrayLength] = useState(0);
     const [updateBox, setUpdateBox] = useState(true);
     const loadingKey = useRef(uuidv4());
     const [isFirstLoad, setIsFirstLoad] = useState(true);
@@ -85,10 +86,11 @@ export default function PostCommentBox({ post, isPost=true, numCommentsPerLoad=2
     }, [updateBox, post])
 
     useEffect(() => {
-        if (!isFirstLoad && commentArray.length > visibleComments) {
+        if (!isFirstLoad && commentArray.length > prevCommentArrayLength) {
             setVisibleComments(visibleComments + 1);
+            setPrevCommentArrayLength(commentArray.length);
         }
-    }, [commentArray])
+    }, [commentArray, prevCommentArrayLength])
 
     useEffect(() => {
         if (!isLoading) {
@@ -106,7 +108,7 @@ export default function PostCommentBox({ post, isPost=true, numCommentsPerLoad=2
         {commentArray.slice(0, visibleComments).map((comment) => {
             return ( 
                 <div key={comment.id} className="comment-box">
-                    <Comment commentId={comment.id} setUpdateBox={setUpdateBox}/>
+                    <Comment commentId={comment.id}/>
                 </div>
             );
         })}

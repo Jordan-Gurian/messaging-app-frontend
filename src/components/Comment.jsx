@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useLoggedInUser } from './../hooks/useLoggedInUser';
 import CommentContent from './CommentContent';
 import CommentBottom from './CommentBottom';
@@ -11,7 +11,7 @@ import PostCommentBox from './PostCommentBox';
 
 import './Comment.css';
 
-export default function Comment({ commentId, setUpdateBox }) {
+export default function Comment({ commentId }) {
 
     const [comment, setComment] = useState({});
     const [author, setAuthor] = useState({});
@@ -193,8 +193,6 @@ export default function Comment({ commentId, setUpdateBox }) {
     }
 
     const minButtonText = isMinimized ? "+" : "-";
-    const useMargin = MAX_INDENT_LEVEL > comment.level ? 4 : 0;
-    console.log(comment.level)
 
     return (
         Object.keys(comment).length > 0 && Object.keys(author).length > 0 && (
@@ -242,6 +240,4 @@ export default function Comment({ commentId, setUpdateBox }) {
 
 Comment.propTypes = {
     commentId: PropTypes.string.isRequired,
-    setUpdateBox: PropTypes.func.isRequired,
-    updateLoadCount: PropTypes.func,
 };

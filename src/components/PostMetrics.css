@@ -2,3 +2,16 @@
     display: flex;
     gap: var(--default-gap);
 }
+
+.users-that-liked-block {
+    margin-top: 5vh;
+    display: flex;
+    justify-content: center;
+    overflow-y: scroll;
+    max-height: 55vh;
+}
+
+.post.likes:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

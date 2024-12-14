@@ -216,7 +216,7 @@ export default function Post({ postId, updateUser }) {
                     <LikeButton objToLike={post} updateLikes={setPostUpdate}/>
                     <EditButton icon={ReplyIcon} onClick={() => changeReplyStatus()} width='16px'/>
                     <PostMetrics
-                        likes={post.usersThatLiked.length}
+                        usersThatLiked={post.usersThatLiked}
                         comments={post.comments.length}
                     />
                 </div>

@@ -13,7 +13,7 @@ export default function CommentBottom({ comment, isUser=false, setCommentUpdate,
         comment.isDeleted ? (
             <div className="comment-bottom">
                 <PostMetrics
-                    likes={comment.usersThatLiked.length}
+                    usersThatLiked={comment.usersThatLiked}
                     comments={comment.comments.length}
                 />
                 <div className="comment-date subtext">
@@ -25,7 +25,7 @@ export default function CommentBottom({ comment, isUser=false, setCommentUpdate,
                 <LikeButton objToLike={comment} updateLikes={setCommentUpdate}/>
                 <EditButton icon={ReplyIcon} onClick={() => changeReplyStatus()} width='16px'/>
                 <PostMetrics
-                    likes={comment.usersThatLiked.length}
+                    usersThatLiked={comment.usersThatLiked}
                     comments={comment.comments.length}
                 />
                 <div className="comment-date subtext">
