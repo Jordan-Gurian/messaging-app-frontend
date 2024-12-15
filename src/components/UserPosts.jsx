@@ -13,7 +13,7 @@ import './UserPosts.css';
 
 const Post = lazy(() => import('./Post'));
 
-export default function UserPosts({ posts, postsLabel = 'Posts', updateUser, numPostsPerLoad=5 }) {
+export default function UserPosts({ posts, postsLabel = 'Posts', updateUser, numPostsPerLoad=5, user=null }) {
 
     const usernameObj = useParams()
     const username = usernameObj.username;
@@ -141,6 +141,7 @@ export default function UserPosts({ posts, postsLabel = 'Posts', updateUser, num
                         <Post 
                             postId={post.id}
                             updateUser={updateUser}
+                            authorProp={user}
                         />
                     </Suspense>  
                 ))}
@@ -172,4 +173,5 @@ UserPosts.propTypes = {
     postsLabel: PropTypes.string,
     updateUser: PropTypes.func.isRequired,
     numPostsPerLoad: PropTypes.number,
+    user: PropTypes.object,
 };

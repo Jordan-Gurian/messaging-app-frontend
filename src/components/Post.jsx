@@ -14,22 +14,15 @@ import { useLoggedInUser } from './../hooks/useLoggedInUser';
 
 import './Post.css'
 
-export default function Post({ postId, updateUser }) {
+export default function Post({ postId, updateUser, authorProp=null }) {
       
     const [post, setPost] = useState({});
-    const [author, setAuthor] = useState({});
+    const [author, setAuthor] = useState(authorProp || {})
     const [isActiveReply, setIsActiveReply] = useState(false);
     const [postUpdate, setPostUpdate] = useState(true);
     const [isActiveEdit, setIsActiveEdit] = useState(false);
     const { isAuthenticated } = useAuth();
     const loggedInUser = useLoggedInUser();
-
-    const [isCommentBoxLoaded, setIsCommentBoxLoaded] = useState(false);
-
-    function updateCommentBoxLoaded() {
-        setIsCommentBoxLoaded(true);
-    }
-
 
     const replyPlaceholder = 'Reply to post...';
 
@@ -187,19 +180,19 @@ export default function Post({ postId, updateUser }) {
 
     useEffect(() => {
         const fetchAuthor = async () => {
-            if (post.authorId) {
-                const author = await getAuthor(post.authorId);
-                setAuthor(author);
+            if (post.authorId && !authorProp) {
+                const authorData = await getAuthor(post.authorId);
+                setAuthor(prev => ({ ...prev, ...authorData }));
             }
         }
         fetchAuthor();
-    }, [post, author])
+    }, [post])
 
     return (
-        Object.keys(post).length > 0 && Object.keys(author).length > 0 && (
+        Object.keys(post).length > 0 && ( Object.keys(author).length > 0 || authorProp ) && (
             <div className='post-container'>
                 <PostHeader
-                    author={author}
+                    author={authorProp ? authorProp : author}
                     post={post}
                     onClickEdit={changeEditStatus}
                     onClickDelete={deletePost}
@@ -231,7 +224,7 @@ export default function Post({ postId, updateUser }) {
                     </EditForm>
                 )}
                 
-                <PostCommentBox post={post} updateUser={updateUser} updateLoadCount={updateCommentBoxLoaded}/>
+                <PostCommentBox post={post} updateUser={updateUser}/>
             </div>
         )
     );
@@ -241,4 +234,5 @@ export default function Post({ postId, updateUser }) {
 Post.propTypes = {
     postId: PropTypes.string.isRequired,
     updateUser: PropTypes.func.isRequired,
+    authorProp: PropTypes.object,
 };

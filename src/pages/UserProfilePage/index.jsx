@@ -49,7 +49,7 @@ export default function UserProfilePage() {
         if (resetUser) {
             const fetchUser = async () => {
                 const currentUser = await getUserData();
-                setUser(currentUser);
+                setUser(prev => ({ ...prev, ...currentUser }));
                 setChats(currentUser.chats);
                 setPosts(currentUser.posts);
                 setResetUser(false);      
@@ -86,6 +86,7 @@ export default function UserProfilePage() {
                         posts={posts}
                         postsLabel={'Posts'}
                         updateUser={setResetUser}
+                        user={user}
                     />
                     
                 </div>

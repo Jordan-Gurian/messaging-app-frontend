@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import './PostHeader.css'
 
 export default function PostHeader({ author, post, onClickEdit, onClickDelete, loggedInUser=null, isActiveEdit=false }) {
+
     return (
         <div className='post-header'>
             <Link className="link-text" to={`/user/${author.username}`} reloadDocument>
