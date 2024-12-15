@@ -1,17 +1,30 @@
 import { useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import PropTypes from 'prop-types';
 import ChatUsernames from './ChatUsernames';
+import EditButton from './EditButton';
+import ProfileIcon from './../assets/profile-default.png'
+import CloseIcon from './CloseIcon';
+import FollowBlock from './FollowBlock';
+import DeleteIcon from './../assets/delete.png';
 
 import './ChatWindowHeader.css'
 
 export default function ChatWindowHeader({ chat, updateUser, setChat }) {
     
     const [isActiveEdit, setIsActiveEdit] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const token = localStorage.token;
-    const decoded = jwtDecode(token);
-    const user = decoded.user; 
+
+    const modalContent = document.querySelector('.modal-content');
+    const rect = modalContent?.getBoundingClientRect();
+    let height;
+
+    if (rect) {
+        height = rect.height;
+    } else {
+        height = 'auto';
+    }
       
     async function updateUserChat(event) {
         event.preventDefault();
@@ -51,21 +64,55 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
     }
 
     return (
-        <div className="chat-window-header" onClick={() => setIsActiveEdit(true)}>
-            {isActiveEdit ? (
-            <form className="new-chat-name-form" id="form" onSubmit={(event) => updateUserChat(event) }>
-                <input 
-                    id="chatName"
-                    className="default-input-format"
-                    placeholder="Enter chat name here..."
-                    defaultValue={chat.name}
-                    autoFocus
-                />
-            </form>
-            ) : (
-                <ChatUsernames chat={chat}/>
-            )}
-        </div>
+        <>
+        {modalOpen && (
+            <div role="dialog">
+                <div className="modal-overlay"></div>
+                <div className="modal-container">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <button
+                                type="button"
+                                className="close-profile-image"
+                                onClick={() => setModalOpen(false)}
+                            >
+                                <span>Close menu</span>
+                                <CloseIcon />
+                            </button>
+                        </div>
+                        <div className="users-that-liked-block default-scrollbar" style={{ maxHeight: height }}>
+                            <FollowBlock followUsers={chat.users}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
+        
+        
+            <div className="chat-window-header" onClick={() => setIsActiveEdit(true)}>
+                <div className="see-members-button">
+                    <EditButton icon={ProfileIcon} onClick={() => setModalOpen(true)} width="24px"/>
+                </div>
+                <div className="chat-name">
+                    {isActiveEdit ? (
+                    <form className="new-chat-name-form" id="form" onSubmit={(event) => updateUserChat(event) }>
+                        <input 
+                            id="chatName"
+                            className="default-input-format"
+                            placeholder="Enter chat name here..."
+                            defaultValue={chat.name}
+                            autoFocus
+                        />
+                    </form>
+                    ) : (
+                        <ChatUsernames chat={chat}/>
+                    )}
+                </div> 
+                <div className="delete-button">
+                    <EditButton icon={DeleteIcon} width="20px"/>
+                </div>
+            </div>
+        </>
     )
 }
 

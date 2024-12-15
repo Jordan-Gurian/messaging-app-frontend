@@ -1,3 +1,13 @@
+.chat-window-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-name {
+    width: 75%;
+}
+
 #chatName {
     all: unset;
     box-sizing: border-box;
