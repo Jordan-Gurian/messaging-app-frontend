@@ -6,6 +6,7 @@ import ProfileIcon from './../assets/profile-default.png'
 import CloseIcon from './CloseIcon';
 import FollowBlock from './FollowBlock';
 import DeleteIcon from './../assets/delete.png';
+import { useLoggedInUser } from '../hooks/useLoggedInUser';
 
 import './ChatWindowHeader.css'
 
@@ -15,6 +16,7 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
     const [modalOpen, setModalOpen] = useState(false);
 
     const token = localStorage.token;
+    const loggedInUser = useLoggedInUser();
 
     const modalContent = document.querySelector('.modal-content');
     const rect = modalContent?.getBoundingClientRect();
@@ -57,6 +59,40 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
             setChat(chat);
             updateUser(true);
             setIsActiveEdit(false);
+        } catch (error) {
+            console.log(error)
+            return { error }        
+        }  
+    }
+
+    
+    async function leaveChat() {
+
+        const apiUrl = import.meta.env.VITE_API_URL
+        const requestURL = `${apiUrl}/chats/${chat.id}`
+        
+        const body = {
+            usersToRemove:  loggedInUser.username,
+        };
+    
+        const bodyString = JSON.stringify(body);
+    
+        const headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        };
+    
+        const requestOptions = {
+            body: bodyString,
+            method: "PUT",
+            headers: headers,
+        }
+
+        try {
+            const response = await fetch(requestURL, requestOptions);
+            const chat = await response.json();
+            setChat(chat);
+            updateUser(true);
         } catch (error) {
             console.log(error)
             return { error }        
@@ -109,7 +145,7 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
                     )}
                 </div> 
                 <div className="delete-button">
-                    <EditButton icon={DeleteIcon} width="20px"/>
+                    <EditButton icon={DeleteIcon} onClick={() => leaveChat()} width="20px"/>
                 </div>
             </div>
         </>
