@@ -5,7 +5,7 @@ import EditButton from './EditButton';
 import ProfileIcon from './../assets/profile-default.png'
 import CloseIcon from './CloseIcon';
 import FollowBlock from './FollowBlock';
-import DeleteIcon from './../assets/delete.png';
+import LeaveIcon from './../assets/leave.png';
 import { useLoggedInUser } from '../hooks/useLoggedInUser';
 
 import './ChatWindowHeader.css'
@@ -65,7 +65,6 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
         }  
     }
 
-    
     async function leaveChat() {
 
         const apiUrl = import.meta.env.VITE_API_URL
@@ -127,7 +126,7 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
         
             <div className="chat-window-header" onClick={() => setIsActiveEdit(true)}>
                 <div className="see-members-button">
-                    <EditButton icon={ProfileIcon} onClick={() => setModalOpen(true)} width="24px"/>
+                    <EditButton icon={ProfileIcon} onClick={() => setModalOpen(true)} width="30px"/>
                 </div>
                 <div className="chat-name">
                     {isActiveEdit ? (
@@ -145,7 +144,7 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
                     )}
                 </div> 
                 <div className="delete-button">
-                    <EditButton icon={DeleteIcon} onClick={() => leaveChat()} width="20px"/>
+                    <EditButton icon={LeaveIcon} onClick={() => leaveChat()} width="36px"/>
                 </div>
             </div>
         </>
