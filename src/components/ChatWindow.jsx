@@ -39,8 +39,8 @@ export default function ChatWindow({ chatId, updateUser }) {
         }  
     }
       
-    async function updateUserChat(event, text) {
-        event.preventDefault();
+    async function sendMessageToChat(event, text, isSystemMessage=false) {
+        if (event) event.preventDefault();
 
         const apiUrl = import.meta.env.VITE_API_URL
         const requestURL = `${apiUrl}/messages`
@@ -49,6 +49,7 @@ export default function ChatWindow({ chatId, updateUser }) {
             content:  text,
             authorId: user.id,
             chatId:   chatId,
+            isSystemMessage: isSystemMessage,
         };
     
         const bodyString = JSON.stringify(body);
@@ -84,7 +85,7 @@ export default function ChatWindow({ chatId, updateUser }) {
     return (
         <div className="chat-window"> 
             <div className="chat-window-header-container">
-                <ChatWindowHeader chat={chat} updateUser={updateUser} setChat={setChat}/>
+                <ChatWindowHeader chat={chat} updateUser={updateUser} sendLeaveMessage={sendMessageToChat} setChat={setChat}/>
             </div>
             <div className="message-container default-scrollbar" ref={chatContainerRef}>
                 {chat.messages.map((message) => {
@@ -93,7 +94,7 @@ export default function ChatWindow({ chatId, updateUser }) {
                     )
                 })}
             </div>
-            <TextInputBox sendText={updateUserChat}/>
+            <TextInputBox sendText={sendMessageToChat}/>
         </div>
     )
 }

@@ -10,7 +10,7 @@ import { useLoggedInUser } from '../hooks/useLoggedInUser';
 
 import './ChatWindowHeader.css'
 
-export default function ChatWindowHeader({ chat, updateUser, setChat }) {
+export default function ChatWindowHeader({ chat, updateUser, sendLeaveMessage, setChat }) {
     
     const [isActiveEdit, setIsActiveEdit] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
@@ -67,6 +67,10 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
 
     async function leaveChat() {
 
+        const leaveMessageText = `${loggedInUser.username} has left the chat`;
+        const isSystemMessage = true;
+        await sendLeaveMessage(null, leaveMessageText, isSystemMessage);
+            
         const apiUrl = import.meta.env.VITE_API_URL
         const requestURL = `${apiUrl}/chats/${chat.id}`
         
@@ -97,6 +101,7 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
             return { error }        
         }  
     }
+    
 
     return (
         <>
@@ -154,5 +159,6 @@ export default function ChatWindowHeader({ chat, updateUser, setChat }) {
 ChatWindowHeader.propTypes = {
     chat: PropTypes.object.isRequired,
     updateUser: PropTypes.func.isRequired,
+    sendLeaveMessage: PropTypes.func.isRequired,
     setChat: PropTypes.func.isRequired,
 };
