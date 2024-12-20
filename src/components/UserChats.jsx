@@ -11,6 +11,34 @@ export default function UserChats({ updateUser, chats, isUser = false, loggedInU
     const [chatId, setChatId] = useState(null);
     const [isHover, setIsHover] = useState(false);
 
+    async function deleteChat(chat) {
+        const token = localStorage.token;
+        const apiUrl = import.meta.env.VITE_API_URL
+        const requestURL = `${apiUrl}/chats/${chat.id}`
+    
+        const headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        };
+    
+        const requestOptions = {
+            method: "DELETE",
+            headers: headers,
+        }
+
+        try {
+            const response = await fetch(requestURL, requestOptions);
+            const responseDetails = await response.json();
+            if (responseDetails.error === 'token invalid') {
+                localStorage.removeItem("token");
+            }
+            updateUser(true);
+        } catch (error) {
+            console.log(error);
+            return { error }        
+        }  
+    }
+
     const handleMouseEnter = () => {
         setIsHover(true); // Update state on mouse enter
     };
@@ -48,9 +76,8 @@ export default function UserChats({ updateUser, chats, isUser = false, loggedInU
                                     {chatId===chat.id && (
                                     <ChatWindow 
                                         chatId={chat.id}
-                                        isUser={isUser}
-                                        loggedInUserId={loggedInUserId}
                                         updateUser={updateUser}
+                                        deleteChat={deleteChat}
                                     />
                                     )}
                                 </div>
@@ -74,9 +101,8 @@ export default function UserChats({ updateUser, chats, isUser = false, loggedInU
                                         <ChatWindow 
                                             key={chat.id}
                                             chatId={chat.id}
-                                            isUser={isUser}
-                                            loggedInUserId={loggedInUserId}
                                             updateUser={updateUser}
+                                            deleteChat={deleteChat}
                                         />
                                         )}
                                     </div>

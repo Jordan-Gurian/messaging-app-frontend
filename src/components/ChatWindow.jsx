@@ -7,7 +7,7 @@ import Message from './Message';
 
 import './ChatWindow.css';
 
-export default function ChatWindow({ chatId, updateUser }) {
+export default function ChatWindow({ chatId, updateUser, deleteChat }) {
     const [chat, setChat] = useState({ users: [], messages: [] })
     
     const chatContainerRef = useRef(null);
@@ -85,7 +85,7 @@ export default function ChatWindow({ chatId, updateUser }) {
     return (
         <div className="chat-window"> 
             <div className="chat-window-header-container">
-                <ChatWindowHeader chat={chat} updateUser={updateUser} sendLeaveMessage={sendMessageToChat} setChat={setChat}/>
+                <ChatWindowHeader chat={chat} updateUser={updateUser} sendLeaveMessage={sendMessageToChat} deleteChat={deleteChat} setChat={setChat}/>
             </div>
             <div className="message-container default-scrollbar" ref={chatContainerRef}>
                 {chat.messages.map((message) => {
@@ -102,4 +102,5 @@ export default function ChatWindow({ chatId, updateUser }) {
 ChatWindow.propTypes = {
     chatId: PropTypes.string,
     updateUser: PropTypes.func.isRequired,
+    deleteChat: PropTypes.func.isRequired,
 };
