@@ -22,8 +22,8 @@ export default function CommentBottom({ comment, isUser=false, setCommentUpdate,
             </div>
         ) : (
             <div className="comment-bottom">
-                <LikeButton objToLike={comment} updateLikes={setCommentUpdate}/>
-                <EditButton icon={ReplyIcon} onClick={() => changeReplyStatus()} width='16px'/>
+                <LikeButton objToLike={comment} updateLikes={setCommentUpdate} title="Like"/>
+                <EditButton icon={ReplyIcon} onClick={() => changeReplyStatus()} width='16px' title="Add comment"/>
                 <PostMetrics
                     usersThatLiked={comment.usersThatLiked}
                     comments={comment.comments.length}
@@ -33,8 +33,8 @@ export default function CommentBottom({ comment, isUser=false, setCommentUpdate,
                 </div>
                 {isUser && (
                     <div className="mod-buttons">
-                        <EditButton onClick={() => changeEditStatus()} width='16px'/>
-                        <EditButton icon={DeleteIcon} onClick={() => deleteComment()} width='16px'/>
+                        <EditButton onClick={() => changeEditStatus()} width='16px' title="Edit comment"/>
+                        <EditButton icon={DeleteIcon} onClick={() => deleteComment()} width='16px' title="Delete comment"/>
                     </div>
                 )}
             </div>

@@ -228,8 +228,8 @@ export default function Comment({ commentId }) {
                         placeholder={replyPlaceholder}
                         textAreaStyle={{height: "4em"}}
                     >
-                        <EditButton type='submit' width='16px'/>
-                        <EditButton icon={DeleteIcon} onClick={() => changeReplyStatus()} width='16px'/>
+                        <EditButton type='submit' width='16px' title="Submit"/>
+                        <EditButton icon={DeleteIcon} onClick={() => changeReplyStatus()} width='16px' title="Delete"/>
                     </EditForm>
                     )}
                 </div>
