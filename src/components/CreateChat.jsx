@@ -150,7 +150,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
             </button>
         )}
         {isUser && isHover && isAuthenticated && !isCreatingChat && (
-            <EditButton onClick={() => setIsCreatingChat(true)} width={"28px"}/>
+            <EditButton onClick={() => setIsCreatingChat(true)} width={"28px"} title="Create chat"/>
         )}
         {isCreatingChat && (
             <form className="create-chat-form" id="form" onSubmit={(event) => createNewChat(event)}>
@@ -168,7 +168,7 @@ export default function CreateChat({ updateUser, isUser=false, isHover=false, ha
                     <button className="submit-button" type="submit">
                         Create Chat
                     </button>
-                    <EditButton icon={DeleteIcon} onClick={() => { setUsersToAdd([usersToAdd[0]]); setIsCreatingChat(false)}} width='28px'/>
+                    <EditButton icon={DeleteIcon} onClick={() => { setUsersToAdd([usersToAdd[0]]); setIsCreatingChat(false)}} width='28px' title="Exit"/>
                 </div>
             </form> 
         )}

@@ -55,7 +55,7 @@ export default function UserProfileImage({ profileUrl, allowEdit, height='auto',
             <div className="user-profile-img-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <img className='user-profile-img' src={presignedUrl} height={height} width={width} alt="NOTHING"/>
                 <div className="edit-button-container"> {/* Need div container for formatting */}
-                    <EditButton onClick={() => modalSetter(true)} width={"32px"}/>
+                    <EditButton onClick={() => modalSetter(true)} width={"32px"} title="Change profile picture"/>
                 </div>
             </div>
         )

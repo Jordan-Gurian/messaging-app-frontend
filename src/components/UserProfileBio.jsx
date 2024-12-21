@@ -74,7 +74,7 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
             <div className="user-profile-bio-header-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <header className="profile-page-section-label">About Me</header>
                 {!isActiveEdit && isHover && isUser && isAuthenticated && (
-                    <EditButton onClick={() => changeEditStatus()} width={"28px"}/>
+                    <EditButton onClick={() => changeEditStatus()} width={"28px"} title="Edit bio"/>
                 )}
             </div>
             { !isActiveEdit && (
@@ -89,8 +89,8 @@ export default function UserProfileBio({ profile_bio, updateUser, isUser }) {
                     placeholder='Enter your bio here...'
                     textAreaStyle={{height: "4em"}}
                 >
-                    <EditButton type='submit' width='28px'/>
-                    <EditButton icon={DeleteIcon} onClick={() => changeEditStatus()} width='28px'/>
+                    <EditButton type='submit' width='28px' title="Submit changes"/>
+                    <EditButton icon={DeleteIcon} onClick={() => changeEditStatus()} width='28px' title="Delete changes"/>
                 </EditForm>
             )}
         </div>

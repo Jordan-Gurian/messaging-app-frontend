@@ -28,8 +28,8 @@ export default function PostHeader({ author, post, onClickEdit, onClickDelete, l
                 </div>
                 {loggedInUser.id === author.id && !isActiveEdit && (
                     <div className='mod-buttons'>
-                        <EditButton onClick={() => onClickEdit()} width='18px'/>
-                        <EditButton icon={DeleteIcon} onClick={() => onClickDelete()} width='18px'/>
+                        <EditButton onClick={() => onClickEdit()} width='18px' title="Edit post"/>
+                        <EditButton icon={DeleteIcon} onClick={() => onClickDelete()} width='18px' title="Delete post"/>
                     </div>
                 )}                
             </div>

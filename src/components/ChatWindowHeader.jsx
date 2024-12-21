@@ -137,9 +137,9 @@ export default function ChatWindowHeader({ chat, updateUser, sendLeaveMessage, d
         
             <div className="chat-window-header" onClick={() => setIsActiveEdit(true)}>
                 <div className="see-members-button">
-                    <EditButton icon={ProfileIcon} onClick={() => setModalOpen(true)} width="30px"/>
+                    <EditButton icon={ProfileIcon} onClick={() => setModalOpen(true)} width="30px" title="View chat members"/>
                 </div>
-                <div className="chat-name">
+                <div className="chat-name" title="Edit chat name">
                     {isActiveEdit ? (
                     <form className="new-chat-name-form" id="form" onSubmit={(event) => updateUserChat(event) }>
                         <input 
@@ -155,7 +155,7 @@ export default function ChatWindowHeader({ chat, updateUser, sendLeaveMessage, d
                     )}
                 </div> 
                 <div className="delete-button">
-                    <EditButton icon={LeaveIcon} onClick={() => leaveChat()} width="36px"/>
+                    <EditButton icon={LeaveIcon} onClick={() => leaveChat()} width="36px" title="Leave Chat"/>
                 </div>
             </div>
         </>

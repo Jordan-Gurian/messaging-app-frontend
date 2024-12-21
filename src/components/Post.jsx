@@ -206,8 +206,8 @@ export default function Post({ postId, updateUser, authorProp=null }) {
                     isActiveEdit={isActiveEdit}
                 />
                 <div className="post-bottom">
-                    <LikeButton objToLike={post} updateLikes={setPostUpdate}/>
-                    <EditButton icon={ReplyIcon} onClick={() => changeReplyStatus()} width='16px'/>
+                    <LikeButton objToLike={post} updateLikes={setPostUpdate} title="Like"/>
+                    <EditButton icon={ReplyIcon} onClick={() => changeReplyStatus()} width='16px' title="Add comment"/>
                     <PostMetrics
                         usersThatLiked={post.usersThatLiked}
                         comments={post.comments.length}

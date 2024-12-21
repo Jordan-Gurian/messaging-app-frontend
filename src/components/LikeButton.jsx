@@ -8,7 +8,7 @@ import IconImage from './IconImage';
 
 import './LikeButton.css'
 
-export default function LikeButton({ objToLike, updateLikes }) {
+export default function LikeButton({ objToLike, updateLikes, title=null }) {
     
     const [isLiked, setIsLiked] = useState(false);
     const token = localStorage.token;
@@ -76,7 +76,7 @@ export default function LikeButton({ objToLike, updateLikes }) {
     const likeIcon = isLiked ? LikeIconColor : LikeIconDark;
     
     return (
-        <button className="like-button" onClick={likeObjToLike}>
+        <button className="like-button" onClick={likeObjToLike} title={title}>
             <IconImage icon={likeIcon} height='18px'/>
         </button>
     )
@@ -86,4 +86,5 @@ export default function LikeButton({ objToLike, updateLikes }) {
 LikeButton.propTypes = {
     objToLike: PropTypes.object.isRequired,
     updateLikes: PropTypes.func.isRequired,
+    title: PropTypes.string,
 }

@@ -74,7 +74,7 @@ export default function Navbar() {
                             className="default-input-format"
                             placeholder="Search for other users..."
                         />
-                        <button className="search-button nav-search" type="submit">
+                        <button className="search-button nav-search" type="submit" title="Search">
                             <IconImage className="icon-image" icon={SearchIcon} width="15px" height="15px"/>
                         </button>
                     </form>
