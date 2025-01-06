@@ -1,11 +1,26 @@
 .following {
-    width: 50vw;
+    width: 100%;
+    padding: var(--default-padding);
+}
+
+.follow-block-container {
+    width: 100%;
 }
 
 .user-profile-following-container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
     align-items: flex-start;
+}
+
+@media screen and (max-width: 600px) {
+    .follow-block-container {
+        visibility: hidden;
+        height: 0px;
+    }
+
+    .user-profile-following-container {
+        align-items: center;
+    }
 }

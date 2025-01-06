@@ -59,7 +59,9 @@ export default function ChatPreview({ chat, onClickChatId, updateUser }) {
                 <div className='chat-preview-name' onClick={handleChatClick}> 
                     <ChatUsernames chat={chat}/>
                 </div>
+                <div className="chat-preview-edit-buttons">
                     <EditButton icon={DeleteIcon} onClick={deleteChat} width='18px' hoverToggle={true} title="Delete chat"/>
+                </div>
            </div>
         )
     } else {

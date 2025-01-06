@@ -7,14 +7,12 @@ import DefaultSpinner from './DefaultSpinner';
 
 import './FollowBlock.css'
 
-export default function FollowBlock({ followUsers=[], numCols=4 }) {
+export default function FollowBlock({ followUsers=[] }) {
 
     const loadingKey = useRef(uuidv4());
     const [isFollowersLoaded, setIsFollowersLoaded] = useState(false);
     const followersLoaded = useRef(0);
 
-    const gridColumnWidth = '150px';
-    const gridRowHeight = '100px';
     const height = '75px';
     const width = '75px';
     
@@ -42,12 +40,7 @@ export default function FollowBlock({ followUsers=[], numCols=4 }) {
     return (
         <div 
             className='follow-block' 
-            style={
-                { 
-                    gridTemplateColumns: `repeat(${numCols}, ${gridColumnWidth})`,
-                    gridAutoRows: `minmax(${gridRowHeight}, auto)`,
-                }
-            }>
+        >
             {followUsers.map((user) => {
                 return (
                     <Link key={uuidv4()}
@@ -62,7 +55,7 @@ export default function FollowBlock({ followUsers=[], numCols=4 }) {
                             width={width}
                             updateLoadCount={updateFollowersLoadedCount}
                         />
-                        <div className="follow-username" style={{maxWidth: gridColumnWidth}}>{user.username}</div>
+                        <div className="follow-username">{user.username}</div>
                     </Link>
                 )
             })}
@@ -75,8 +68,4 @@ export default function FollowBlock({ followUsers=[], numCols=4 }) {
 
 FollowBlock.propTypes = {
     followUsers: PropTypes.array,
-    numCols: PropTypes.oneOfType([
-        PropTypes.number,        
-        PropTypes.oneOf(['auto', 'auto-fit', 'auto-fill'])
-    ]),
 };

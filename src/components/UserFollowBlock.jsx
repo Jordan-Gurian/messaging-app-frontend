@@ -7,7 +7,9 @@ export default function UserFollowBlock({ followLabel='Follow Block', followBloc
     return (
         <div className='following user-profile-following-container'>
             <div className='profile-page-section-label'>{followLabel}</div>
-            <FollowBlock followUsers={followBlockContent}></FollowBlock>
+            <div className='follow-block-container'>
+                <FollowBlock followUsers={followBlockContent}></FollowBlock>
+            </div>
         </div>
     )
 

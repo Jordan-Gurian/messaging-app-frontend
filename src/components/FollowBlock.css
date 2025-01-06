@@ -3,6 +3,7 @@
     display: grid;
     gap: calc(var(--default-gap));
     text-align: center;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%/2, max(75px, 100%/4)), 1fr));
 }
 
 .follow-user-flex {
@@ -14,4 +15,5 @@
 .follow-username {
     text-align: center;
     overflow-x: hidden;
+    max-width: 75px;
 }

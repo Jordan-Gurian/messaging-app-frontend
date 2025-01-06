@@ -1,3 +1,9 @@
+.user-profile-chats-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+}
+
 .user-profile-chats-header-container {
     display: flex;
     gap: 2px;
@@ -6,7 +12,14 @@
 
 .chat-preview-container {
     display: flex;
-    max-width: 95%;
+    /* max-width: 95%; */
     flex-direction: column;
     gap: calc(var(--default-gap) / 5);
+}
+
+@media screen and (max-width: 600px) {
+    .user-profile-chats-container {
+        align-items: center;
+    }
+
 }
