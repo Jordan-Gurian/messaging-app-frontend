@@ -4,6 +4,7 @@
     gap: calc(var(--default-gap));
     text-align: center;
     grid-template-columns: repeat(auto-fit, min(100%/3, max(100px, 100%/5)));
+    min-width: 100%;
 }
 
 .follow-user-flex {
