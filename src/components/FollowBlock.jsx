@@ -46,6 +46,7 @@ export default function FollowBlock({ followUsers=[] }) {
                     <Link key={uuidv4()}
                         className='link-text follow-user-flex'
                         to={`/user/${user.username}`}
+                        title={user.username}
                         reloadDocument
                     >
                         <UserProfileImage 

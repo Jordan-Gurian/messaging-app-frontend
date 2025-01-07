@@ -35,6 +35,14 @@ const router = createBrowserRouter([
                 path: '/users',
                 element: <AllUsersPage />,
             },
+            {
+                path: '/user/:username/following',
+                element: <AllUsersPage following={true} />,
+            },
+            {
+                path: '/user/:username/followers',
+                element: <AllUsersPage following={false} />,
+            },
         ],
     }
 ]);
