@@ -7,7 +7,7 @@
 
 .profile-page-container {
     width: 100%;
-    padding: var(--default-padding);
+    /* padding: var(--default-padding); */
 }
 
 .profile-page-left-container, .profile-page-right-container {
@@ -23,7 +23,7 @@
     width: 40%;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1000px) {
     .profile-page-container, 
     .profile-page-left-container, 
     .profile-page-right-container {
@@ -36,7 +36,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: var(--default-padding);
+        /* padding: var(--default-padding); */
     }
 
     .profile-page-left-container, .profile-page-right-container {
@@ -52,7 +52,7 @@
 
     .profile-page-right-container {
         /* width: 40%; */
-        padding-right: 10px;
+        /* padding-right: 10px; */
     }
 }
 

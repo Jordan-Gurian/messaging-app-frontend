@@ -2,7 +2,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--default-padding);
+    /* padding: var(--default-padding); */
     font-size: 2rem;
     gap: var(--default-gap);
 }
@@ -25,6 +25,7 @@ nav {
     display: flex;
     gap: var(--default-gap);
     align-items: stretch;
+    padding-left: 30px;
 }
 
 #searchVal {
@@ -45,7 +46,7 @@ nav {
     display: block;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1000px) {
     nav {
         flex-direction: column;
         width: 100%;
@@ -54,15 +55,5 @@ nav {
     .nav-links {
         width: 100%;
         justify-content: space-evenly;
-    }
-}
-
-@media screen and (max-width: 1000px) and (min-width: 600px) {
-    nav {
-        font-size: 1rem;
-    }
-
-    #searchVal {
-        font-size: 0.75rem;
     }
 }
