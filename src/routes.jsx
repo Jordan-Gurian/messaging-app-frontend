@@ -6,6 +6,7 @@ import HomePage from './pages/Home/index';
 import RegisterPage from './pages/Register/index';
 import UserProfilePage from './pages/UserProfilePage/index';
 import AllUsersPage from './pages/AllUsersPage/index';
+import UserChatsPage from './pages/UserChatsPage/index';
 
 import './index.css';
 
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
             {
                 path: '/user/:username/followers',
                 element: <AllUsersPage following={false} />,
+            },
+            {
+                path: '/user/:username/chats',
+                element: <UserChatsPage />,
             },
         ],
     }

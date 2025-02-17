@@ -1,15 +1,18 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import CreateChat from './CreateChat';
 import ChatPreview from './ChatPreview';
 import ChatWindow from './ChatWindow';
 
 import './UserChats.css'
 
-export default function UserChats({ updateUser, chats, isUser = false, loggedInUserId, chatsLabel = 'Chats' }) {
-
+export default function UserChats({ updateUser, chats, isUser = false, loggedInUserId, chatsLabel = 'Chats'}) {
+    
     const [chatId, setChatId] = useState(null);
+    console.log(chatId)
     const [isHover, setIsHover] = useState(false);
+    const [resetChatWindow, setResetChatWindow] = useState(false);
 
     async function deleteChat(chat) {
         const token = localStorage.token;
@@ -36,7 +39,7 @@ export default function UserChats({ updateUser, chats, isUser = false, loggedInU
         } catch (error) {
             console.log(error);
             return { error }        
-        }  
+        }
     }
 
     const handleMouseEnter = () => {
@@ -50,11 +53,20 @@ export default function UserChats({ updateUser, chats, isUser = false, loggedInU
     const hasChatWithLoggedInUser = chats.filter((chat) => {
         return chat.users.some((user) => user.id === loggedInUserId) && chat.users.length === 2;
     }).length > 0 || isUser;
+    
+    // useEffect(() => {
+    //     setResetChatWindow(false);
+    //     if (!resetChatWindow && chatId !== null) {
+    //         setResetChatWindow(true);
+    //     }
+    // }, [chatId])
 
     return (
         <div className='chats-container user-profile-chats-container'>
             <div className="user-profile-chats-header-container" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                <header className="profile-page-section-label">{chatsLabel}</header>
+                <Link className='profile-page-section-label' to={`./${chatsLabel}`}>
+                    {chatsLabel}
+                </Link>
                 <CreateChat 
                     updateUser={updateUser} 
                     isUser={isUser} 
@@ -62,56 +74,51 @@ export default function UserChats({ updateUser, chats, isUser = false, loggedInU
                     hasChatWithLoggedInUser={hasChatWithLoggedInUser}
                 />
             </div>
-            <div className="chat-preview-container">
-                {isUser ? (
-                    chats.length > 0 && (
-                        chats.map((chat) => {
-                            return (
-                                <div className="chat-preview-item"key={chat.id}>
-                                    <ChatPreview 
-                                        chat={chat} 
-                                        onClickChatId={setChatId}
-                                        updateUser={updateUser}
-                                    />
-                                    {chatId===chat.id && (
-                                    <ChatWindow 
-                                        chatId={chat.id}
-                                        updateUser={updateUser}
-                                        deleteChat={deleteChat}
-                                    />
-                                    )}
-                                </div>
-                            )
-                        })
-                    )
-                ) : (
-                    chats.length > 0 && (
-                        chats.map((chat) => {
-                            let resultArray = chat.users.filter((user) => user.id === loggedInUserId);
-                            if (resultArray.length > 0) {
+            <div className="chat-combo">
+                <div className={"chat-preview-container"}>
+                    {isUser ? (
+                        chats.length > 0 && (
+                            chats.map((chat) => {
                                 return (
-                                    <div key={chat.id}>
+                                    <div className="chat-preview-item"key={chat.id}>
                                         <ChatPreview 
-                                            key={chat.id} 
                                             chat={chat} 
                                             onClickChatId={setChatId}
                                             updateUser={updateUser}
                                         />
-                                        {chatId===chat.id && (
-                                        <ChatWindow 
-                                            key={chat.id}
-                                            chatId={chat.id}
-                                            updateUser={updateUser}
-                                            deleteChat={deleteChat}
-                                        />
-                                        )}
-                                    </div>
+                                    </div>                                
                                 )
-                            }
-                        })
-                    )
-                )}
+                            })
+                        )
+                    ) : (
+                        chats.length > 0 && (
+                            chats.map((chat) => {
+                                let resultArray = chat.users.filter((user) => user.id === loggedInUserId);
+                                if (resultArray.length > 0) {
+                                    return (
+                                        <div key={chat.id}>
+                                            <ChatPreview 
+                                                key={chat.id} 
+                                                chat={chat} 
+                                                onClickChatId={setChatId}
+                                                updateUser={updateUser}
+                                            />
+                                        </div>
+                                    )
+                                }
+                            })
+                        )
+                    )}
+                </div>
+                <div className="chat-window-item">
+                    <ChatWindow 
+                        chatId={chatId}
+                        updateUser={updateUser}
+                        deleteChat={deleteChat}
+                    />
+                </div>
             </div>
+
         </div>
     )
 } 

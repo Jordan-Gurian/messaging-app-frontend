@@ -7,7 +7,7 @@ import Message from './Message';
 
 import './ChatWindow.css';
 
-export default function ChatWindow({ chatId, updateUser, deleteChat }) {
+export default function ChatWindow({ chatId=null, updateUser, deleteChat }) {
     const [chat, setChat] = useState({ users: [], messages: [] })
     
     const chatContainerRef = useRef(null);
@@ -32,8 +32,10 @@ export default function ChatWindow({ chatId, updateUser, deleteChat }) {
 
         try {
             const response = await fetch(requestURL, requestOptions);
-            const chat = await response.json();
-            setChat(chat);
+            if (chatId !== null) {
+                const chat = await response.json();
+                setChat(chat);
+            }
         } catch (error) {
             return { error }        
         }  
@@ -76,12 +78,19 @@ export default function ChatWindow({ chatId, updateUser, deleteChat }) {
 
     useEffect(() => {
         getChat();
-    }, []);
+    }, [chatId]);
 
     useEffect(() => {
-        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        if (chatId !== null) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
     }, [chat.messages])
 
+    if (chatId == null) {
+        return (
+            <div>No chats open</div>
+        )
+    } else {
     return (
         <div className="chat-window"> 
             <div className="chat-window-header-container">
@@ -96,11 +105,15 @@ export default function ChatWindow({ chatId, updateUser, deleteChat }) {
             </div>
             <TextInputBox sendText={sendMessageToChat}/>
         </div>
-    )
+        )
+    }
 }
 
 ChatWindow.propTypes = {
-    chatId: PropTypes.string,
+    chatId: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.oneOf([null])
+    ]),
     updateUser: PropTypes.func.isRequired,
     deleteChat: PropTypes.func.isRequired,
 };

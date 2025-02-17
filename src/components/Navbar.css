@@ -2,7 +2,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* padding: var(--default-padding); */
+    padding: var(--default-padding);
     font-size: 2rem;
     gap: var(--default-gap);
 }
@@ -25,7 +25,7 @@ nav {
     display: flex;
     gap: var(--default-gap);
     align-items: stretch;
-    padding-left: 30px;
+    padding-left: 34px;
 }
 
 #searchVal {
@@ -50,6 +50,7 @@ nav {
     nav {
         flex-direction: column;
         width: 100%;
+        padding: var(--default-padding);
     }
 
     .nav-links {

@@ -10,10 +10,8 @@ import './ChatPreview.css';
 
 export default function ChatPreview({ chat, onClickChatId, updateUser }) {
 
-    const [chatIsOpen, setChatIsOpen] = useState(false);
-
     function handleChatClick() {
-        setChatIsOpen(!chatIsOpen);
+        onClickChatId(chat.id);
     }
 
     async function deleteChat() {
@@ -44,18 +42,9 @@ export default function ChatPreview({ chat, onClickChatId, updateUser }) {
         }  
     }
 
-    useEffect(() => {
-        if (chatIsOpen) {
-            onClickChatId(chat.id);
-        } else {
-            onClickChatId(null);
-        }
-    }, [chatIsOpen])
-
-    
     if (Object.keys(chat).length > 0) {
         return (
-            <div key={uuidv4()} className='chat-preview'>
+            <div key={uuidv4()} className={'chat-preview'}>
                 <div className='chat-preview-name' onClick={handleChatClick}> 
                     <ChatUsernames chat={chat}/>
                 </div>

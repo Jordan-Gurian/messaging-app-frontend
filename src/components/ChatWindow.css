@@ -1,5 +1,6 @@
 .chat-window {
     border: 2px solid white;
+    width: 100%;
 }
 
 .chat-window-header-container {

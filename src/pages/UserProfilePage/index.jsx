@@ -9,6 +9,7 @@ import UserChats from './../../components/UserChats';
 import FollowButton from './../../components/FollowButton';
 import { useAuth } from './../../hooks/AuthContext';
 import EditUserProfileImage from './EditUserProfileImage'
+import ProfileFooter from './../../components/ProfileFooter';
 
 import './index.css';
 
@@ -114,6 +115,9 @@ export default function UserProfilePage() {
                         closeModal={() => setModalOpen(false)}
                     />
                 )}
+                <footer className="profile-footer">
+                    <ProfileFooter/>
+                </footer>
             </main>
         )
     } else {

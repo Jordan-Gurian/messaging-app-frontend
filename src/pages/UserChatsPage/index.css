@@ -1,0 +1,31 @@
+.chats-page-container {
+    display: flex;
+    gap: calc(var(--default-gap) * 2);
+    width: 100vw;
+    padding: var(--default-padding);
+}
+
+@media screen and (max-width: 1000px) {
+    .profile-page-container {
+        display: flex;
+        gap: calc(var(--default-gap) * 5);
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+    }
+    
+/* 
+    .profile-footer {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--main-bg-color);
+        border-top: 1px solid rgb(82, 124, 78);
+        padding: 10px 0px;
+    } */
+}
+

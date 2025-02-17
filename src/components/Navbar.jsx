@@ -59,7 +59,7 @@ export default function Navbar() {
     }
         return (
             <header>
-                <nav>
+                <nav className="navbar">
                     <div
                         className={`nav-links-item ${hoveredItem === 'messageXpress' ? 'item-hovered' : ''}`}
                         onMouseEnter={() => handleMouseEnter('messageXpress')}

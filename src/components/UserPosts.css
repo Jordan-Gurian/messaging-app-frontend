@@ -32,6 +32,10 @@
         max-width: 100%;
     }
 
+    .posts-content-container {
+        padding: 0 20px;
+    }
+
     .user-posts-header-container {
         justify-content: center;
     }

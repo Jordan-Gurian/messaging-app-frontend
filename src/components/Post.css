@@ -7,4 +7,12 @@
     display: flex;
     gap: var(--default-gap);
     align-items: center;
+    min-width: 450px;
+}
+
+@media screen and (max-width: 1000px) {
+    .post-container {
+        border-left: none;
+        border-right: none;
+    }
 }
