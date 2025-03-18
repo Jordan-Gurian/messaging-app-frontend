@@ -1,4 +1,4 @@
-This is the front-end of the "MessageXpress" social media site. The frontend is built with React, Javascript, and Vite. The backend is built with Node.js, and uses Prisma and PostgreSQL to build, maintain, and interact with the database. Amazon Web Services (AWS) S3 was used to store profile images. The site is not an exact clone of any existing site, but mirrors common functionality of many social media sites including:
+This is the frontend of the "MessageXpress" social media site. The frontend is built with React, Javascript, and Vite. The backend is built with Node.js, and uses Prisma and PostgreSQL to build, maintain, and interact with the database. Amazon Web Services (AWS) S3 was used to store profile images. The site is not an exact clone of any existing site, but mirrors common functionality of many social media sites including:
 
 - Create a profile
 - Add a profile picture and bio
@@ -8,7 +8,7 @@ This is the front-end of the "MessageXpress" social media site. The frontend is 
 
 Live Site: [MessageXpress](https://messaging-app-frontend-blue.vercel.app/)
 
-Server Repository: messaging-app-backend
+Server Repository: [messaging-app-backend (github)](https://github.com/Jordan-Gurian/messaging-app-backend)
 
 Technologies Used:
 
@@ -17,6 +17,7 @@ Technologies Used:
 - AWS
 - PostgreSQL
 - Prisma
+- CSS
 - Vite
 - MUI (Material-UI)
 - ESLint
